@@ -113,6 +113,27 @@ Of all the light curves that are finally created, darker events with a maximum s
 %
 %
 \subsection{Preprocessing (normazliation absolute mag)}
+% われわれはシミュレーションデータを利用した実験の中で入力xは絶対等級と最大値が1になるようにスケーリングしたfluxを組み合わせるのが良いことを発見した。
+% 厳密な絶対等級の計算は複雑な計算が要求されるので、簡単のために以下の式を用いた。
+% また、等級の計算は観測したfluxが負の値の場合もあるので、Luptitude(Lupton magnitude)を用いて対応した。
+We found that in experiments using simulation data, it is better to be input x follow as,
+\begin{equation}
+    x = \left( m_1^\mathrm{abs}, \ldots, m_P^\mathrm{abs}, f_{1}^{\mathrm{scale}}, \ldots, f_{P}^{\mathrm{scale}} \right)^T,
+\end{equation}
+where $m_i^\mathrm{abs}$ is i-th absolute magnitude, scaled flux $f_{i}^{\mathrm{scale}}$, that is,
+\begin{equation}
+    f_{i}^{\mathrm{scale}} = \frac{f_i}{\max \left(f_1, \ldots, f_P \right)},    \label{eq:scaled_flux}
+\end{equation}
+$f_i$ is i-th raw observed flux.
+Since the calculation of exact absolute magnitude requires complicated calculation, the following equation is used for simplicity.
+\begin{eqnarray}
+    m_i^\mathrm{abs} = m_i - \mathrm{DM}\left(z\right),
+\end{eqnarray}
+where $m_i$ is i-th magnitude and $\mathrm{DM}\left(z\right)$ is distance modulus of the redshift value $z$.
+In addition, since the observed flux may be a negative value, the calculation of the magnitude was dealt with using Luptitude (Lupton magnitude). %simplified Lupton magnitude 
+\begin{eqnarray}
+    m_i = 27.5 - \frac{2.5}{\log 10} \sinh^{-1} \frac{f_i}{2}. \label{eq:mag} 
+\end{eqnarray}
 
 \section{Deep Neural Network Clasifier : Imoto/Takahashi}
 On the rise of the era of Big Data, the use of machine learning technique plays a critical role on the analysis of astronomical data.  Techniques such as Random Forest, Support Vector Machine, Convolution Neural Network are being used for photometric data analysis, galaxy classifications and spectral classifications.
@@ -214,7 +235,7 @@ For the first iteration, we do not know what kind of transformation is the best,
 %変換の種類は何が良いかわからないので、恒等変換も含めてその変換の種類をハイパーパラメータとして後述の方法で最適化した。
 %実装はtf.nnの中にあるそれぞれの関数を利用した。
 
-{\bf Second Fully connected Layer:}
+{\bf Second Fully Connected Layer:}
 %D次元からC次元に隠れ層の次元数を変換する。
 After Highway Layer Block is stacked for 3-5 times, we are in need of converting the number of neurons to the number of supernovae times the number of supernova classes.   This is an opposite operation of the first fully connected layers.
 
@@ -275,7 +296,7 @@ We trained the DNN model using the hyper parameters obtained by optimization, an
   \label{fig:size_convergence_test}
 \end{figure}
 %
-\subsubsection{}
+%\subsubsection{}
 
 
 \begin{figure}[ht]
@@ -396,27 +417,6 @@ flag4 & \checkmark &            & \checkmark & 5 & 379 & 4.21e-3   & 1  & sigmoi
 
 
 
-% われわれはシミュレーションデータを利用した実験の中で入力xは絶対等級と最大値が1になるようにスケーリングしたfluxを組み合わせるのが良いことを発見した。
-% 厳密な絶対等級の計算は複雑な計算が要求されるので、簡単のために以下の式を用いた。
-% また、等級の計算は観測したfluxが負の値の場合もあるので、Luptitude(Lupton magnitude)を用いて対応した。
-We found that in experiments using simulation data, it is better to be input x follow as,
-\begin{equation}
-    x = \left( m_1^\mathrm{abs}, \ldots, m_P^\mathrm{abs}, f_{1}^{\mathrm{scale}}, \ldots, f_{P}^{\mathrm{scale}} \right)^T,
-\end{equation}
-where $m_i^\mathrm{abs}$ is i-th absolute magnitude, scaled flux $f_{i}^{\mathrm{scale}}$, that is,
-\begin{equation}
-    f_{i}^{\mathrm{scale}} = \frac{f_i}{\max \left(f_1, \ldots, f_P \right)},    \label{eq:scaled_flux}
-\end{equation}
-$f_i$ is i-th raw observed flux.
-Since the calculation of exact absolute magnitude requires complicated calculation, the following equation is used for simplicity.
-\begin{eqnarray}
-    m_i^\mathrm{abs} = m_i - \mathrm{DM}\left(z\right),
-\end{eqnarray}
-where $m_i$ is i-th magnitude and $\mathrm{DM}\left(z\right)$ is distance modulus of the redshift value $z$.
-In addition, since the observed flux may be a negative value, the calculation of the magnitude was dealt with using Luptitude (Lupton magnitude). %simplified Lupton magnitude 
-\begin{eqnarray}
-    m_i = 27.5 - \frac{2.5}{\log 10} \sinh^{-1} \frac{f_i}{2}. \label{eq:mag} 
-\end{eqnarray}
 
 \subsubsection{Binary and Multi-type}
 % DNNでのクラス分類は、DNNの各出力を各クラスに対応させることで、クラス数$K$によらずに同じ方法で学習できる。
