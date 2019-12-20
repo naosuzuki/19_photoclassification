@@ -31,8 +31,8 @@ The progress of observation technology in recent years has brought the rapid inc
 \end{abstract}
 
 \section{Introduction : Suzuki}
-Time domain science becomes one of the major fields of study today.  The discovery of accelerating universe \citep{perlmutter99a,riess98a} evoked a series of large supernova surveys in the last decade.  These surveys revealed that there exist a whole new family of transients and the search for unknown populations is of great interest today. 
-For the precision cosmology, it is very important to keep the purity of Type Ia supernova (SNIa) while having uniform sampling from bright to faint SNeIa.  Spectroscopic follow-up has been essential to distinguish faint SNIa from SNIbc.   A large amount of telescope time are dedicated to the follow-up programs.
+Time domain science becomes one of the major fields of astronomical study today.  The discovery of accelerating universe \citep{perlmutter99a,riess98a} evoked a series of large supernova surveys in the last decade.  These surveys revealed that there exist a whole new family of transients and the search for unknown populations is of great interest today. 
+For the precision cosmology, it is very important to keep the purity of Type Ia supernova (SNIa) while having uniform sampling from bright to faint SNeIa.  Spectroscopic follow-up has been essential to distinguish faint SNIa from SNIbc which has a similar light curve behavior.   A large amount of precious telescope time is dedicated to the follow-up programs, and we would like to make an efficient use of those telescopes.
 
 The scale of survey is getting larger, and it becomes impossible to trigger spectroscopic follow-up for all of the candidates in real time, and we are in need of developing new classification scheme.  It is a natural path to perform photometric classification \citep{sako11a} and with the rise of Machine Learning Technologies, 
 %our attempt to apply the latest techniques to the real astronomical data is reported in this paper.  
@@ -275,8 +275,6 @@ We divided the data set into training data and validation data.
 We used training data for optimizing DNN and used validation data for measuring the accuracy.
 We trained the DNN model using the hyper parameters obtained by optimization, and evaluated the performance of the DNN model.
 
-
-
 %\section{Results (TBD Experiment/Execution)}
 \begin{figure}[ht]
   \begin{center}
@@ -414,8 +412,6 @@ flag4 & \checkmark &            & \checkmark & 5 & 379 & 4.21e-3   & 1  & sigmoi
 % 恒等変換の出力は層がない状態と等しいのでモデルの実質的な深さを減らす効果がある。
 % このゲートの働きによってHighway layerの出力は非線形は変換と恒等変換の中間的なものになる。
 % layerの出力が恒等変換であればネットワークの深さが実質的に減少することになる。
-
-
 
 
 
