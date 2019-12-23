@@ -800,7 +800,7 @@ The numbers of supernovae classified as Ia by the classifier are 612, 436, and 1
 %
 %2class AUC
 %Ver. 1.2.0 
-\begin{table*}[ht]
+\begin{table*}[h]
 \tbl{AUC of each input in the HSC binary classification.}{
 \begin{tabular}{c|ccc|p{2em}p{2em}p{2em}p{2em}p{2em}p{2em}|p{2em}p{2em}p{2em}p{2em}p{2em}p{2em}}
 \hline
@@ -830,7 +830,7 @@ Test& \checkmark &            & \checkmark &       0.919 &       0.906 &       0
 %
 %Validation
 %
-\begin{figure*}[ht]
+\begin{figure*}[h]
     \begin{tabular}{cc}
         \begin{minipage}{0.5\hsize}
             \begin{center}
@@ -853,7 +853,7 @@ Test& \checkmark &            & \checkmark &       0.919 &       0.906 &       0
 % all samples
 %
 %
-\begin{figure*}[ht]
+\begin{figure*}[h]
     \begin{tabular}{cc}
         \begin{minipage}{0.5\hsize}
             \begin{center}
@@ -974,7 +974,7 @@ However, it should be noted that this ratio is calculated including misclassific
 %
 %3class Validation
 %Ver. 1.2.1
-\begin{table*}[ht]
+\begin{table}[ht]
 \tbl{Accuracy of each input in the HSC three class classification for validation dataset.}{
 \begin{tabular}{ccc|p{2em}p{2em}p{2em}p{2em}p{2em}p{2em}}
 \hline
@@ -992,7 +992,7 @@ $M$ & $m$ & $f$  &  Flag\_0 &  Flag\_1 &  Flag\_2 &  Flag\_3 & Flag\_4 &  All \\
 \begin{tabnote}
 * Accuracy for samples extracted from each flag according to the number ratio in the test dataset.
 \end{tabnote}
-\end{table*}
+\end{table}
 %
 %
 \begin{figure}[ht]
@@ -1022,12 +1022,12 @@ $M$ & $m$ & $f$  &  Flag\_0 &  Flag\_1 &  Flag\_2 &  Flag\_3 & Flag\_4 &  All \\
 \subsection{Comparison with the best classifier in PLAsTiCC}
 %
 We compare the results of our classifiers and those ranked first place in the PLAsTiCC Kaggle competition.
-The best classifier in the PLAsTiCC competition is based on Light-GBM and trained with features extracted from photometric data modeled by Gaussian process regression \citep{2019arXiv190704690B}.
+The best classifier in the PLAsTiCC competition \citep{2019arXiv190704690B} is based on Light-GBM and trained with features extracted from photometric data modeled by Gaussian process regression.
 For comparison, we used about 2300 supernova predictions in PLASTiCC data classified by both classifiers.
 Since the number of classes to be classified is different between our classifier and the best classifier, we divide the classification results into Ia and the other, and compare as binary classification.
 Figure\ \ref{fig:comp_plasticc_1st} shows the confusion matrix of each classifier.
-While our classifier and PLATiTiCC 1st classifier cannot be strictly compared because of the different training data sets,
-Our classifier is about 6\% better in total accuracy than the PLAsTiCC 1st classifier and 6\% better in Ia accuracy.
+While our classifier and PLATiTiCC 1st classifier cannot be strictly compared because of the different training data sets and number of classification classes,
+only for the compared supernovae, our classifier is about 6\% better in total accuracy than the PLAsTiCC 1st classifier and 6\% better in Ia accuracy.
 Considering that our classifier only uses the middle one year data out of the original three year data as input, our classifier classifies PLAsTiCC data with better accuracy with less data than that of PLAsTiCC 1st.
 However, since our method fixes the observation schedule to input, it is not possible to apply to all PLAsTiCC data with one classifier.
 %How many patterns
@@ -1089,6 +1089,7 @@ Furthermore, this distributional difference of residuals leads to the fact that 
 %
 %
 \subsection{Misclassification}
+\label{sec:misclass}
 %
 Next, we summarize misclassifications in the classification of PLAsTiCC and HSC data respectively.
 For PLAsTiCC dataset, misclassified supernovae have the following characteristics:
@@ -1129,7 +1130,7 @@ The partial decrease in accuracy is thought to be due to the new supernova found
 By regrouping all events classified while changing the number of input dimensions into groups according to the length of the supernova detection period, we investigated the classification performance for each phase from the rise of the supernova.
 The figure\ \ref{fig:n_observations_SNphase} shows the classification performance against the supernova phase.
 This figure presents how long supernova photometric data is needed to classify with high accuracy using our classifier.
-If we input two weeks of supernova data, we can classify it with about 90\% accuracy.
+As mentioned in section \ref{sec:misclass}, the classification performance is low if only the initial rising phase before the supernova peek is included in the input photometric data, but the accuracy increases to 90\% when we input two weeks of supernova data from the first detection.
 Since the observation interval in the HSC survey is not constant, the number of inputs may be different even for supernovae with the same detected period.
 Due to this fact, there is a variation in the average input dimension number of samples in each phase, which causes a fluctuation in accuracy.
 In addition, from the cumulative number of supernovae classified as Ia with high probability,  it is estimated that our classifier can classify two or three Ia supernovae candidate to follow-up in one month observation.'
