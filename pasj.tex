@@ -794,16 +794,17 @@ The combination of these classifiers enables the classification of 1812 supernov
 The remaining 12 supernovae are excluded in this classification because they have many missing data.
 We applied both two-class and three-class classification tasks to HSC data, as with PLAsTiCC data.
 %
+%v190829
 \begin{table}[ht]
 \tbl{Number of supernovae for each pattern.}{
 \begin{tabular}{lrrrr}
 \hline
 Flag & Epoch & Number & Cumulate & Cumulate ratio \\
 \hline
-0     & 52      & 709        & 709         & 0.389 \\
-1     & 32      & 646        & 1355       & 0.743 \\
-2     & 23      & 271        & 1626       & 0.891 \\
-3     & 12      & 122        & 1748       & 0.958 \\
+0     & 52      & 705        & 705        & 0.387 \\
+1     & 32      & 651        & 1356       & 0.743 \\
+2     & 23      & 271        & 1627       & 0.892 \\
+3     & 12      & 121        & 1748       & 0.958 \\
 4     & 6        & 64        & 1812       & 0.993 \\
 \hline
 \end{tabular}
@@ -1189,6 +1190,18 @@ The other supernovae have outlier values and poor photometry components.
   \end{center}
   \caption{%
   Misclassification rate against redshift
+  }%
+  \label{fig:misclass_rate_3class}
+\end{figure}
+%
+\subsection{Type fractions of HSC supernovae}
+%
+\begin{figure}[ht]
+  \begin{center}
+     \includegraphics[width=\columnwidth]{figures/SNfrac_alongz.eps}
+  \end{center}
+  \caption{%
+  Type fractions along redshift in HSC three-class classification.
   }%
   \label{fig:misclass_rate_3class}
 \end{figure}
