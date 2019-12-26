@@ -89,17 +89,12 @@ Thus, it is critical to hit the target at the time of maximum either by ToO (GTC
 For SNIa, it takes about 18 days from its explosion to the maximum in rest frame \citep{conley06a,papadogiannakis19a}.   Given the fact, we are looking at high-redshift SNIa (z$>$1), we have about a month in observed frame for a SNIa from explosion to the maximum.   However, our task is to identify them 2 weeks prior to the maximum, meaning we have only 2 data points per a filter.   In addition to that, sky condition keeps changing, and we may not have the data as we originally had planned.   In reality, our identification has to be done through missing data points on the rise.
 
 In parallel to SNIa Cosmology program, our sister projects also needs identification and classification of HSC transient.   
-Type II supernova cosmology program needs a timely spectroscopic follow-up to measure the expansion velocity of photosphere.
-
-\citep{dejaeger17a}
-
-\citep{moriya19a,curtin19a}
-
-\citep{maeda18a,jiang18a}
-
-
-
-\citep{moriya19b}
+Type II supernova cosmology program needs a timely spectroscopic follow-up to measure the expansion velocity of photosphere
+\citep{dejaeger17a}.
+Superluminous Supernova (SLSN) is of great interest today, it is relatively rare and its mechanism is just began to be understood \citep{moriya19a}, and it can probe high redshift universe.    
+For SLSN project, timely spectroscopic follow-up is also critical \citep{curtin19a}.
+%\citep{maeda18a,jiang18a}
+%\citep{moriya19b}
 
 %\begin{itemize}
 %\item Classification of SN Ia
@@ -135,10 +130,10 @@ The figure \ref{fig:simLCsamples} shows examples of the simulated light curves.
 %\end{itemize}
 %
 Ia light curves are simulated using SALT-II light curve model \citep{Guy_2010}.
-The stretch and color values are distributed according to "G10'" model in \citet{Mosher_2014}.
+The stretch and color values are distributed in the range of $-2<x_1<+2$ and $-0.3<c<0.3$ according to "G10'" model in \citet{Mosher_2014}.
 The non-Ia light curve is generated based on the template and using redshift as a parameter.
 The selection ratio of the template to be used is the same as that of PLASTiCC.
-The redshift is selected in the range of 0.1 to 2.0, and the event rate depends on the number distribution of galaxies in the COSMOS region.
+The redshift is selected in the range of 0.1 to 2.0, and the event rate depends on the number distribution of galaxies in the COSMOS2015 catalog \citep{2016ApJS..224...24L}.
 In addition, the timing at which supernovas occur is shifted by randomly setting an offset that indicates the difference between the supernova phase and the observation schedule.
 Of all the light curves that are finally created, darker events with a maximum signal-to-noise ratio of less than three are rejected.
 %
@@ -817,6 +812,7 @@ Flag & Epoch & Number & Cumulate & Cumulate ratio \\
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Binary classification}
+\label{sec:h2}
 %
 In binary classification, we prepared four versions of classifiers with different inputs as in PLAsTiCC data, and compared their performance.
 %The performance for each input of binary classification are summarized in Table\ \ref{tab:h2_validation},\ref{tab:h2_test_gold} and \ref{tab:h2_test_all}.
@@ -991,6 +987,7 @@ Test& \checkmark &            & \checkmark &        0.859 &        0.816 &      
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \subsection{Multi-type classification}
+\label{sec:h3}
 %
 Because we are currently labeling more than three classes for all supernovae detected in HSC transient survey using other methods,
 in this paper, we show the classification performance only for the validation dataset with three-class classifier.
@@ -1059,8 +1056,10 @@ $M$ & $m$ & $f$  &  Flag\_0 &  Flag\_1 &  Flag\_2 &  Flag\_3 & Flag\_4 &  All \\
 \subsection{Classification results list}
 %
 We here publish the classification results of 1824 HSC supernovae by the proposed classifiers at (url).
-A part of this classification list is shown in Table 1 as an example.
-
+A part of this classification list is shown in Table\ \ref{tab:h_results} as an example.
+This list summarizes the probabilities predicted by the two-class and three-class classifiers for each supernova, along with redshifts of host galaxies and classification labels by SALT2 fit.
+The probabilities in this list are calculated from the output of the classifier with the normalized flux added to the input.
+Each classification performance shown in sections \ref{sec:h2} and \ref{sec:h3} is calculated based on the probabilities in this list.
 \begin{table*}[ht]
 \tbl{Example of classification result list for HSC supernovae.}{
 \begin{tabular}{p{2em}p{1em}p{1em}lp{2em}p{1em}p{2em}p{2em}p{2em}p{2em}p{2em}p{2em}p{2em}p{2em}p{2em}p{2em}}
