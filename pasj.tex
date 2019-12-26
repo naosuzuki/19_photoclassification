@@ -46,8 +46,12 @@ In this paper, we introduce our attempt to apply machine learning (DNN) to the r
 Hyper Suprime-Cam (HSC) on Subaru Telescope enables us to probe wide filed (1.77 deg$^2$ Field of View) and deep space (26th mag in $i-$band / epoch).  Our primary scientific goals are Type Ia Supernova (SNIa) cosmology, Type II Supernova Cosmology, Super Luminous Supernova (SLSN) studies as well as probing unknown population of transients.  
 As is reported in \citet{yasuda19a}, more than 1800 SNe are discovered in a 6-month campaign. 
 We deployed a machine learning (AUC boosting) for transient detection \citep{morii16a}, where 'real' vs. 'bogus' is determined by a machine.
-In \citet{kimura17a}, we use DNN for supernova type classification from 2 dimentional image, and highway block is introduced for the optimization of layers.
-This paper is the first application of our methods to the observed data.
+In \citet{kimura17a}, we adopted DNN for supernova type classification from 2 dimentional image, and highway block is introduced for the optimization of layers.
+This paper is an extension of \citet{kimura17a} and applies DNN to the photometric classification of transients.   
+Our unique attempt is to make use of the observed data as 'raw' as possible so that we can directly plug them into machine without any fitting or extracting characteristics.
+%paper structure
+%In $\S$2, 
+ 
 %\subsection{Increase in the number of discovered supernovae}
 %\begin{itemize}
 %\item DES, LSST
@@ -67,18 +71,19 @@ This paper is the first application of our methods to the observed data.
 %
 \section{Methods :}
 \subsection{Tasks in HSC survey}
-Subaru Hyper-Suprime Cam (HSC) Transient survey is a part of Subaru Strategic Project (SSP) which is a five-year
-program with 300 dark nights \citep{aihara18a,miyazaki18a}.
+Subaru Hyper-Suprime Cam (HSC) Transient survey is a part of Subaru Strategic Project (SSP) which is a five-year program with 300 dark nights \citep{aihara18a,miyazaki18a}.
 HSC Transient survey is executed for a consective 6 monghth from November 2016 through April 2017.
 HSC is mounted on the prime focus for 2 weeks in dark time.   
 Weather permitted, we aim to observe 2 data points per filter per lunation.
-Survey strategies and the observing logs are reported in \citet{yasuda19a}, and we use the observed phtometric data described in \citet{yasuda19a}.
+A detailed survey strategies and the observing logs are reported in \citet{yasuda19a}, and we use the observed phtometric data described in \citet{yasuda19a}.
 
-One of our primary goals of HSC Transient survey is Type Ia Supernova Cosmology which aims to perform 
-the most precise measurement of dark energy at high-redshift and test if dark energy is changing in time or not.
-We are awarded 96 orbits of the Hubble Space Telescope time (WFC3 Camera) to execute a precise photometry on IR.
+One of our primary goals of HSC Transient survey is Type Ia Supernova Cosmology which aims to perform the most precise measurement of dark energy at high-redshift and test if dark energy is changing in time or not (cite).
+We are awarded 96 orbits of the Hubble Space Telescope time (WFC3 Camera) to execute a precise photometry on IR at the time of maximum.
+Our HST program uses non-disrupted ToO which means we send the observing request by Wednesday 5pm (EST), 2 weeks prior to the observation.
+In other words, we are in need of finding good candidates 2-3 weeks prior to the maximum.  High-redshift (z$>$1) time dilation factor helps, but it is always a challenge to identify SNIa on the rise.
 
 Our international collaboration team executes spectroscopic follow-up using large telescopes in the world (Gemini, GTC, Keck, VLT).  
+Our target, high-redshift SNIa, is faint ($\sim$ 24th mag in $i$-band) for spectroscopic identification even with these powerful large telescopes.
 
 
 %\begin{itemize}
