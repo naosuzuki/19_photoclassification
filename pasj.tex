@@ -92,12 +92,13 @@ In parallel to SNIa Cosmology program, our sister projects also needs identifica
 Type II supernova cosmology program needs a timely spectroscopic follow-up to measure the expansion velocity of photosphere from H$\beta$ line \citep{dejaeger17a}.
 Superluminous Supernova (SLSN) is of great interest today, it is relatively a rare event\citep{quimby11a} and its mechanism has quite a diversity \citep{galyam12a,moriya12a}, and it can probe high redshift universe \citep{cooke12a}.    
 For SLSN project, timely spectroscopic follow-up is also critical \citep{moriya19a,curtin19a}.
-Early phase SNIa gives us clues on explosion mechanism \citep{maeda18a} and progenitors (cite), and it is a hot topic to study.
-HSC has an advantage of going deep which also means survey volume is large.
-Finding early phase SNIa is not trivial and machine learning can play an important role to identify the candidates.
 
-Observations of the early phase Core Collapse Supernova provides us with a crucial information on the size of the projenitors \citep{thompson03a,chevalier11a}.  Shock Breakout lasts only for a few $\sim$ several hours at the time of explosion and it becomes as luminous as at the time of the maximum \citep{gezari08a}, and it contains the information on projenitor radius \citep{nakar10a}.
-HSC has an advantage of is expected to find shock breakouts for its volume survey \cite{tominaga11a}.
+Early phase SNIa gives us clues on explosion mechanism \citep{maeda18a} and progenitors \citep{cao15a}, and it is a hot topic to study.
+HSC has an advantage of surveying a large volume and has revealed long standing theory prediction of Helium-shell detonation \citep{jiang18a}.
+Finding early phase SNIa is not trivial but HSC is yielding a new set of early phase SNIa (Jiang et al. 2020 in prep).
+Observations of the early phase Core Collapse Supernova provides us with a crucial information on the size of the projenitors \citep{thompson03a,chevalier11a}.  Shock Breakout lasts only for a few $\sim$ several hours at the time of explosion and it becomes as luminous as at the time of the maximum \citep{gezari08a}. 
+Shock Breakout contains the information on projenitor radius \citep{nakar10a}, and HSC is expected to find these candidates as well \citep{tominaga11a}.
+
 
 %\citep{maeda18a,jiang18a}
 %\citep{moriya19b}
@@ -107,17 +108,19 @@ HSC has an advantage of is expected to find shock breakouts for its volume surve
 %\item Observation schedule
 %\item Type classification before peak
 %\end{itemize}
-\subsection{Classification methods for HSC survey}
+\subsection{Classification Method for HSC Transient Survey}
+We designed two models of machine learning with emphasis on identifying SNIa which requires time sensitive trigger for HST.
+One model classifies 
 %
-We designed a supernova type classifier using machine learning specialized for HSC survey.
+%We designed a supernova type classifier using machine learning specialized for HSC survey.
 %
-There are two types of classifiers, which input light curve data directly.
+%There are two types of classifiers, which input light curve data directly.
 %
-One classifies whether the type of supernovae are Ia or not, and the other classifies them into three classes (Type Ia, Ibc and II).
+%One classifies whether the type of supernovae are Ia or not, and the other classifies them into three classes (Type Ia, Ibc and II).
 %
-Hundreds of thousands of simulated light curves are used to train the classifier.
+%Hundreds of thousands of simulated light curves are used to train the classifier.
 %
-By simulating the light curve data and training the machine in advance before observation, type classification of supernova can be performed in a short time after observation.
+%By simulating the light curve data and training the machine in advance before observation, type classification of supernova can be performed in a short time after observation.
 %
 \section{Data}
 \subsection{Simulation: SNANA}
@@ -1252,7 +1255,7 @@ Although the Ia probability fluctuates greatly in the earliest phase, it begins 
 %
 \begin{figure}[ht]
   \begin{center}
-     \includegraphics[width=\columnwidth]{figures/n_observations_SNphase_191114.eps}
+     \includegraphics[width=\columnwidth]{figures/n_observations_SNphase_191227.eps}
   \end{center}
   \caption{%
   Classification accuracy and cumulative number of type Ia supernovae classified with high probability against supernova phase.
@@ -1264,7 +1267,7 @@ Although the Ia probability fluctuates greatly in the earliest phase, it begins 
 %
 \begin{figure}[ht]
   \begin{center}
-     \includegraphics[width=\columnwidth]{figures/n_observations_visualized_Ia_probability_line.eps}
+     \includegraphics[width=\columnwidth]{figures/n_observations_visualized_Ia_probability_191227.eps}
   \end{center}
   \caption{%
   Transition of Ia probability with increasing elapsed time of input supernovae
