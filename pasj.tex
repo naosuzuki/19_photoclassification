@@ -361,7 +361,7 @@ We trained the DNN model using the hyper parameters obtained by optimization, an
       \begin{tabular}{lcccllllllllll}
 \hline
 %      & $M$        & $m$        & $f$        & the number of blocks T & hidden size D & drop rate & bn & type    \\ \hline
-      & \multicolumn{3}{l}{Input}            & \multicolumn{5}{l}{Two-Class}      &  \multicolumn{5}{l}{Three-Class}   \\ \hline
+      & \multicolumn{3}{l}{Input$^*$}            & \multicolumn{5}{l}{Two-Class}      &  \multicolumn{5}{l}{Three-Class}   \\ \hline
       & $M$        & $m$        & $f$        & T & D   & drop rate & bn & type    & T & D   & drop rate & bn & type    \\ \hline      
 flag0 & \checkmark &            & \checkmark & 5 & 178 & 9.47e-3   & 1  & sigmoid & 4 & 429 & 1.20e-3   & 0  & linear  \\
       & \checkmark &            &            & 3 & 247 & 9.68e-4   & 1  & sigmoid & 4 & 516 & 2.54e-3   & 0  & tanh    \\
@@ -385,6 +385,10 @@ flag4 & \checkmark &            & \checkmark & 5 & 379 & 4.21e-3   & 1  & sigmoi
       &            & \checkmark &            & 4 & 567 & 5.77e-2   & 0  & sigmoid & 3 & 354 & 2.14e-1   & 1  & sigmoid \\ \hline
 \end{tabular}
   }\label{tb:searched_hp_class}
+\begin{tabnote}
+* The photometric data selected as input to classifiers are displayed as check marks.
+$M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
+\end{tabnote}
 \end{table*}
 
 %
@@ -663,13 +667,13 @@ On the other hand, unlike the case of classification, no mixup is performed.
 
 \section{Validation with PLAsTiCC data} %Takahashi
 %
-We verify the performance of the classifier described in the previous section using the PLAsTiCC dataset.
+We verify the performance of the classifier described in the previous section using the PLAsTiCC dataset \citep{plasticc_dataset}.
 PLAsTiCC data is mainly divided into two components, Wide-Fast-Deep (WFD) and Deep-Drilling-Fields (DDF), based on survey styles with different cadences.
 WFD data is not suitable for classification by our proposed method, because it consists of a group of light curves simulated assuming a wide area survey of almost half of the whole sky, and have various observation schedules.
 In contrast, DDF data is suitable for the verification of our method because it has photometric data that simulates the observation of specific areas with the same cadence as the HSC survey.
 Therefore, we validated the classifier using DDF data which have the fixed observation schedule for each object.
-About 2300 events extracted from PLAsTiCC DDF data were used for the test set.
-These are three types of supernovae, Ia, Ibc, and II, which are simulated to occur in the COSMOS field, the target region of HSC survey.
+About 2,297 events extracted from PLAsTiCC DDF data were used for the test set.
+These are three types of supernovae, Ia, Ibc, and II, which are simulated to occur in the COSMOS field \citep{scoville2007cosmos}, the target region of HSC survey.
 For these events, we extracted only the light curves for about one year during which supernovae occur from the original three-year data and input them into the classifier.
 %
 We prepared several classifiers with different inputs for comparison.
@@ -683,7 +687,7 @@ We evaluated the results by Area Under the Curve (AUC) of Receiver Operating Cha
 %\item Distribution of predictions in redshift (figure?)
 %\end{itemize}
 %
-Prior to validation of PLAsTiCC data, we evaluated classification performance for simulated lightcurves by performing cross-validation on approximately 370,000 events simulated using PLAsTiCC template.
+Prior to validation of PLAsTiCC data, we evaluated classification performance for simulated lightcurves by performing cross-validation on 370,345 events simulated using PLAsTiCC template.
 The simulated light curve has a class ratio of Ia : Ibc : II = 0.60 : 0.06 : 0.34, and the positions of these peaks are randomly shifted between 450 days.
 Table\ \ref{tab:p_validation} shows the AUC of ROC curve and Precision recall curve in two-class classification, and accuracy in three-class classification.
 The classifier given absolute magnitudes and normalized flux performed best in both two-class and three-class in the simulated data classification.
@@ -700,7 +704,7 @@ From these results, we confirmed that the classifier can classify simlated data 
 \tbl{Classification performance of each input for the PLAsTiCC validation dataset.}{
 \begin{tabular}{cccccc}
 \hline
-\multicolumn{3}{c}{Input}   & \multicolumn{2}{c}{AUC} & Accuracy \\
+\multicolumn{3}{c}{Input$^*$}   & \multicolumn{2}{c}{AUC} & Accuracy \\
 \hline
 %\begin{tabular}{c}absolute\\magnitude\end{tabular} & magnitude & \begin{tabular}{c}normalized\\flux\end{tabular} &  ROC &  PreRec &\\
 $M$ & $m$ & $f$ &  ROC &  Pre.-Rec. &\\
@@ -712,6 +716,10 @@ $M$ & $m$ & $f$ &  ROC &  Pre.-Rec. &\\
 \hline
 \end{tabular}
 }\label{tab:p_validation}
+\begin{tabnote}
+* The photometric data selected as input to classifiers are displayed as check marks.
+$M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
+\end{tabnote}
 \end{table}
 %
 %
@@ -739,7 +747,7 @@ Although the classification performance for Ibc is not high, since the number of
 \tbl{Classification performance of each input for the PLAsTiCC test dataset.}{
 \begin{tabular}{cccccc}
 \hline
-\multicolumn{3}{c}{Input}   & \multicolumn{2}{c}{AUC} & Accuracy \\
+\multicolumn{3}{c}{Input$^*$}   & \multicolumn{2}{c}{AUC} & Accuracy \\
 \hline
 %\begin{tabular}{c}absolute\\magnitude\end{tabular} & magnitude & \begin{tabular}{c}normalized\\flux\end{tabular} &  ROC &  PreRec &\\
 $M$ & $m$ & $f$ &  ROC &  Pre.-Rec. &\\
@@ -751,6 +759,10 @@ $M$ & $m$ & $f$ &  ROC &  Pre.-Rec. &\\
 \hline
 \end{tabular}
 }\label{tab:p_test}
+\begin{tabnote}
+* The photometric data selected as input to classifiers are displayed as check marks.
+$M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
+\end{tabnote}
 \end{table}
 %
 \begin{figure}[ht]
@@ -768,7 +780,7 @@ $M$ & $m$ & $f$ &  ROC &  Pre.-Rec. &\\
 \section{Application to HSC survey}
 %
 We applied the developed classifier to the light curve data of supernovae discovered in the HSC transient survey.
-The classifier was trained using approximately 520,000 simulated light curve data created in the same way as PLAsTiCC data classification.
+The classifier was trained using 514,954 simulated light curve data created in the same way as PLAsTiCC data classification.
 Their class ratio is Ia: Ibc: II = 0.59 : 0.07 : 0.34, and the shift range of the peaks is the same as that of PLAsTiCC data, 450 days.
 We used 1824 supernovas detected in the survey as a test set.
 They have 42 epochs of photometric data in four bands of g, r, i, z excluding Y band.
@@ -779,14 +791,14 @@ The number of epochs and the schedule for each filer are summarized in Table\ \r
 %
 \begin{table}[ht]
 \tbl{Number of epochs and the schedule for each filer.}{
-\begin{tabular}{lcc}
+\begin{tabular}{llp{15em}}
 \hline
-Filter & epochs & Elapsed day \\
+Filter & Epochs & Elapsed day\\
 \hline
-g & 8 & -57, -19, 4, 11, 33, 60, 67, 95 \\
-r & 9 & -54, -27, 2, 12, 33, 44, 63, 70, 92 \\
-i & 13 & -57, -53, -27, -19, 2, 9, 12, 35, 42, 61, 68, 95, 96 \\
-z & 12 & -59, -53, -29, -19, 0, 9, 31, 42, 60, 67, 92, 98 \\
+g & 8 & 2, 40, 63, 70, 92, 119, 126, 154\\
+r & 9 & 5, 32, 61, 71, 92, 103, 122, 129, 151\\
+i & 13 & 2, 6, 32, 40, 61, 68, 71, 94, 101, 120, 127, 154, 155\\
+z & 12 & 0, 6, 30, 40, 59, 68, 90, 101, 119, 126, 151, 157\\
 %Y  & 10 & -59, -26, -17, 4, 13, 37, 45, 59, 68, 89 \\
 \hline
 \end{tabular}
@@ -849,7 +861,7 @@ The numbers of supernovae classified as Ia by the classifier are 613, 437, and 1
 \tbl{AUC of each input in the HSC binary classification.}{
 \begin{tabular}{c|ccc|p{2em}p{2em}p{2em}p{2em}p{2em}p{2em}|p{2em}p{2em}p{2em}p{2em}p{2em}p{2em}}
 \hline
-Dataset & \multicolumn{3}{c}{Input} & \multicolumn{6}{|c|}{ROC} & \multicolumn{6}{c}{Pre.-Rec.} \\
+Dataset & \multicolumn{3}{c}{Input$^*$} & \multicolumn{6}{|c|}{ROC} & \multicolumn{6}{c}{Pre.-Rec.} \\
 \hline
  & $M$ & $m$ & $f$ & Flag0 & Flag1 & Flag2 & Flag3 & Flag4 & All & Flag0 & Flag1 & Flag2 & Flag3 & Flag4 & All \\
 \hline
@@ -870,6 +882,10 @@ Test& \checkmark &            & \checkmark &       0.919 &       0.906 &       0
 \hline
 \end{tabular}
 }\label{tab:h2_AUC}
+\begin{tabnote}
+* The photometric data selected as input to classifiers are displayed as check marks.
+$M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
+\end{tabnote}
 \end{table*}
 \begin{comment}
 %
@@ -1024,7 +1040,7 @@ However, it should be noted that this ratio is calculated including misclassific
 \tbl{Accuracy of each input in the HSC three class classification for validation dataset.}{
 \begin{tabular}{ccc|p{2em}p{2em}p{2em}p{2em}p{2em}p{2em}}
 \hline
-\multicolumn{3}{c}{Input} & \multicolumn{6}{|c}{Accuracy} \\
+\multicolumn{3}{c}{Input$^*$} & \multicolumn{6}{|c}{Accuracy$^{**}$} \\
 \hline
 $M$ & $m$ & $f$  &  Flag\_0 &  Flag\_1 &  Flag\_2 &  Flag\_3 & Flag\_4 &  All \\
 \hline
@@ -1036,7 +1052,10 @@ $M$ & $m$ & $f$  &  Flag\_0 &  Flag\_1 &  Flag\_2 &  Flag\_3 & Flag\_4 &  All \\
 \end{tabular}
 }\label{tab:h3_validation}
 \begin{tabnote}
-* Accuracy for samples extracted from each flag according to the number ratio in the test dataset.
+* The photometric data selected as input to classifiers are displayed as check marks.
+$M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
+
+** Accuracy for samples extracted from each flag according to the number ratio in the test dataset.
 \end{tabnote}
 \end{table}
 %
