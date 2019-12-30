@@ -779,18 +779,41 @@ $M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Application to HSC survey}
 %
-We applied the developed classifier to the light curve data of supernovae discovered in the HSC transient survey.
-The classifier was trained using 514,954 simulated light curve data created in the same way as PLAsTiCC data classification.
-Their class ratio is Ia: Ibc: II = 0.59 : 0.07 : 0.34, and the shift range of the peaks is the same as that of PLAsTiCC data, 450 days.
-We used 1824 supernovas detected in the survey as a test set.
-They have 42 epochs of photometric data in four bands of g, r, i, z excluding Y band.
+We applied the developed classifier to the light curve data of 1824 supernovae discovered in the HSC transient survey.
+As described in the HSC transient servey overview paper \citep{yasuda19a}, this survey is part of the HSC SSP survey, where observations were performed in two areas with different observation frequencies, "Deep" area and "Ultra-Deep" area.
+Therefore, the number of photometric data of supernova in each area is different.
+There are also events in which part of the light curve data is missing.
+To correspond these supernovae, we prepared five input patterns of light curve data and classifiers for each pattern.
+The number of supernovae for each pattern are summarized in Table\ \ref{tab:class_flag}.
+The combination of these classifiers enables the classification of 1812 supernovae corresponding to 99.3\% of all target supernovae.
+The remaining 12 supernovae are excluded in this classification because they have many missing data.
+For example, the number of supernovae in Flag0 using photometric data of all observation epochs in the survey is 705.
+They are detected in the Ultra-deep area, and have 42 epochs of photometric data in four bands of g, r, i, z excluding Y band.
 Because part of the y-band photometric data has residuals due to improper background subtraction influenced by scattered light,
 %need reference
-We exclude the Y band data, considering the impact on classification performance.
+we exclude the Y band data, considering the impact on classification performance.
 The number of epochs and the schedule for each filer are summarized in Table\ \ref{tab:HSCsurvey_schedule}.
 %
+%v190829
 \begin{table}[ht]
-\tbl{Number of epochs and the schedule for each filer.}{
+\tbl{Number of supernovae for each pattern.}{
+\begin{tabular}{lrrrr}
+\hline
+Flag & Epoch & Number & Cumulate & Cumulate ratio \\
+\hline
+0     & 42      & 705        & 705        & 0.387 \\
+1     & 26      & 651        & 1356       & 0.743 \\
+2     & 19      & 271        & 1627       & 0.892 \\
+3     & 10      & 121        & 1748       & 0.958 \\
+4     & 4        & 64        & 1812       & 0.993 \\
+\hline
+\end{tabular}
+}\label{tab:class_flag}
+\end{table}
+%
+%
+\begin{table}[ht]
+\tbl{Number of input epochs and the schedule for Flag0 supernova.}{
 \begin{tabular}{llp{15em}}
 \hline
 Filter & Epochs & Elapsed day\\
@@ -806,31 +829,9 @@ z & 12 & 0, 6, 30, 40, 59, 68, 90, 101, 119, 126, 151, 157\\
 \end{table}
 %
 
-%Explanation of Flags (difference in input epochs)
-Because observations were performed in two areas with different observation frequencies, "Deep" area and "Ultra Deep" area, the number of photometric data of supernova in these areas is different.
-There are also events in which part of the light curve data is missing.
-To correspond these supernovae, we prepared five input patterns of light curve data and classifiers for each pattern.
-The number of supernovae for each pattern are summarized in Table\ \ref{tab:class_flag}.
-The combination of these classifiers enables the classification of 1812 supernovae corresponding to 99.3\% of all target supernovae.
-The remaining 12 supernovae are excluded in this classification because they have many missing data.
 We applied both two-class and three-class classification tasks to HSC data, as with PLAsTiCC data.
-%
-%v190829
-\begin{table}[ht]
-\tbl{Number of supernovae for each pattern.}{
-\begin{tabular}{lrrrr}
-\hline
-Flag & Epoch & Number & Cumulate & Cumulate ratio \\
-\hline
-0     & 52      & 705        & 705        & 0.387 \\
-1     & 32      & 651        & 1356       & 0.743 \\
-2     & 23      & 271        & 1627       & 0.892 \\
-3     & 12      & 121        & 1748       & 0.958 \\
-4     & 6        & 64        & 1812       & 0.993 \\
-\hline
-\end{tabular}
-}\label{tab:class_flag}
-\end{table}
+The classifiers were trained using 514,954 simulated light curve data created in the same way as PLAsTiCC data classification.
+Their class ratio is Ia: Ibc: II = 0.59 : 0.07 : 0.34, and the shift range of the peaks is the same as that of PLAsTiCC data, 450 days.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Binary classification}
@@ -1015,8 +1016,7 @@ Test& \checkmark &            & \checkmark &        0.859 &        0.816 &      
 \subsection{Multi-type classification}
 \label{sec:h3}
 %
-Because we are currently labeling more than three classes for all supernovae detected in HSC transient survey using other methods,
-in this paper, we show the classification performance only for the validation dataset with three-class classifier.
+In this paper, we show the classification performance only for the validation dataset with three-class classifier, because we are currently labeling more than three classes for all supernovae detected in HSC transient survey using other methods.
 %It is necessary to write the reason why there is no answer of multi-class classification.
 %
 % Classification performance of each model (3class, HSC, validation)
