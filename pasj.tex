@@ -190,6 +190,7 @@ We are in need of classifying supernova from photometric data.  We attempt to ma
 We push one step further and use the observed data as raw as possible, meaning our input is a simple array of magnitudes.  Such attempt would not be possible ten years ago, but thanks for the advancement of computing and deep learning technique, now it becomes reality.  Among many other machine learning methods, deep neural network is our choice which enables us to classify astronomical objects from the raw observed data. 
 
 \subsection{Model Design}
+\label{sec:model} %added by IT
 In this section, we describe our design of DNN model which takes an array of observed magnitudes as an input and outputs supernova classification with probabilities.  We adopted Highway Layer \citep{srivastava15a} as a core part of our network which is also called 'layer in layer'.  Compared to the plain DNN, Highway Layer can perform better when the network is deep in terms of parameter optimization \citep{srivastava15b}.   
 Just like the other DNN model, this model goes through training, validation process to optimize parameters, and we describe the steps below.  The terminology we use is common in the world of DNN, but this is a new introduction to astronomical community, we spell out each step one by one.  The architecture of our model is summarized in Figure \ref{fig:dnn_model}.
 At the end, each supernova is given a probability of being a certain astrophysical class, in our case, supernova types. 
@@ -676,9 +677,9 @@ About 2,297 events extracted from PLAsTiCC DDF data were used for the test set.
 These are three types of supernovae, Ia, Ibc, and II, which are simulated to occur in the COSMOS field \citep{scoville2007cosmos}, the target region of HSC survey.
 For these events, we extracted only the light curves for about one year during which supernovae occur from the original three-year data and input them into the classifier.
 %
-We prepared several classifiers with different inputs for comparison.
-Specifically, there are two types of inputs, magnitude or absolute magnitude, and a total of four types of classifiers including cases where scaled flux is added to the input. 
-We tried two cases of classification tasks: two-class classification to classify Ia or non Ia and three-class classification to classify Ia, Ibc or II.
+We prepared multiple classifiers with different inputs for comparison.
+Specifically, there are two types of inputs, magnitude or absolute magnitude, and a total of four types of classifiers including cases where normalized flux is added to the input. 
+Two cases of classification tasks were explored in this study: two-class classification (Ia or non Ia) and three-class classification (Ia, Ibc or II).
 We evaluated the results by Area Under the Curve (AUC) of Receiver Operating Characteristic (ROC) curve and Precision-recall curve in two-class classification, and calculated accuracy from confusion matrix in three-class classification.
 %
 \subsection{Simulated data}
@@ -843,14 +844,14 @@ The performance for each input of binary classification are summarized in Table\
 For the validation dataset, the higher the number of input dimensions, the better the results, and any classifier can classify them with very high AUCs.
 The AUCs for all classified events are 0.993 and 0.995 for the ROC curve and precision-recall curve, respectively.
 %Figure\ \ref{fig:h2_validation} show ROC curves and precision-recall curves in the best performing classifier for the validation set.
-For the test set, the classification performance is verified assuming that the classes of 1540 supernovae labeled by the SALT2 light curve fitter \citep{guy2007}, one of the conventional classification methods, is correct.
-In addition, we extracted 441 "gold samples" that have redshift estimated from the spectrum and have photometric information before and after peak, and also verified their classification results.
-Figures\ \ref{fig:h2_test_all} and \ref{fig:h2_test_gold} show the AUCs of the best classifier for all labeled supernovae and gold samples respectively.
+For the test set, the classification performance is verified assuming that the classes of 1540 supernovae labeled by the SALT2 light curve fitter \citep{guy2007,Guy_2010}, one of the conventional classification methods, is correct.
+In addition, we extracted 441 "light curve verified supernovae" that have redshift estimated from the spectrum and have photometric information before and after peak, and also verified their classification results.
+Figures\ \ref{fig:h2_test_all} and \ref{fig:h2_test_gold} show the AUCs of the best classifier for all labeled supernovae and light curve verified supernovae respectively.
 The confusion matrices for each case are shown in Figure\ \ref{fig:h2_test_CM}.
 %need reference
-The best performing classifier shows the same classification results as the conventional method with an accuracy of 82\% for all labeled supernovae and 91\% for the gold samples.
+The best performing classifier shows the same classification results as the conventional method with an accuracy of 82\% for all labeled supernovae and 91\% for the light curve verified supernovae.
 The final classification result of the HSC supernovae is the combination of outputs from the classifier using the absolute magnitude for those with redshift information, and from that using the magnitude for those without redshift information.
-The numbers of supernovae classified as Ia by the classifier are 613, 437, and 186 out of 1540 when the threshold value of Ia probability are 0.5, 0.7, and 0.9, respectively.
+The numbers of supernovae with Ia probabilities above 0.5, 0.7 and 0.9 are 613, 437 and 186 out of 1540, respectively.
 %
 % completeness and purity
 %
@@ -872,12 +873,12 @@ Validation &\checkmark &            & \checkmark &       1.000&       0.990 &   
 &           & \checkmark &            &       0.996&       0.971 &       0.966 &       0.938 &       0.790 &        0.980 &          0.997 &          0.980 &          0.976 &          0.955 &          0.841 &           0.985 \\
 \hline
 Test& \checkmark &            & \checkmark &       0.972 &       0.973 &       0.946 &       0.889 &       1.000 &        0.966 &          0.918 &          0.956 &          0.860 &          0.838 &          1.000 &           0.919 \\
-(Gold sample)& \checkmark &            &            &       0.979 &       0.974 &       0.977 &       0.900 &       0.944 &        0.972 &          0.938 &          0.942 &          0.960 &          0.870 &          0.908 &           0.936 \\
+(Light curve verified)& \checkmark &            &            &       0.979 &       0.974 &       0.977 &       0.900 &       0.944 &        0.972 &          0.938 &          0.942 &          0.960 &          0.870 &          0.908 &           0.936 \\
 &           & \checkmark & \checkmark &       0.934 &       0.928 &       0.886 &       0.711 &       0.889 &        0.918 &          0.798 &          0.852 &          0.791 &          0.605 &          0.579 &           0.795 \\
 &           & \checkmark &            &       0.926 &       0.887 &       0.868 &       0.822 &       0.611 &        0.894 &          0.757 &          0.775 &          0.775 &          0.693 &          0.374 &           0.751 \\
 \hline
 Test& \checkmark &            & \checkmark &       0.919 &       0.906 &       0.896 &       0.862 &       0.849 &        0.903 &          0.769 &          0.785 &          0.758 &          0.708 &          0.598 &           0.759 \\
-(All sample)& \checkmark &            &            &       0.921 &       0.910 &       0.884 &       0.863 &       0.864 &        0.902 &          0.786 &          0.772 &          0.701 &          0.757 &          0.658 &           0.742 \\
+(All)& \checkmark &            &            &       0.921 &       0.910 &       0.884 &       0.863 &       0.864 &        0.902 &          0.786 &          0.772 &          0.701 &          0.757 &          0.658 &           0.742 \\
 &           & \checkmark & \checkmark &       0.877 &       0.868 &       0.852 &       0.703 &       0.724 &        0.853 &          0.644 &          0.689 &          0.678 &          0.441 &          0.302 &           0.632 \\
 &           & \checkmark &            &       0.868 &       0.827 &       0.830 &       0.683 &       0.675 &        0.831 &          0.620 &          0.624 &          0.623 &          0.408 &          0.293 &           0.601 \\
 \hline
@@ -951,7 +952,7 @@ $M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
         \end{minipage}
     \end{tabular}
     \caption{%
-  ROC curves and precision Recall curves in two-class classification of test dataset(Gold samples).
+  ROC curves and precision Recall curves in two-class classification of test dataset(Light curve verified).
 }%
     \label{fig:h2_test_gold}
 \end{figure*}
@@ -972,12 +973,12 @@ Dataset & \multicolumn{3}{|c}{Input} & \multicolumn{6}{|c}{Accuracy} \\
  & $M$ & $m$ & $f$  &  Flag\_0 &  Flag\_1 &  Flag\_2 &  Flag\_3 & Flag\_4 &  All \\
 \hline
 Test& \checkmark &            & \checkmark &        0.947 &        0.902 &        0.877 &        0.789 &        0.923 &         0.914 \\
-(Gold sample)& \checkmark &            &            &        0.931 &        0.902 &        0.912 &        0.789 &        0.769 &         0.907 \\
+(Light curve verified)& \checkmark &            &            &        0.931 &        0.902 &        0.912 &        0.789 &        0.769 &         0.907 \\
 &           & \checkmark & \checkmark &        0.878 &        0.847 &        0.825 &        0.632 &        0.538 &         0.839 \\
 &           & \checkmark &            &        0.868 &        0.816 &        0.789 &        0.842 &        0.462 &         0.825 \\
 \hline
 Test& \checkmark &            & \checkmark &        0.859 &        0.816 &        0.757 &        0.778 &        0.745 &         0.818 \\
-(All sample)& \checkmark &            &            &        0.843 &        0.778 &        0.734 &        0.697 &        0.618 &         0.784 \\
+(All)& \checkmark &            &            &        0.843 &        0.778 &        0.734 &        0.697 &        0.618 &         0.784 \\
 &           & \checkmark & \checkmark &        0.798 &        0.782 &        0.767 &        0.636 &        0.508 &         0.765 \\
 &           & \checkmark &            &        0.790 &        0.744 &        0.737 &        0.645 &        0.393 &         0.740 \\
 \hline
@@ -1006,7 +1007,7 @@ Test& \checkmark &            & \checkmark &        0.859 &        0.816 &      
         \end{minipage}
     \end{tabular}
     \caption{%
-  Confusion matrix in binary classification of All samples (left) and Gold samples (right).
+  Confusion matrix in binary classification of all supernovae (left) and light curve verified supernovae (right).
 }%
     \label{fig:h2_test_CM}
 \end{figure*}
@@ -1207,7 +1208,7 @@ For PLAsTiCC dataset, misclassified supernovae have the following characteristic
 The figure\ \ref{fig:misclass_rate_3class} shows the misclassification rate against redshift for the PLAsTiCC dataset.
 In the three-class classification of the PLAsTiCC data set, we found that the accuracy of Ibc was lower than that of other classes, and that the accuracy dropped significantly in the vicinity of redshift 1.0, and in addition, the accuracy also decreased for nearby Ibc supernovae.
 While some misclassified supernovae are so dark and indeterminate that they are difficult to classify even with traditional methods,There are also bright supernovae that are completely misclassified.
-In the binary classification of the HSC gold samples, 13 Ia labeled supernovae are classified as non Ia.
+In the binary classification of the 441 HSC light curve verified supernovae, 13 Ia labeled supernovae are classified as non Ia.
 Four of them are boundary events which have Ia probability of 40 to 50\%.
 Five of the remaining nine are events with relatively few input data points belonging to Flag1 and Flag3.
 The other supernovae have outlier values and poor photometry components.
