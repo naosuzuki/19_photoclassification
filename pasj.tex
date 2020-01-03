@@ -109,8 +109,10 @@ Shock Breakout contains the information on projenitor radius \citep{nakar10a}, a
 %\item Type classification before peak
 %\end{itemize}
 \subsection{Classification Method for HSC Transient Survey}
-We designed two models of machine learning with emphasis on identifying SNIa which requires time sensitive trigger for HST.
-One model classifies 
+We designed two models of machine learning with emphasis on identifying SNIa which requires time sensitive trigger for HST IR follow-up.
+One model is in a binary mode and classifies if a transient is SNIa or not.
+The other model classifies a transient into 3 classes: SNIa, SNIbc and SNII.  
+We chose three classes for simplicity and in fact, the majority of supernovae goes to one of these three categoeis.
 %
 %We designed a supernova type classifier using machine learning specialized for HSC survey.
 %
@@ -680,7 +682,8 @@ For these events, we extracted only the light curves for about one year during w
 We prepared multiple classifiers with different inputs for comparison.
 Specifically, there are two types of inputs, magnitude or absolute magnitude, and a total of four types of classifiers including cases where normalized flux is added to the input. 
 Two cases of classification tasks were explored in this study: two-class classification (Ia or non Ia) and three-class classification (Ia, Ibc or II).
-We evaluated the results by Area Under the Curve (AUC) of Receiver Operating Characteristic (ROC) curve and Precision-recall curve in two-class classification, and calculated accuracy from confusion matrix in three-class classification.
+The performance of each classifier is evaluated based on the probabilities of each class, which are the outputs from the classifier, described in section \ref{sec:model}.
+We adopt the area under the curve (AUC) of receiver operating characteristic (ROC) curve and precision-recall curve in two-class classification, and the accuracy from confusion matrix in three-class classification, as the evaluation criteria.
 %
 \subsection{Simulated data}
 %\begin{itemize}
@@ -779,6 +782,7 @@ $M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Application to HSC survey}
+\label{sec:h}
 %
 We applied the developed classifier to the light curve data of 1824 supernovae discovered in the HSC transient survey.
 As described in the HSC transient servey overview paper \citep{yasuda19a}, this survey is part of the HSC SSP survey, where observations were performed in two areas with different observation frequencies, "Deep" area and "Ultra-Deep" area.
@@ -830,6 +834,12 @@ z & 12 & 0, 6, 30, 40, 59, 68, 90, 101, 119, 126, 151, 157\\
 \end{table}
 %
 
+%redshift info
+The redshift informations for HSC supernovae are combinations of our follow-up observation results and catalogs from multiple surveys of those host galaxies.
+The spectral redshift (spec-z) informations are adopted from the results of the follow-up spectrum observation by AAT/AAOmega performed in 2018 and that from DEIMOS \citep{DEIMOS2018}, FMOS-COSMOS \citep{FMOS-COSMOS2015}, C3R2 \citep{C3R2_2017}, PRIMUS \citep{PRIMUS2011} and COSMOS catalogs.
+For those without spec-z information, the photometric redshifts (photo-z) are adopted from the COSMOS catalog and those calculated from HSC SSP survey data \citep{HSCSSP_photo-z2018}.
+
+%training set
 We applied both two-class and three-class classification tasks to HSC data, as with PLAsTiCC data.
 The classifiers were trained using 514,954 simulated light curve data created in the same way as PLAsTiCC data classification.
 Their class ratio is Ia: Ibc: II = 0.59 : 0.07 : 0.34, and the shift range of the peaks is the same as that of PLAsTiCC data, 450 days.
@@ -1129,8 +1139,10 @@ Index &    ID &  flag &        z &  z\_stat &  dof & label1 & label2 &    Ia\_2a
 \subsection{Comparison with the best classifier in PLAsTiCC}
 %
 We compare the results of our classifiers and those ranked first place in the PLAsTiCC Kaggle competition.
-The best classifier in the PLAsTiCC competition \citep{2019arXiv190704690B} is based on Light-GBM and trained with features extracted from photometric data modeled by Gaussian process regression.
-For comparison, we used about 2300 supernova predictions in PLASTiCC data classified by both classifiers.
+The best classifier in the PLAsTiCC competition \citep{Boone_2019} is based on Light-GBM and trained with features extracted from photometric data modeled by Gaussian process regression.
+The training set of this classifier includes a total of 591,410 light curves by augmenting 100 new light curves under different observation conditions and different redshifts for each light curve of the original PLAsTiCC training set.
+Furthermore, this classifier classifies 15 classes including variable objects other than supernova such as microlensing events and active galactic nuclei.
+we used 2,297 PLASTiCC supernova predictions, classified by both classifier, for comparison.
 Since the number of classes to be classified is different between our classifier and the best classifier, we divide the classification results into Ia and the other, and compare as binary classification.
 Figure\ \ref{fig:comp_plasticc_1st} shows the confusion matrix of each classifier.
 While our classifier and PLATiTiCC 1st classifier cannot be strictly compared because of the different training data sets and number of classification classes,
@@ -1165,7 +1177,7 @@ In addition to the supernova type classification,
 we also made a redshift estimate using same training dataset for type classification.
 The standard deviation of normalized residual $(z_{\rm pred}-z_{\rm spec})/(1+z_{\rm spec})$ \citep{Salvato_2009,Salvato_2019}, used in galaxy photo-z estimation, is applied to the performance criteria for redshift estimation.
 In verification with Flag 0 simulated data, that for Ia and non Ia objects are 0.022 and 0.076, respectively.
-For the actual HSC supernovae, we used observationally obtained redshifts of host galaxies including spec-z and photo-z for comparison with estimates.
+For the actual HSC supernovae, we used observationally obtained redshifts of host galaxies (see section \ref{sec:h}) including spec-z and photo-z for comparison with estimates.
 The figure\ \ref{fig:redshift_estimation} shows the comparison between the estimated redshifts and the observed redshifts for the HSC supernovae that the classifier classifies as Ia.
 The two classes labeled by SALT2 fit have different distributions, and the events labeled non Ia are less accurate in redshift estimation than Ia.
 The normalized residuals for each of Ia and non Ia Flag 0 supernovae labeled with SALT2 fit are normally distributed with standard deviations of 0.066 and 0.138, respectively.
@@ -1249,6 +1261,7 @@ The partial decrease in accuracy is thought to be due to the new supernova found
 By regrouping all events classified while changing the number of input dimensions into groups according to the length of the supernova detection period, we investigated the classification performance for each phase from the rise of the supernova.
 The figure\ \ref{fig:n_observations_SNphase} shows the classification performance against the supernova phase.
 This figure presents how long supernova photometric data is needed to classify with high accuracy using our classifier.
+We define "first detection" as the first day when the supernova is detected with 5sigma confidence in flux, and flagged as a real object by the real-bogus classifier using convolutional neural network (Yasuda et al. 2019).
 As mentioned in section \ref{sec:misclass}, the classification performance is low if only the initial rising phase before the supernova peek is included in the input photometric data, but the accuracy increases to 90\% when we input two weeks of supernova data from the first detection.
 Since the observation interval in the HSC survey is not constant, the number of inputs may be different even for supernovae with the same detected period.
 Due to this fact, there is a variation in the average input dimension number of samples in each phase, which causes a fluctuation in accuracy.
