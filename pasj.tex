@@ -127,9 +127,8 @@ We chose three classes for simplicity and in fact, the majority of supernovae go
 %
 \section{Data}
 \subsection{Simulation: SNANA}
-We used SNANA \citep{Kessler_2009} and time series SED called "template" to simulate photometric light curves.
-%Should we mention the differences of templates between those in HSC survey and the final version?
-We adopted the PLAsTiCC templates \citep{plasticc_models} which was published after PLAsTiCC. 
+We used SNANA \citep{Kessler_2009} and time series SED called "template" to simulate the light curve dataset for classifier training.
+The PLAsTiCC templates published after the completion of PLAsTiCC \citep{plasticc_models} were adopted for our simulation.
 %need citation
 We prepared simulated light curves of three classes of supernovae, Ia and Ibc type II.
 The figure \ref{fig:simLCsamples} shows examples of the simulated light curves.
@@ -143,11 +142,14 @@ The figure \ref{fig:simLCsamples} shows examples of the simulated light curves.
 %
 Ia light curves are simulated using SALT-II light curve model \citep{Guy_2010}.
 The stretch and color values are distributed in the range of $-2<x_1<+2$ and $-0.3<c<0.3$ according to "G10'" model in \citet{Mosher_2014}.
-The non-Ia light curve is generated based on the template and using redshift as a parameter.
-The selection ratio of the template to be used is the same as that of PLASTiCC.
+Non-Ia light curves are generated based on the PLAsTiCC template and using redshift as a parameter.
+The number of Ia and non Ia light curves has been adjusted to a ratio of 1:1.
+The ratio of Ibc and II is set to Ibc:II=3:7 with reference to that of the simulated dataset for PLAsTiCC \citep{plasticc_models}.
+In other words, the numbers of the three classes have a ratio of Ia: Ibc:II=0.5:0.15:0.35.
+The selection weights of individual SED time-series models in each of the Ibc and II classes are also matched to those in the PLAsTiCC dataset.
 The redshift is selected in the range of 0.1 to 2.0, and the event rate depends on the number distribution of galaxies in the COSMOS2015 catalog \citep{2016ApJS..224...24L}.
 In addition, the timing at which supernovas occur is shifted by randomly setting an offset that indicates the difference between the supernova phase and the observation schedule.
-Of all the light curves that are finally created, darker events with a maximum signal-to-noise ratio of less than three are rejected.
+Of all the light curves that are finally created, faint events with a maximum signal-to-noise ratio of less than three are rejected.
 %
 \begin{figure}[ht]
   \begin{center}
@@ -676,7 +678,7 @@ PLAsTiCC data is mainly divided into two components, Wide-Fast-Deep (WFD) and De
 WFD data is not suitable for classification by our proposed method, because it consists of a group of light curves simulated assuming a wide area survey of almost half of the whole sky, and have various observation schedules.
 In contrast, DDF data is suitable for the verification of our method because it has photometric data that simulates the observation of specific areas with the same cadence as the HSC survey.
 Therefore, we validated the classifier using DDF data which have the fixed observation schedule for each object.
-About 2,297 events extracted from PLAsTiCC DDF data were used for the test set.
+A total of 2,297 events extracted from PLAsTiCC DDF data were used for the test set.
 These are three types of supernovae, Ia, Ibc, and II, which are simulated to occur in the COSMOS field \citep{scoville2007cosmos}, the target region of HSC survey.
 For these events, we extracted only the light curves for about one year during which supernovae occur from the original three-year data and input them into the classifier.
 %
@@ -1260,9 +1262,10 @@ Although the Ia accuracy is as low as 0.6 to 0.7 in the early stage of the surve
 The partial decrease in accuracy is thought to be due to the new supernova found at the added photometric point.
 
 By regrouping all events classified while changing the number of input dimensions into groups according to the length of the supernova detection period, we investigated the classification performance for each phase from the rise of the supernova.
+%examples of probability
+We define "first detection" as the first day when the supernova is detected with 5sigma confidence in flux, and flagged as a real object by the real-bogus classifier using convolutional neural network (Yasuda et al. 2019).
 The figure\ \ref{fig:n_observations_SNphase} shows the classification performance against the supernova phase.
 This figure presents how long supernova photometric data is needed to classify with high accuracy using our classifier.
-We define "first detection" as the first day when the supernova is detected with 5sigma confidence in flux, and flagged as a real object by the real-bogus classifier using convolutional neural network (Yasuda et al. 2019).
 As mentioned in section \ref{sec:misclass}, the classification performance is low if only the initial rising phase before the supernova peek is included in the input photometric data, but the accuracy increases to 90\% when we input two weeks of supernova data from the first detection.
 Since the observation interval in the HSC survey is not constant, the number of inputs may be different even for supernovae with the same detected period.
 Due to this fact, there is a variation in the average input dimension number of samples in each phase, which causes a fluctuation in accuracy.
@@ -1287,9 +1290,33 @@ Although the Ia probability fluctuates greatly in the earliest phase, it begins 
 \end{figure}
 %
 %
+\begin{figure*}[ht]
+    \begin{tabular}{cc}
+        \begin{minipage}{0.32\hsize}
+            \begin{center}
+                \includegraphics[width=\columnwidth]{figures/lcp_aqfi.eps}
+            \end{center}
+        \end{minipage}
+        \begin{minipage}{0.32\hsize}
+            \begin{center}
+                \includegraphics[width=\columnwidth]{figures/lcp_apsw.eps}
+            \end{center}
+        \end{minipage}
+        \begin{minipage}{0.32\hsize}
+            \begin{center}
+                \includegraphics[width=\columnwidth]{figures/lcp_aboi.eps}
+            \end{center}
+        \end{minipage}
+    \end{tabular}
+    \caption{%
+    Examples of light curve and Ia probability variation.
+}%
+    \label{fig:lcps}
+\end{figure*}
+%
 \begin{figure}[ht]
   \begin{center}
-     \includegraphics[width=\columnwidth]{figures/n_observations_SNphase_200106.eps}
+     \includegraphics[width=\columnwidth]{figures/n_observations_SNphase_v200108.eps}
   \end{center}
   \caption{%
   Classification accuracy and cumulative number of type Ia supernovae classified with high probability against supernova phase.
@@ -1301,13 +1328,25 @@ Although the Ia probability fluctuates greatly in the earliest phase, it begins 
 %
 \begin{figure}[ht]
   \begin{center}
-     \includegraphics[width=\columnwidth]{figures/n_observations_visualized_Ia_probability_200107.eps}
+     \includegraphics[width=\columnwidth]{figures/n_observations_visualized_Ia_probability_200108.eps}
   \end{center}
   \caption{%
-  Transition of Ia probability with increasing elapsed time of input supernovae
+  Transition of Ia probability with increasing elapsed time of input supernovae.
   }%
   \label{fig:visualized_Ia_prob}
 \end{figure}
+%
+%
+\begin{figure}[ht]
+  \begin{center}
+     \includegraphics[width=\columnwidth]{figures/HST_DaysFromPeak_vs_IaProbability_200108.eps}
+  \end{center}
+  \caption{%
+  Ia probability variation of HST targets.
+  }%
+  \label{fig:HSTIaprob}
+\end{figure}
+%
 %
 %
 \section{Conclusion}
