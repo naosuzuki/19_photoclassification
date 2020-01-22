@@ -71,6 +71,7 @@ Our unique attempt is to make use of the observed data as 'raw' as possible so t
 %
 \section{Methods :}
 \subsection{Tasks in HSC survey}
+\label{sec:tasks}
 Subaru Hyper-Suprime Cam (HSC) Transient survey is a part of Subaru Strategic Project (SSP) which is a five-year program with 300 dark nights \citep{aihara18a,miyazaki18a}.
 HSC Transient survey is executed for a consective 6 monghth from November 2016 through April 2017.
 HSC is mounted on the prime focus for 2 weeks in dark time.   
@@ -1220,7 +1221,7 @@ For PLAsTiCC dataset, misclassified supernovae have the following characteristic
 \item Many others have similar probabilities.
 \item Most of quite wrong events misclassify Ibc as Ia or II.
 \end{itemize}
-The figure\ \ref{fig:misclass_rate_3class} shows the misclassification rate against redshift for the PLAsTiCC dataset.
+Figure\ \ref{fig:misclass_rate_3class} shows the misclassification rate against redshift for the PLAsTiCC dataset.
 In the three-class classification of the PLAsTiCC data set, we found that the accuracy of Ibc was lower than that of other classes, and that the accuracy dropped significantly in the vicinity of redshift 1.0, and in addition, the accuracy also decreased for nearby Ibc supernovae.
 While some misclassified supernovae are so dark and indeterminate that they are difficult to classify even with traditional methods,There are also bright supernovae that are completely misclassified.
 In the binary classification of the 441 HSC light curve verified supernovae, 13 Ia labeled supernovae are classified as non Ia.
@@ -1257,25 +1258,31 @@ When using our classification method, the number of dimension input to the class
 Therefore, we discuss about the transition of performance against the number of inputs.
 We classified the HSC dataset by increasing the number of input dimensions one by one, and investigated the relationship between the number of input photometric data pionts and the classification performance.
 Binary classifiers are used for classification, and evaluation is performed using accuracy calculated from the confusion matrix.
-The figure\ \ref{fig:n_observations} shows the transition of classification performance along with the number of inputs.
+Figure\ \ref{fig:n_observations} shows the transition of classification performance along with the number of inputs.
 Although the Ia accuracy is as low as 0.6 to 0.7 in the early stage of the survey with less than five inputs, it exceeds 0.8 when the number of inputs increases to 20.
 The partial decrease in accuracy is thought to be due to the new supernova found at the added photometric point.
 
-By regrouping all events classified while changing the number of input dimensions into groups according to the length of the supernova detection period, we investigated the classification performance for each phase from the rise of the supernova.
+We also investigated the classification performance during each supernova phase by regrouping all events according to the length of period since the first detection.
 %examples of probability
-We define "first detection" as the first day when the supernova is detected with 5sigma confidence in flux, and flagged as a real object by the real-bogus classifier using convolutional neural network (Yasuda et al. 2019).
-The figure\ \ref{fig:n_observations_SNphase} shows the classification performance against the supernova phase.
+Figure\ \ref{fig:lcps} illustrates the light curves and Ia probability transitions since the first detection of three HSC supernovae.
+We define "first detection" as the first day when the supernova is detected with 5sigma confidence in flux, and flagged as a real object by the real-bogus classifier using convolutional neural network \citep{yasuda19a}.
+The probability is updated at each new epoch.
+While there are events where the probability increases as the supernova phase progresses, there are also some events where the probabilities fluctuate around 0.5 even as the observation progresses and cannot be clearly classified.
+Figure\ \ref{fig:n_observations_SNphase} shows the relationship between the number of days from first detection to classification, the accuracy of the classification, and the cumulative number of supernovae classified as Ia with high probability.
+The calculations for each performance are based on the classification results for different input epoch numbers of 470 Flag0 supernovae observed before the rising phase.
 This figure presents how long supernova photometric data is needed to classify with high accuracy using our classifier.
-As mentioned in section \ref{sec:misclass}, the classification performance is low if only the initial rising phase before the supernova peek is included in the input photometric data, but the accuracy increases to 90\% when we input two weeks of supernova data from the first detection.
-Since the observation interval in the HSC survey is not constant, the number of inputs may be different even for supernovae with the same detected period.
-Due to this fact, there is a variation in the average input dimension number of samples in each phase, which causes a fluctuation in accuracy.
-In addition, from the cumulative number of supernovae classified as Ia with high probability,  it is estimated that our classifier can classify two or three Ia supernovae candidate to follow-up in one month observation.'
+As mentioned in section \ref{sec:misclass}, the classification performance is low if only the initial rising phase before the supernova peek is included in the input photometric data, but the accuracy increases to 80\% when we input two weeks of supernova data from the first detection.
+%Since the observation interval in the HSC survey is not constant, the number of inputs is different even for supernovae with the same detected period.
+%Due to this fact, there is a variation in the average input dimension number of samples in each phase, which causes a fluctuation in accuracy.
+However, due to events whose probabilities fluctuate with the progress of the supernova phase illustrated in Figure \ref{fig:lcps}, there are some cases where the accuracy slightly decreases even if the period until classification becomes long.
+In addition, considering the cumulative number of supernovae classified as Ia with high probability from 6 months data, it is estimated that our classifier can classify at least four or more Ia supernovae candidate to follow-up in one month observation of the Ultra-deep area.
 
 Lastly, we discuss the transition of the Ia probability output by the classifier along the supernova phase.
 Each time the supernova photometric data input to the classifier increases, Ia probability, the output of the classifier, is updated.
 For each of 100 supernovae labeled Ia and non-Ia with SALT2 fitting, we extracted its Ia probability for each duration from the various classification results, and plotted its transition as Figure\ \ref{fig:n_observations_SNphase}.
 Although the Ia probability fluctuates greatly in the earliest phase, it begins to divide in about two weeks, and it can be clearly separated in one month.
-
+Figure \ref{fig:HSTIaprob} shows the transitions of Ia probability along the days from the peak for 16 supernovae included in Flag0 data among 26 supernovae selected as HST targets in the HSC survey, and the average of these transitions.
+This means that our classifier accomplishes the task described in Section \ref{sec:tasks} to find good candidates only with information before the supernova peak.
 %
 \begin{figure}[ht]
   \begin{center}
@@ -1309,7 +1316,7 @@ Although the Ia probability fluctuates greatly in the earliest phase, it begins 
         \end{minipage}
     \end{tabular}
     \caption{%
-    Examples of light curve and Ia probability variation.
+    Examples of light curves and probability transitions. The title of each plot shows the name of the supernova in the HSC survey and the label classified by the conventional method.
 }%
     \label{fig:lcps}
 \end{figure*}
@@ -1342,7 +1349,7 @@ Although the Ia probability fluctuates greatly in the earliest phase, it begins 
      \includegraphics[width=\columnwidth]{figures/HST_DaysFromPeak_vs_IaProbability_200108.eps}
   \end{center}
   \caption{%
-  Ia probability variation of HST targets.
+  Ia probability transitions of 16 HST targets. Each of the lighter lines represents the variation for the individual HST targets, and the red line is those average.
   }%
   \label{fig:HSTIaprob}
 \end{figure}
