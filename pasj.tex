@@ -105,9 +105,9 @@ the supernova, but it monotonically drops and the event happens at the core of t
 events per season.
 
 It is always possible to discover something new when we explore a new parameter space which is the depth for the case
-of Subaru HSC.   Rapid transients are discovered, but their identities are yet to be known (Tampo et al.  2020 in prep).
-Similar objects are also reported by DES team (cite).
+of Subaru HSC.   Rapid transients are discovered by HSC, but their identities are yet to be known (Tampo et al.  2020 in prep).  Similar objects are also reported by DES team \citep{pursianinen18a}.
 
+In many science cases, it is essential to have a timely classification at the early phase of transient so that we can trigger follow-up observations.
 %\citep{maeda18a,jiang18a}
 %\citep{moriya19b}
 
@@ -118,7 +118,9 @@ Similar objects are also reported by DES team (cite).
 %\end{itemize}
 \subsection{Classification Method for HSC Transient Survey}
 We designed two models of machine learning with emphasis on identifying SNIa which requires time sensitive trigger for HST IR follow-up.  One model is in a binary mode and classifies if a transient is SNIa or not.
-The other model classifies a transient into 3 classes: SNIa, SNIbc and SNII.  
+It has been known that the majority of high-redshift transients are SN~Ia, and we seek for other unknown transients
+from the ones labeled as non-SN~Ia.   
+The other model classifies a transient into 3 classes: SN~Ia, SN~Ibc and SN~II.  
 We chose three classes for simplicity and in fact, the majority of supernovae goes to one of these three categories.
 %
 %We designed a supernova type classifier using machine learning specialized for HSC survey.
@@ -132,7 +134,7 @@ We chose three classes for simplicity and in fact, the majority of supernovae go
 %By simulating the light curve data and training the machine in advance before observation, type classification of supernova can be performed in a short time after observation.
 %
 \section{Data}
-\subsection{Simulation: SNANA}
+\subsection{Simulatied Data}
 We used SNANA \citep{Kessler_2009} and time series SED called "template" to simulate the light curve dataset for classifier training.
 The PLAsTiCC templates published after the completion of PLAsTiCC \citep{plasticc_models} were adopted for our simulation.
 %need citation
