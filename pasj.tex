@@ -48,7 +48,7 @@ As is reported in \citet{yasuda19a}, more than 1800 SNe are discovered in a 6-mo
 We deployed a machine learning (AUC boosting) for transient detection \citep{morii16a}, where 'real' vs. 'bogus' is determined by a machine.
 In \citet{kimura17a}, we adopted DNN for supernova type classification from 2 dimentional image, and highway block is introduced for the optimization of layers.
 This paper is an extension of \citet{kimura17a} and applies DNN to the photometric classification of transients.   
-Our unique attempt is to make use of the observed data as 'raw' as possible so that we can directly plug them into machine without any fitting or extracting characteristics.
+Our unique attempt is to make use of the observed data as 'raw' as possible so that we can directly plug them into machine without any fitting to the data or extracting characteristics.
 %paper structure
 %In $\S$2, 
  
@@ -101,7 +101,12 @@ Observations of the early phase Core Collapse Supernova provides us with a cruci
 Shock Breakout contains the information on projenitor radius \citep{nakar10a}, and HSC is expected to find these candidates as well \citep{tominaga11a}.
 
 Tidal Disruption Event (TDE) is also expected to be observed by HSC Transient survey.  The light curve is similar to
-the supernova, but it monotonically drops and the event happens at the core of the galaxy.
+the supernova, but it monotonically drops and the event happens at the core of the galaxy.  We expect to have a few
+events per season.
+
+It is always possible to discover something new when we explore a new parameter space which is the depth for the case
+of Subaru HSC.   Rapid transients are discovered, but their identities are yet to be known (Tampo et al.  2020 in prep).
+Similar objects are also reported by DES team (cite).
 
 %\citep{maeda18a,jiang18a}
 %\citep{moriya19b}
@@ -112,10 +117,9 @@ the supernova, but it monotonically drops and the event happens at the core of t
 %\item Type classification before peak
 %\end{itemize}
 \subsection{Classification Method for HSC Transient Survey}
-We designed two models of machine learning with emphasis on identifying SNIa which requires time sensitive trigger for HST IR follow-up.
-One model is in a binary mode and classifies if a transient is SNIa or not.
+We designed two models of machine learning with emphasis on identifying SNIa which requires time sensitive trigger for HST IR follow-up.  One model is in a binary mode and classifies if a transient is SNIa or not.
 The other model classifies a transient into 3 classes: SNIa, SNIbc and SNII.  
-We chose three classes for simplicity and in fact, the majority of supernovae goes to one of these three categoeis.
+We chose three classes for simplicity and in fact, the majority of supernovae goes to one of these three categories.
 %
 %We designed a supernova type classifier using machine learning specialized for HSC survey.
 %
