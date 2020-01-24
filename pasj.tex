@@ -1156,6 +1156,7 @@ For comparison, we use the classification results of the simulated supernova lig
 \citet{Lochner_2016} obtained AUC of 0.984 by classification with boosted decision trees (BDTs) using the SALT2 fitting parameters as input features.
 \citet{charnock17a} reported AUC of 0.986 for classification of SNPCC data using deep recurrent neural networks (RNN) with unidirectional long short-term memory (LSTM) units.
 \citep{Muthukrishna_2019} used deep RNN with Gated Recurrent Units (GRUs) to classify  ZTF light curves simulated with PLAsTiCC templates and archived an AUC of 0.99 40 days after the trigger.
+The AUC of our classifier, 0.996, is is more than comparable to those of these recent classifiers in binary classification.
 
 Next, We compare the results of our classifiers and those ranked first place in the PLAsTiCC Kaggle competition.
 The best classifier in the PLAsTiCC competition \citep{Boone_2019} is based on Light-GBM and trained with features extracted from photometric data modeled by Gaussian process regression.
@@ -1189,42 +1190,6 @@ Our method is not useful for surveys that sweep a wide area like LSST survey, bu
     \label{fig:comp_plasticc_1st}
 \end{figure*}
 %
-\subsection{Redshift estimation}
-%using v1.1.0 results
-%
-In addition to the supernova type classification,
-we also made a redshift estimate using same training dataset for type classification.
-The standard deviation of normalized residual $(z_{\rm pred}-z_{\rm spec})/(1+z_{\rm spec})$ \citep{Salvato_2009,Salvato_2019}, used in galaxy photo-z estimation, is applied to the performance criteria for redshift estimation.
-In verification with Flag 0 simulated data, that for Ia and non Ia objects are 0.022 and 0.076, respectively.
-For the actual HSC supernovae, we used observationally obtained redshifts of host galaxies (see section \ref{sec:h}) including spec-z and photo-z for comparison with estimates.
-The figure\ \ref{fig:redshift_estimation} shows the comparison between the estimated redshifts and the observed redshifts for the HSC supernovae that the classifier classifies as Ia.
-The two classes labeled by SALT2 fit have different distributions, and the events labeled non Ia are less accurate in redshift estimation than Ia.
-The normalized residuals for each of Ia and non Ia Flag 0 supernovae labeled with SALT2 fit are normally distributed with standard deviations of 0.066 and 0.138, respectively.
-If the comparison is limited to supernovae in the host galaxy with spec-z information, they are 0.056 and 0.130.
-Although these estimation accuracy is worse than the template fitting accuracy using host galaxy photometric data, it is useful for selecting host galaxy by comparing the redshift estimated from the supernova light curve itself with those of galaxies.
-Furthermore, this distributional difference of residuals leads to the fact that the Ia accuracy can be further improved by excluding events with large residuals in the estimated redshift of the supernova and host galaxy.
-%
-\begin{figure*}[ht]
-    \begin{tabular}{cc}
-        \begin{minipage}{0.5\hsize}
-            \begin{center}
-                \includegraphics[width=\columnwidth]{figures/redshift_pred_Ia_w_true_label_flagall.eps}
-            \end{center}
-        \end{minipage}
-        \begin{minipage}{0.5\hsize}
-            \begin{center}
-                \includegraphics[width=\columnwidth]{figures/redshift_pred_Ia_w_true_label_diff_flag0.eps}
-            \end{center}
-        \end{minipage}
-    \end{tabular}  \caption{%
-    (Left) Relation between the machine predictions and the observed redshifts.
-    The dashed line is the line of equality.
-    The color difference represents SALT-2 fit label.
-    (Right) Normalized residual distribution for flag0 supernovae.
-    }%
-    \label{fig:redshift_estimation}
-\end{figure*}
-%
 %
 \subsection{Misclassification}
 \label{sec:misclass}
@@ -1250,18 +1215,6 @@ The other supernovae have outlier values and poor photometry components.
   \end{center}
   \caption{%
   Misclassification rate against redshift
-  }%
-  \label{fig:misclass_rate_3class}
-\end{figure}
-%
-\subsection{Type fractions of HSC supernovae}
-%
-\begin{figure}[ht]
-  \begin{center}
-     \includegraphics[width=\columnwidth]{figures/SNfrac_alongz.eps}
-  \end{center}
-  \caption{%
-  Type fractions along redshift in HSC three-class classification.
   }%
   \label{fig:misclass_rate_3class}
 \end{figure}
@@ -1370,6 +1323,70 @@ This means that our classifier accomplishes the task described in Section \ref{s
 \end{figure}
 %
 %
+\subsection{Data uncertainty}
+%
+What we found out by classifying actual data with our method is that there is a difference in the results of validation and test set.
+Of course, the labeling of the actual data class by the conventional method includes uncertainty, but the difference in the results should be minimized by making the learning data more similar to the actual data.
+%
+\subsection{Missing data}
+%
+Our method is specialized in the HSC survey in which each observed transient tends to have the same cadence by observing a certain region deeply.
+It can use all photometric information and classify almost without any pre-processing, compared to the method of reducing dimensions and extracting features. However, this method is not good at dealing with differences in observation schedules for each classification object.
+To classify all objects with our method, we need to prepare multiple classifiers.
+In order to support ultra-wide-range surveys such as LSST, it is necessary to input features that are less affected by the magnitude of the cadence for each transient, and to add processing to interpolate missing values.
+%
+\subsection{Type fractions of HSC supernovae}
+%
+\begin{figure}[ht]
+  \begin{center}
+     \includegraphics[width=\columnwidth]{figures/SNfrac_alongz.eps}
+  \end{center}
+  \caption{%
+  Type fractions along redshift in HSC three-class classification.
+  }%
+  \label{fig:misclass_rate_3class}
+\end{figure}
+%
+%
+%
+%
+\subsection{Redshift estimation}
+%using v1.1.0 results
+%
+In addition to the supernova type classification,
+we also made a redshift estimate using same training dataset for type classification.
+The standard deviation of normalized residual $(z_{\rm pred}-z_{\rm spec})/(1+z_{\rm spec})$ \citep{Salvato_2009,Salvato_2019}, used in galaxy photo-z estimation, is applied to the performance criteria for redshift estimation.
+In verification with Flag 0 simulated data, that for Ia and non Ia objects are 0.022 and 0.076, respectively.
+For the actual HSC supernovae, we used observationally obtained redshifts of host galaxies (see section \ref{sec:h}) including spec-z and photo-z for comparison with estimates.
+The figure\ \ref{fig:redshift_estimation} shows the comparison between the estimated redshifts and the observed redshifts for the HSC supernovae that the classifier classifies as Ia.
+The two classes labeled by SALT2 fit have different distributions, and the events labeled non Ia are less accurate in redshift estimation than Ia.
+The normalized residuals for each of Ia and non Ia Flag 0 supernovae labeled with SALT2 fit are normally distributed with standard deviations of 0.066 and 0.138, respectively.
+If the comparison is limited to supernovae in the host galaxy with spec-z information, they are 0.056 and 0.130.
+Although these estimation accuracy is worse than the template fitting accuracy using host galaxy photometric data, it is useful for selecting host galaxy by comparing the redshift estimated from the supernova light curve itself with those of galaxies.
+Furthermore, this distributional difference of residuals leads to the fact that the Ia accuracy can be further improved by excluding events with large residuals in the estimated redshift of the supernova and host galaxy.
+%
+\begin{figure*}[ht]
+    \begin{tabular}{cc}
+        \begin{minipage}{0.5\hsize}
+            \begin{center}
+                \includegraphics[width=\columnwidth]{figures/redshift_pred_Ia_w_true_label_flagall.eps}
+            \end{center}
+        \end{minipage}
+        \begin{minipage}{0.5\hsize}
+            \begin{center}
+                \includegraphics[width=\columnwidth]{figures/redshift_pred_Ia_w_true_label_diff_flag0.eps}
+            \end{center}
+        \end{minipage}
+    \end{tabular}  \caption{%
+    (Left) Relation between the machine predictions and the observed redshifts.
+    The dashed line is the line of equality.
+    The color difference represents SALT-2 fit label.
+    (Right) Normalized residual distribution for flag0 supernovae.
+    }%
+    \label{fig:redshift_estimation}
+\end{figure*}
+%
+%
 %
 \section{Conclusion}
 %\begin{itemize}
@@ -1382,13 +1399,7 @@ In this paper, we present a model of a classifier that classifies supernova type
 Our DNN classifier trains with simulated supernova photometric data from PLASTiCC templates and classifies PLASTiCC data and HSC survey actual supernova data with high accuracy of 0.95 and 0.90 respectively.
 The discussion on the number of input dimensions also shows that our classifier can classify the HSC survey data with sufficient accuracy even with only pre-peak data about two weeks after the first detection.
 From these facts, we conclude that this classifier has sufficient classification performance for subsequent type-specific studies and selection of follow-up targets even in actual HSC surveys.
-Our method is specialized in the HSC survey in which each observed transient tends to have the same cadence by observing a certain region deeply.
-It can use all photometric information and classify almost without any pre-processing, compared to the method of reducing dimensions and extracting features. However, this method is not good at dealing with differences in observation schedules for each classification object.
-To classify all objects with our method, we need to prepare multiple classifiers.
-In order to support ultra-wide-range surveys such as LSST, it is necessary to input features that are less affected by the magnitude of the cadence for each transient, and to add processing to interpolate missing values.
-However, our proposed method is easy to apply to estimation models such as redshift because of simple input. The application of our model to redshift estimation is useful for the selection of host galaxies by comparing with the photo-z information of galaxies.
-What we found out by classifying actual data with our method is that there is a difference in the results of validation and test set.
-Of course, the labeling of the actual data class by the conventional method includes uncertainty, but the difference in the results should be minimized by making the learning data more similar to the actual data.
+Furthermore, our proposed method is easy to apply to estimation models such as redshift because of simple input. The application of our model to redshift estimation is useful for the selection of host galaxies by comparing with the photo-z information of galaxies.
 %
 \begin{ack}
 The Hyper Suprime-Cam (HSC) collaboration includes the astronomical communities of Japan, Taiwan, and Princeton University. The HSC instrumentation and software were developed by the National Astronomical Observatory of Japan (NAOJ), the Kavli Institute for the Physics and Mathematics of the Universe (Kavli IPMU), the University of Tokyo, the High Energy Accelerator Research Organization (KEK), the Academia Sinica Institute for Astronomy and Astrophysics in Taiwan (ASIAA), and Princeton University. Funding was contributed by the FIRST program from the Japanese Cabinet Office, the Ministry of Education, Culture, Sports, Science and Technology (MEXT), the Japan Society for the Promotion of Science (JSPS), the Japan Science and Technology Agency (JST), the Toray Science Foundation, NAOJ, Kavli IPMU, KEK, ASIAA, and Princeton University.
