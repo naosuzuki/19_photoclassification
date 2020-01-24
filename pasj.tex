@@ -1153,7 +1153,9 @@ Index &    ID &  flag &        z &  z\_stat &  dof & label1 & label2 &    Ia\_2a
 When comparing the classification results of the classifiers, it is difficult to make a direct comparison if there are differences in the method and number of training sets used, the number of input dimensions and output classes. 
 Here, we simply compare the recent supernova type classifier based on machine learning and our classifier with AUC of ROC in the binary classification of Ia or not.
 For comparison, we use the classification results of the simulated supernova light curves with redshift information from \citet{Lochner_2016}, \citet{charnock17a} and \citep{Muthukrishna_2019}.
-\citet{Lochner_2016} obtained an AUC of 0.984 by classification with boosted decision trees (BDTs) using the SALT2 fitting parameter as a feature.
+\citet{Lochner_2016} obtained AUC of 0.984 by classification with boosted decision trees (BDTs) using the SALT2 fitting parameters as input features.
+\citet{charnock17a} reported AUC of 0.986 for classification of SNPCC data using deep recurrent neural networks (RNN) with unidirectional long short-term memory (LSTM) units.
+\citep{Muthukrishna_2019} used deep RNN with Gated Recurrent Units (GRUs) to classify  ZTF light curves simulated with PLAsTiCC templates and archived an AUC of 0.99 40 days after the trigger.
 
 Next, We compare the results of our classifiers and those ranked first place in the PLAsTiCC Kaggle competition.
 The best classifier in the PLAsTiCC competition \citep{Boone_2019} is based on Light-GBM and trained with features extracted from photometric data modeled by Gaussian process regression.
