@@ -134,8 +134,15 @@ We choose three classes for simplicity and in fact, the majority of supernovae g
 %By simulating the light curve data and training the machine in advance before observation, type classification of supernova can be performed in a short time after observation.
 %
 \section{Data}
-\subsection{Simulatied Data}
-We are in need of simulating observed photometric data to train machine.  
+In this section, we describe three kinds of data we use.
+First, we need a simulated photometric data to train the machine ($\S$X)
+Second, we want to have a realistic data set which we know the answer
+For the assessment of the accuracy of the machine, we need a data set which we know the answer.
+As is described in $\S$X, we adopt a simulated photometric data which was generated for 
+
+\subsection{Simulatied Data for Training}
+We are in need of simulating observed photometric data to train the machine.  
+
 We use Subaru/HSC filter responses including system throughput from \citet{kawanomoto18a}.
 Throughout this paper, we use $\Lambda$CDM cosmology with $\Omega_{m}$=0.3 and h=0.7.
 For normal SN~Ia, we use SALT-II \citep{guy10a} model ({\it ver} 2.4) which requires 2 input parameters:
@@ -143,7 +150,9 @@ c for color and x1 for stretch.
 We adopt the asymetric gaussian distribution of c, and x1 from \citet{mosher14a}, and generate
 light curves and simulate photometric data points based on the observation schedule. 
 Besides SN~Ia, we use spectral time series from \citet{kessler19b} which contains both observed
-core collapse data and light curves from simulation, and we use both.
+core collapse data and light curves from simulation.
+
+
 Examples of simulated photometric data is shown in Figure \ref{fig:simLCsamples}.
 
 
