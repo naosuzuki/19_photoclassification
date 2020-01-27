@@ -137,11 +137,11 @@ We choose three classes for simplicity and in fact, the majority of supernovae g
 \subsection{Simulatied Data}
 We are in need of simulating observed photometric data to train machine.  
 We use Subaru/HSC filter responses including system throughput from \citet{kawanomoto18a}.
-Throughout this paper, we use $\L$CDM cosmology with $O_m$=0.3 and h=0.7 (TBC).
-For normal SN~Ia, we use SALT-II (2.4) \citep{guy10a} model which requires 2 input parameters:
+Throughout this paper, we use $\Lambda$CDM cosmology with $\Omega_{m}$=0.3 and h=0.7.
+For normal SN~Ia, we use SALT-II \citep[ver 2.4][]{guy10a} model which requires 2 input parameters:
 c for color and x1 for stretch.
 We adopt the asymetric gaussian distribution of c, and x1 from Mosher et al., and generate
-light curves and simulate photometric data points. 
+light curves and simulate photometric data points based on the observation schedule. 
 
 %We adopted spectral time series from \citet{kessler19b}. and 
 %We used SNANA \citep{Kessler_2009} and time series SED called "template" to simulate the light curve dataset for classifier training.
