@@ -147,17 +147,19 @@ Third, we apply our well trained machine to the real observed data ($\S$\ref{sec
 \subsection{Simulated Data for Training}
 \label{sec:training}
 We are in need of simulating observed photometric data to train the machine.  
-We use Subaru/HSC filter responses including system throughput from \citet{kawanomoto18a}.
-Throughout this paper, we use $\Lambda$CDM cosmology with $\Omega_{m}$=0.3 and h=0.7.
 For normal SN~Ia, we use SALT-II \citep{guy10a} model ({\it ver} 2.4) which requires 2 input parameters:
 c for color and x1 for stretch.
 We adopt the asymetric gaussian distribution of c, and x1 from \citet{mosher14a}, and generate
 light curves and simulate photometric data points based on the observation schedule. 
 Besides SN~Ia, we use spectral time series from \citet{kessler19b} which contains both observed
 core collapse data and light curves from simulation.
-Based on the observed fraction of SN~Ia and Non-SN~Ia (Li et al), 
-we mix equal number of SN~Ia and Non-SN~Ia. 
-The redshfit distribution of galaxies is taken from COSMOS survey.
+We mix equal number of SN~Ia and Non-SN~Ia to approximate the observed fractions. 
+These fraction does not need to be exact for our purpose of classification, but it is important
+that the minority is not buried in the majority.
+For three class classification, we set the ratio of Ibc:II=3:7 among Non-SN~Ia.
+The redshfit distribution of galaxies is taken from COSMOS survey (cite).
+Throughout this paper, we use $\Lambda$CDM cosmology with $\Omega_{m}$=0.3 and h=0.7.
+Then, we use Subaru/HSC filter responses including system throughput from \citet{kawanomoto18a}.
 
 %Examples of simulated photometric data is shown in Figure \ref{fig:simLCsamples}.
 
@@ -166,7 +168,6 @@ The redshfit distribution of galaxies is taken from COSMOS survey.
 
 \subsection{Observed Data from Subaru/HSC Transient Survey}
 \label{sec:hscdata}
-
 
 %We used SNANA \citep{Kessler_2009} and time series SED called "template" to simulate the light curve dataset for classifier training.
 %The PLAsTiCC templates published after the completion of PLAsTiCC \citep{plasticc_models} were adopted for our simulation.
