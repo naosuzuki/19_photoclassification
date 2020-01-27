@@ -140,10 +140,9 @@ We use Subaru/HSC filter responses including system throughput from \citet{kawan
 Throughout this paper, we use $\L$CDM cosmology with $O_m$=0.3 and h=0.7 (TBC).
 For normal SN~Ia, we use SALT-II (2.4) \citep{guy10a} model which requires 2 input parameters:
 c for color and x1 for stretch.
-We adopt the asymetric gaussian distribution of c, and x1 from Mosher et al., and generated
-light curves and photometric data points. (to be continued)
+We adopt the asymetric gaussian distribution of c, and x1 from Mosher et al., and generate
+light curves and simulate photometric data points. 
 
-To be continued (how to generate erroed data)
 %We adopted spectral time series from \citet{kessler19b}. and 
 %We used SNANA \citep{Kessler_2009} and time series SED called "template" to simulate the light curve dataset for classifier training.
 %The PLAsTiCC templates published after the completion of PLAsTiCC \citep{plasticc_models} were adopted for our simulation.
@@ -158,8 +157,8 @@ The figure \ref{fig:simLCsamples} shows examples of the simulated light curves.
 %\item Simulated light curve samples
 %\end{itemize}
 %
-Ia light curves are simulated using SALT-II light curve model \citep{Guy_2010}.
-The stretch and color values are distributed in the range of $-2<x_1<+2$ and $-0.3<c<0.3$ according to "G10'" model in \citet{Mosher_2014}.
+%Ia light curves are simulated using SALT-II light curve model \citep{Guy_2010}.
+%The stretch and color values are distributed in the range of $-2<x_1<+2$ and $-0.3<c<0.3$ according to "G10'" model in \citet{Mosher_2014}.
 Non-Ia light curves are generated based on the PLAsTiCC template and using redshift as a parameter.
 The number of Ia and non Ia light curves has been adjusted to a ratio of 1:1.
 The ratio of Ibc and II is set to Ibc:II=3:7 with reference to that of the simulated dataset for PLAsTiCC \citep{plasticc_models}.
