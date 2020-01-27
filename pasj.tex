@@ -1365,7 +1365,8 @@ Of course, the labeling of the actual data class by the conventional method incl
 Our method is specialized in the HSC survey in which each observed transient tends to have the same cadence by observing a certain region deeply.
 It can use all photometric information and classify almost without any pre-processing, compared to the method of reducing dimensions and extracting features. 
 However, this method is not good at dealing with differences in observation schedules for each classification object, and missing data.
-
+In the case of the HSC survey, most of all samples can be roughly classified into two types of observation schedules corresponding to the ultra-deep area and the deep area.
+As shown in Table 1, 99.3\% of supernovae are classified by only five types of classifiers with different numbers of inputs, including those for samples whose input epochs are reduced due to missing data.
 To classify all objects with our method, we need to prepare multiple classifiers.
 In order to support ultra-wide-range surveys such as LSST, it is necessary to input features that are less affected by the magnitude of the cadence for each transient, and to add processing to interpolate missing values.
 %
