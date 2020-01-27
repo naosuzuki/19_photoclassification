@@ -138,17 +138,20 @@ We choose three classes for simplicity and in fact, the majority of supernovae g
 We are in need of simulating observed photometric data to train machine.  
 We use Subaru/HSC filter responses including system throughput from \citet{kawanomoto18a}.
 Throughout this paper, we use $\Lambda$CDM cosmology with $\Omega_{m}$=0.3 and h=0.7.
-For normal SN~Ia, we use SALT-II \citep[ver 2.4][]{guy10a} model which requires 2 input parameters:
+For normal SN~Ia, we use SALT-II \citep{guy10a} model ({\it ver} 2.4) which requires 2 input parameters:
 c for color and x1 for stretch.
-We adopt the asymetric gaussian distribution of c, and x1 from Mosher et al., and generate
+We adopt the asymetric gaussian distribution of c, and x1 from \citet{mosher14a}, and generate
 light curves and simulate photometric data points based on the observation schedule. 
+Besides SN~Ia, we use spectral time series from \citet{kessler19b} which contains both observed
+core collapse data and light curves from simulation, and we use both.
+Examples of simulated photometric data is shown in Figure \ref{fig:simLCsamples}.
 
-%We adopted spectral time series from \citet{kessler19b}. and 
+
 %We used SNANA \citep{Kessler_2009} and time series SED called "template" to simulate the light curve dataset for classifier training.
 %The PLAsTiCC templates published after the completion of PLAsTiCC \citep{plasticc_models} were adopted for our simulation.
 %need citation
-We prepared simulated light curves of three classes of supernovae, Ia and Ibc type II.
-The figure \ref{fig:simLCsamples} shows examples of the simulated light curves.
+%We prepared simulated light curves of three classes of supernovae, Ia and Ibc type II.
+%The figure \ref{fig:simLCsamples} shows examples of the simulated light curves.
 %
 %
 %\begin{itemize}
