@@ -137,7 +137,7 @@ We choose three classes for simplicity and in fact, the majority of supernovae g
 In this section, we describe three kinds of data we use.
 First, we need a simulated photometric data to train the machine ($\S$ \ref{sec:training}).
 Second, we want to have a realistic data set which we know the answer so that we can assess the
-accuracy of the machine ($\S$\ref{sec:assessment}).  We would not know how good/bad the machine 
+accuracy of the machine ($\S$\ref{sec:validation}).  We would not know how good/bad the machine 
 is without labeled answer.
 Third, we apply our well trained machine to the real observed data ($\S$\ref{sec:hscdata}).
 
@@ -160,13 +160,19 @@ For three class classification, we set the ratio of SN~Ibc:SN~II=3:7 among Non-S
 The redshfit distribution of galaxies is taken from COSMOS survey (cite), and we distributed
 simulated supernova accordingly from $z$=0.1 through $z=$2.0.
 Throughout this paper, we use $\Lambda$CDM cosmology with $\Omega_{m}$=0.3 and h=0.7.
-We use Subaru/HSC filter responses including system throughput from \citet{kawanomoto18a}, and
-LSST blue book (cite) for LSST photometric data points we describe in the following subsection.
+We use filter responses including system throughput from \citet{kawanomoto18a} for Subaru/HSC and
+\citet{ivezic19a} for LSST ($\S$\ref{sec:validation}). 
+
+One complication in simulating realistic data is that the machine does not accept expected errors,
+or we have not identified a good method to include errors.   
+For this study, we take a path of brute force, meaning, we place expected photometric error on top 
+of simulated data. 
+For HSC simulation, the size of error varies night to night due to sky condition, and we 
 %Examples of simulated photometric data is shown in Figure \ref{fig:simLCsamples}.
 
 
-\subsection{Simulated Data for ML Assessment}
-\label{sec:assessment}
+\subsection{Simulated Data for ML Validation}
+\label{sec:validation}
 
 \subsection{Observed Data from Subaru/HSC Transient Survey}
 \label{sec:hscdata}
