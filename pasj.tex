@@ -167,12 +167,22 @@ One complication in simulating realistic data is that the machine does not accep
 or we have not identified a good method to include errors.   
 For this study, we take a path of brute force, meaning, we place expected photometric error on top 
 of simulated data. 
-For HSC simulation, the size of error varies night to night due to sky condition, and we 
-%Examples of simulated photometric data is shown in Figure \ref{fig:simLCsamples}.
-
+For HSC simulation, the size of error varies night to night due to sky condition. 
+We measure and drive flux vs. error relationship from the actual observed data at simulating epoch 
+and apply that to the simulated photometric data.
+For LSST simulation, we find the flux-error relation from the Deep Drilling Field (DDF) of the one
+used in Kaggle Competition \citep{malz19a} and applied that to the simulated photometric data.
+%Prior to the modeling, we did the convergence test
+Examples of simulated photometric data is shown in Figure \ref{fig:simLCsamples}.
 
 \subsection{Simulated Data for ML Validation}
 \label{sec:validation}
+To evaluate our machine, we need a data set which has the answer.   In nature, we should expect
+to have a variety of transients besides SN~Ia, SN~Ibc, and SN~II.
+LSST team has compiled a series of variables including AGNs, variable stars, microlensing events,
+and class 99 whose identity was not revealed at the time of competition \citep{malz19a,kessler19a}.   
+We take their test data set as a pseudo-real observed data and assess our accuracy of classification.
+%Kaggle competition provided us with the training data set, but the number of objects are too 
 
 \subsection{Observed Data from Subaru/HSC Transient Survey}
 \label{sec:hscdata}
