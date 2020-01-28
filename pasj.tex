@@ -156,7 +156,7 @@ core collapse data and light curves from simulation.
 We mix equal number of SN~Ia and Non-SN~Ia to approximate the observed fractions. 
 These fraction does not need to be exact for our purpose of classification, but it is important
 that the minority is not buried in the majority.
-For three class classification, we set the ratio of SN~Ibc:SN~II=3:7 among Non-SN~Ia.
+For three class classification, we set the ratio of SN~Ia:SN~Ibc:SN~II=10:3:7.
 The redshfit distribution of galaxies is taken from COSMOS survey (cite), and we distributed
 simulated supernova accordingly from $z$=0.1 through $z=$2.0.
 Throughout this paper, we use $\Lambda$CDM cosmology with $\Omega_{m}$=0.3 and h=0.7.
@@ -168,10 +168,11 @@ or we have not identified a good method to include errors.
 For this study, we take a path of brute force, meaning, we place expected photometric error on top 
 of simulated data. 
 For HSC simulation, the size of error varies night to night due to sky condition. 
-We measure and drive flux vs. error relationship from the actual observed data at simulating epoch 
+We measure and derive flux vs. error relationship from the actual observed data at simulating epoch 
 and apply that to the simulated photometric data.
 For LSST simulation, we find the flux-error relation from the Deep Drilling Field (DDF) of the one
 used in Kaggle Competition \citep{malz19a} and applied that to the simulated photometric data.
+
 %Prior to the modeling, we did the convergence test
 Examples of simulated photometric data is shown in Figure \ref{fig:simLCsamples}.
 
