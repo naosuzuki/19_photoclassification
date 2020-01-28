@@ -1382,6 +1382,12 @@ Of course, the labeling of the actual data class by the conventional method incl
 %
 \subsection{Data uncertainty}
 %
+The flux error information is also important for the classification of distant Ia, which is the main target of the HSC survey and has a small signal-to-noise ratio.
+\citet{charnock17a} adds the flux error itself as part of the input vector.
+In the case of feature-based classification, the flux error is used in fitting for calculating the features, and affects those errors.
+In addition, the flux error is used to calculate statistical features such as "Standard Deviation / Mean", which is one of the features shown in \citet{narayan18a} and \citet{Muthukrishna_2019}.
+On the other hand, as described in Section 3.2, we calculate the flux error of the simulated training data based on the relationship between the flux and the flux error for each epoch of the observed data.
+Then, random numbers that follow a normal distribution defined by the original fluxes and flux errors are input to the classifier as processed fluxes.
 %
 \subsection{Missing data}
 %
