@@ -203,14 +203,15 @@ We take their test data set as a pseudo-real observed data and assess our accura
 %
 %Ia light curves are simulated using SALT-II light curve model \citep{Guy_2010}.
 %The stretch and color values are distributed in the range of $-2<x_1<+2$ and $-0.3<c<0.3$ according to "G10'" model in \citet{Mosher_2014}.
-Non-Ia light curves are generated based on the PLAsTiCC template and using redshift as a parameter.
-The number of Ia and non Ia light curves has been adjusted to a ratio of 1:1.
-The ratio of Ibc and II is set to Ibc:II=3:7 with reference to that of the simulated dataset for PLAsTiCC \citep{plasticc_models}.
-In other words, the numbers of the three classes have a ratio of Ia: Ibc:II=0.5:0.15:0.35.
-The selection weights of individual SED time-series models in each of the Ibc and II classes are also matched to those in the PLAsTiCC dataset.
-The redshift is selected in the range of 0.1 to 2.0, and the event rate depends on the number distribution of galaxies in the COSMOS2015 catalog \citep{2016ApJS..224...24L}.
-In addition, the timing at which supernovas occur is shifted by randomly setting an offset that indicates the difference between the supernova phase and the observation schedule.
-Of all the light curves that are finally created, faint events with a maximum signal-to-noise ratio of less than three are rejected.
+
+%Non-Ia light curves are generated based on the PLAsTiCC template and using redshift as a parameter.
+%The number of Ia and non Ia light curves has been adjusted to a ratio of 1:1.
+%The ratio of Ibc and II is set to Ibc:II=3:7 with reference to that of the simulated dataset for PLAsTiCC \citep{plasticc_models}.
+%In other words, the numbers of the three classes have a ratio of Ia:Ibc:II=0.5:0.15:0.35.
+%The selection weights of individual SED time-series models in each of the Ibc and II classes are also matched to those in the PLAsTiCC dataset.
+%The redshift is selected in the range of 0.1 to 2.0, and the event rate depends on the number distribution of galaxies in the COSMOS2015 catalog \citep{2016ApJS..224...24L}.
+%In addition, the timing at which supernovas occur is shifted by randomly setting an offset that indicates the difference between the supernova phase and the observation schedule.
+%Of all the light curves that are finally created, faint events with a maximum signal-to-noise ratio of less than three are rejected.
 %
 \begin{figure}[ht]
   \begin{center}
@@ -1402,7 +1403,12 @@ As shown in Table \ref{tab:class_flag}, 99.3\% of supernovae are classified by o
 %To classify all objects with our method, we need to prepare multiple classifiers.
 %In order to support ultra-wide-range surveys such as LSST, it is necessary to input features that are less affected by the magnitude of the cadence for each transient, and to add processing to interpolate missing values.
 %
+
 \subsection{Type fractions of HSC supernovae}
+Cosmological origin of elements depends of the cosmic history of supernovae.
+%The elemental abundance of solar system originates from the cosmic history of supernovae.  Recent studies
+show solar abundance 
+
 %
 \begin{figure}[ht]
   \begin{center}
