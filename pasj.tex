@@ -760,7 +760,7 @@ Prior to validation of PLAsTiCC data, we evaluated classification performance fo
 The simulated light curve has a class ratio of Ia : Ibc : II = 0.60 : 0.06 : 0.34, and the positions of these peaks are randomly shifted between 450 days.
 Table\ \ref{tab:p_validation} shows the AUC of ROC curve and Precision recall curve in two-class classification, and accuracy in three-class classification.
 The classifier given absolute magnitudes and normalized flux performed best in both two-class and three-class in the simulated data classification.
-The accuracy in the three-class classification is 97.8\%.
+The accuracy in the three-class classification is 98.5\%.
 From these results, we confirmed that the classifier can classify simlated data with high accuracy.
 %There is almost no difference in performance between the two input type models of magnitude and absolute magnitude.
 %It may be necessary to summarize the ratio of each class
@@ -1386,11 +1386,15 @@ Of course, the labeling of the actual data class by the conventional method incl
 \subsection{Data uncertainty}
 %
 The flux error information is also important for the classification of distant Ia, which is the main target of the HSC survey and has a small signal-to-noise ratio.
+Here, we discuss how to incorporate errors for classification, including our method.
 \citet{charnock17a} adds the flux error itself as part of the input vector.
 In the case of feature-based classification, the flux error is used in fitting for calculating the features, and affects those errors.
 In addition, the flux error is used to calculate statistical features such as "Standard Deviation / Mean", which is one of the features shown in \citet{narayan18a} and \citet{Muthukrishna_2019}.
 On the other hand, as described in Section 3.2, we calculate the flux error of the simulated training data based on the relationship between the flux and the flux error for each epoch of the observed data.
 Then, random numbers that follow a normal distribution defined by the original fluxes and flux errors are input to the classifier as processed fluxes.
+
+The processing of time-series data with uncertainty is an issue in many application domains, not only in the astronomy field.
+For example, in similarity matching of time series data with uncertainty, it is suggested as a promising method to take into account continuous correlation in time series such as measuring distance after filtering by Uncertain Moving Average (UMA)\citep{Dallachiesa_2012}.
 %
 \subsection{Missing data}
 %
