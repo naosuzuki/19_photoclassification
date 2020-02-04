@@ -165,11 +165,11 @@ We use filter responses including system throughput from \citet{kawanomoto18a} f
 
 One complication in simulating realistic data is that the machine does not accept expected errors,
 or we have not identified a good method to include errors.   
-For this study, we take a path of brute force, meaning, we place expected photometric error on top 
-of simulated data. 
+For this study, we take a path of brute force, namely, we place expected photometric error on top 
+of the simulated data so that the simulated data point behaves like one of the many realizations.
 For HSC simulation, the size of error varies night to night due to sky condition. 
 We measure and derive flux vs. error relationship from the actual observed data at simulating epoch 
-and apply that to the simulated photometric data.
+and apply that relationship to the simulated photometric data.
 For LSST simulation, we find the flux-error relation from the Deep Drilling Field (DDF) of the one
 used in Kaggle Competition \citep{malz19a} and applied that to the simulated photometric data.
 
@@ -178,7 +178,7 @@ Examples of simulated photometric data is shown in Figure \ref{fig:simLCsamples}
 
 \subsection{Simulated Data for ML Validation}
 \label{sec:validation}
-To evaluate our machine, we need a data set which has the answer.   In nature, we should expect
+To evaluate our machine, we need a data set which is labed by true identities.   In nature, we should expect
 to have a variety of transients besides SN~Ia, SN~Ibc, and SN~II.
 LSST team has compiled a series of variables including AGNs, variable stars, microlensing events,
 and class 99 whose identity was not revealed at the time of competition \citep{malz19a,kessler19a}.   
@@ -1428,9 +1428,10 @@ As shown in Table \ref{tab:class_flag}, 99.3\% of supernovae are classified by o
 %
 
 \subsection{Type fractions of HSC supernovae}
-Cosmological origin of elements depends of the cosmic history of supernovae.
-%The elemental abundance of solar system originates from the cosmic history of supernovae.  Recent studies
-show solar abundance 
+The elemental abundance of the solar system originates from the cosmic history of supernovae.  
+Recent studies show
+%Cosmological origin of elements depends of the cosmic history of supernovae.
+%show solar abundance 
 
 %
 \begin{figure}[ht]
