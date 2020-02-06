@@ -1257,7 +1257,7 @@ Our method is not useful for surveys that sweep a wide area like LSST survey, bu
 \label{sec:misclass}
 %
 Next, we summarize misclassifications in the classification of PLAsTiCC and HSC data respectively.
-For PLAsTiCC dataset, misclassified supernovae have the following characteristics:
+For PLAsTiCC dataset, misclassified 107 supernovae have the following characteristics:
 \begin{itemize}
 \item 45\% (46/107) of them do not include the supernova peak phase in the photometric data, while they are only 22\% of all events.
 \item Of the rest, 28\% (17/61) are on the boundary where the difference in probability between the correct class and the predicted class is less than 0.1.
@@ -1267,8 +1267,8 @@ Figure\ \ref{fig:misclass_rate_3class} shows the misclassification rate against 
 In the three-class classification of the PLAsTiCC data set, we found that the accuracy of Ibc was lower than that of other classes, and that the accuracy dropped significantly in the vicinity of redshift 1.0, and in addition, the accuracy also decreased for nearby Ibc supernovae.
 While some misclassified supernovae are so dark and indeterminate that they are difficult to classify even with traditional methods,There are also bright supernovae that are completely misclassified.
 
-In the binary classification of 1446 labeled HSC supernovae, 263 of them are misclassified.
-As with the PLAsTiCC data, incomplete events are the majority in the HSC data, accounting for 58\% (153/263) of those misclassified.
+In the binary classification of 1256 labeled HSC supernovae, 190 of them are misclassified.
+As with the PLAsTiCC data, incomplete events are the majority in the HSC data, accounting for 44\% (83/190) of those misclassified.
 %Four of them are boundary events which have Ia probability of 40 to 50\%.
 %Five of the remaining nine are events with relatively few input data points belonging to Flag1 and Flag3.
 Some other events have outlier values and systematic flux offset in photometric data.
@@ -1355,7 +1355,7 @@ This means that our classifier accomplishes the task described in Section \ref{s
 %
 \begin{figure}[ht]
   \begin{center}
-     \includegraphics[width=\columnwidth]{figures/n_observations_SNphase_v200108.eps}
+     \includegraphics[width=\columnwidth]{figures/n_observations_SNphase_v200206.eps}
   \end{center}
   \caption{%
   Classification accuracy and cumulative number of type Ia supernovae classified with high probability against supernova phase.
@@ -1367,7 +1367,7 @@ This means that our classifier accomplishes the task described in Section \ref{s
 %
 \begin{figure}[ht]
   \begin{center}
-     \includegraphics[width=\columnwidth]{figures/n_observations_visualized_Ia_probability_200108.eps}
+     \includegraphics[width=\columnwidth]{figures/n_observations_visualized_Ia_probability_200206.eps}
   \end{center}
   \caption{%
   Transition of Ia probability with increasing elapsed time of input supernovae.
