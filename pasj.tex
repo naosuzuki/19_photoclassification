@@ -1262,7 +1262,7 @@ Our method is not useful for surveys that sweep a wide area like LSST survey, bu
 Next, we summarize misclassifications in the classification of PLAsTiCC and HSC data respectively.
 For PLAsTiCC dataset, misclassified 107 supernovae have the following characteristics:
 \begin{itemize}
-\item 45\% (46/107) of them do not include the supernova peak phase in the photometric data, while they are only 22\% of all events.
+\item 45\% (46/107) of them are "incomplete events" that do not include the supernova peak phase in the photometric data, while they are only 22\% of all events.
 \item Of the rest, 28\% (17/61) are on the boundary where the difference in probability between the correct class and the predicted class is less than 0.1.
 \item More than half of the remaining events misclassify Ibc as Ia, II
 \end{itemize}
@@ -1272,12 +1272,14 @@ While some misclassified supernovae are so dark and indeterminate that they are 
 
 In the binary classification of 1256 labeled HSC supernovae, 190 of them are misclassified.
 The misclassification rate for each flag is different, and tends to increase as the number of input dimensions decreases.
-Although the rate is 11\% for flag 0, while it is 22\% for flag 4.
-As with the PLAsTiCC data, incomplete events are the majority in the HSC data, accounting for 44\% (83/190) of those misclassified.
+Although the rate is 11\% for flag 0, it is 22\% for flag 4.
+As with the PLAsTiCC data, incomplete events are the majority of misclassified events in HSC data, accounting for 44\% (83/190) of them.
 The second most common cause of misclassification are boundary events with an Ia probability of 40 to 60\%, corresponding to the remaining 28\% (30/107).
+As a result of individually checking the light curves of other misclassified supernovae, we found that most of them have outlier values or systematic flux offset in photometric data.
+In addition, there are some cases where SALT2 fitting does not work well during labeling.
 %Four of them are boundary events which have Ia probability of 40 to 50\%.
 %Five of the remaining nine are events with relatively few input data points belonging to Flag1 and Flag3.
-Some other events have outlier values and systematic flux offset in photometric data.
+%Some other events have outlier values and systematic flux offset in photometric data.
 %
 \begin{figure}[ht]
   \begin{center}
@@ -1397,11 +1399,12 @@ This means that our classifier accomplishes the task described in Section \ref{s
 %
 In this paper we not only validate our classifier with simulated data, but also apply it to actual HSC survey data to evaluate classification performance.
 What we found out by classifying actual data with our method is that there is a difference in the results of validation and test set.
-One possible reason for this is the uncertainty in the labeling of real data using traditional methods.
-In the confusion matrix for all supernovae in Figure 9, 63\% of the 211 supernovae labeled nonIa and classified by machine as Ia (i.e. false positive) are "edge events" that do not include a peak phase during the entire observation period.
-Edge events account for only 35\% of the total, and 38\% for false positives, and it is difficult to classify them even with conventional template fitting.
-Referring to the PLAsTiCC test set classification, the percentages of incomplete events among false positive and false negative events are 50\% (9/18) and 67\% (20/30), respectively, and there is no significant difference.
-The fact that the number of false positives is significantly higher than false negatives, and 63\% of them are incomplete events, suggests the existence of uncertainty in labeling with conventional classification methods.
+One possible reason for this is the uncertainty in the labeling of real data using conventional methods.
+In the confusion matrix for all labeled supernovae in Figure \ref{fig:h2_test_CM}, 44\% of the 190 misclassified supernovae are incomplete events.
+%In the confusion matrix for all labeled supernovae in Figure \ref{fig:h2_test_CM}, 63\% of the 190 supernovae labeled nonIa and classified by machine as Ia (i.e. false positive) are "incomplete events" that do not include a peak phase during the entire observation period.
+%Edge events account for only 35\% of the total, and 38\% for false positives, and it is difficult to classify them even with conventional template fitting.
+%Referring to the PLAsTiCC test set classification, the percentages of incomplete events among false positive and false negative events are 50\% (9/18) and 67\% (20/30), respectively, and there is no significant difference.
+%The fact that the number of false positives is significantly higher than false negatives, and 63\% of them are incomplete events, suggests the existence of uncertainty in labeling with conventional classification methods.
 
 Another cause of the large difference in the results of the validation and test set is the inability to completely simulate the observed data.
 
@@ -1465,8 +1468,8 @@ The standard deviation of normalized residual $(z_{\rm pred}-z_{\rm spec})/(1+z_
 In verification with Flag 0 simulated data, that for Ia and non Ia objects are 0.022 and 0.076, respectively.
 For the actual HSC supernovae, we used observationally obtained redshifts of host galaxies (see section \ref{sec:h}) including spec-z and photo-z for comparison with estimates.
 The figure\ \ref{fig:redshift_estimation} shows the comparison between the estimated redshifts and the observed redshifts for the HSC supernovae that the classifier classifies as Ia.
-The two classes labeled by SALT2 fit have different distributions, and the events labeled non Ia are less accurate in redshift estimation than Ia.
-The normalized residuals for each of Ia and non Ia Flag 0 supernovae labeled with SALT2 fit are normally distributed with standard deviations of 0.066 and 0.138, respectively.
+The two classes labeled by SALT2 fitting have different distributions, and the events labeled non Ia are less accurate in redshift estimation than Ia.
+The normalized residuals for each of Ia and non Ia Flag 0 supernovae labeled with SALT2 fitting are normally distributed with standard deviations of 0.066 and 0.138, respectively.
 If the comparison is limited to supernovae in the host galaxy with spec-z information, they are 0.056 and 0.130.
 Although these estimation accuracy is worse than the template fitting accuracy using host galaxy photometric data, it is useful for selecting host galaxy by comparing the redshift estimated from the supernova light curve itself with those of galaxies.
 Furthermore, this distributional difference of residuals leads to the fact that the Ia accuracy can be further improved by excluding events with large residuals in the estimated redshift of the supernova and host galaxy.
