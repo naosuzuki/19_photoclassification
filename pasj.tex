@@ -919,14 +919,15 @@ The performance for each input of binary classification are summarized in Table\
 For the validation dataset, the higher the number of input dimensions, the better the results, and any classifier can classify them with very high AUCs.
 The AUCs for all classified events are 0.993 and 0.995 for the ROC curve and precision-recall curve, respectively.
 %Figure\ \ref{fig:h2_validation} show ROC curves and precision-recall curves in the best performing classifier for the validation set.
-For the test set, the classification performance is verified assuming that the classes of 1540 supernovae labeled by the SALT2 light curve fitter \citep{guy2007,Guy_2010}, one of the conventional classification methods, is correct.
+For the test set, the classification performance is verified using 1332 supernovae (1256 with redshift) labeled by the SALT2 light curve fitter \citep{guy2007,Guy_2010}, one of the conventional classification methods.
 In addition, we extracted 441 "light curve verified supernovae" that have redshift estimated from the spectrum and have photometric information before and after peak, and also verified their classification results.
 Figures\ \ref{fig:h2_test_all} and \ref{fig:h2_test_gold} show the AUCs of the best classifier for all labeled supernovae and light curve verified supernovae respectively.
 The confusion matrices for each case are shown in Figure\ \ref{fig:h2_test_CM}.
 %need reference
 The best performing classifier shows the same classification results as the conventional method with an accuracy of 82\% for all labeled supernovae and 91\% for the light curve verified supernovae.
 The final classification result of the HSC supernovae is the combination of outputs from the classifier using the absolute magnitude for those with redshift information, and from that using the magnitude for those without redshift information.
-The numbers of supernovae with Ia probabilities above 0.5, 0.7 and 0.9 are 613, 437 and 186 out of 1540, respectively.
+The numbers of supernovae with Ia probabilities above 0.5, 0.7 and 0.9 are 530, 386 and 170 out of 1332, respectively.
+%The numbers of supernovae with Ia probabilities above 0.5, 0.7 and 0.9 are 613, 437 and 186 out of 1540, respectively. (in old ver.)
 %
 % completeness and purity
 %
@@ -952,10 +953,10 @@ Test& \checkmark &            & \checkmark &       0.972 &       0.973 &       0
 &           & \checkmark & \checkmark &       0.934 &       0.928 &       0.886 &       0.711 &       0.889 &        0.918 &          0.798 &          0.852 &          0.791 &          0.605 &          0.579 &           0.795 \\
 &           & \checkmark &            &       0.926 &       0.887 &       0.868 &       0.822 &       0.611 &        0.894 &          0.757 &          0.775 &          0.775 &          0.693 &          0.374 &           0.751 \\
 \hline
-Test& \checkmark &            & \checkmark &       0.919 &       0.906 &       0.896 &       0.862 &       0.849 &        0.903 &          0.769 &          0.785 &          0.758 &          0.708 &          0.598 &           0.759 \\
-(All)& \checkmark &            &            &       0.921 &       0.910 &       0.884 &       0.863 &       0.864 &        0.902 &          0.786 &          0.772 &          0.701 &          0.757 &          0.658 &           0.742 \\
-&           & \checkmark & \checkmark &       0.877 &       0.868 &       0.852 &       0.703 &       0.724 &        0.853 &          0.644 &          0.689 &          0.678 &          0.441 &          0.302 &           0.632 \\
-&           & \checkmark &            &       0.868 &       0.827 &       0.830 &       0.683 &       0.675 &        0.831 &          0.620 &          0.624 &          0.623 &          0.408 &          0.293 &           0.601 \\
+Test& \checkmark &            & \checkmark &       0.938 &       0.921 &       0.906 &       0.896 &       0.865 &        0.921 &          0.842 &          0.845 &          0.809 &          0.849 &          0.672 &           0.830 \\
+(All)& \checkmark &            &            &       0.941 &       0.921 &       0.893 &       0.892 &       0.879 &        0.918 &          0.861 &          0.829 &          0.757 &          0.870 &          0.729 &           0.810 \\
+&           & \checkmark & \checkmark &       0.898 &       0.883 &       0.867 &       0.721 &       0.706 &        0.874 &          0.719 &          0.743 &          0.744 &          0.574 &          0.362 &           0.709 \\
+&           & \checkmark &            &       0.891 &       0.845 &       0.847 &       0.700 &       0.677 &        0.853 &          0.693 &          0.693 &          0.689 &          0.519 &          0.377 &           0.676 \\
 \hline
 \end{tabular}
 }\label{tab:h2_AUC}
@@ -1005,7 +1006,7 @@ $M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
         \end{minipage}
     \end{tabular}
     \caption{%
-    ROC curves and precision Recall curves in two-class classification of test dataset(All samples).
+    ROC curves and precision Recall curves in two-class classification of test dataset(All labeled).
     }
     \label{fig:h2_test_all}
 \end{figure*}
@@ -1082,7 +1083,7 @@ Test& \checkmark &            & \checkmark &        0.859 &        0.816 &      
         \end{minipage}
     \end{tabular}
     \caption{%
-  Confusion matrix in binary classification of all supernovae (left) and light curve verified supernovae (right).
+  Confusion matrix in binary classification of 1256 labeled HSC supernovae (left) and 441 light curve verified supernovae (right).
 }%
     \label{fig:h2_test_CM}
 \end{figure*}
@@ -1169,7 +1170,7 @@ Each classification performance shown in sections \ref{sec:h2} and \ref{sec:h3} 
 \tbl{Example of classification result list for HSC supernovae.}{
 %\tiny
 \scriptsize
-\begin{tabular}{p{1.5em}p{1em}p{1em}p{4.0em}p{1.5em}p{0.6em}p{1.5em}p{4.5em}|p{2.9em}|p{1.3em}p{1.3em}p{1.3em}p{1em}|p{2.9em}|p{1.3em}p{1.3em}p{1.3em}p{1em}}
+\begin{tabular}{p{1.5em}p{1em}p{1em}p{4.0em}p{1.5em}p{0.6em}p{3.0em}p{4.5em}|p{2.9em}|p{1.3em}p{1.3em}p{1.3em}p{1em}|p{2.9em}|p{1.3em}p{1.3em}p{1.3em}p{1em}}
 %\multicolumn{6}{|c}{Accuracy}
 \hline
 Index &    ID &  Flag &        z &  z\_stat &  dof & label1 & label2 &\multicolumn{5}{|p{14.5em}}{Input:\ absolute mag.+norm. flux} & \multicolumn{5}{|p{10.5em}}{Input:\ mag.+norm. flux}\\
@@ -1184,7 +1185,7 @@ Index &    ID &  Flag &        z &  z\_stat &  dof & label1 & label2 &\multicolu
 3    &  aabk &     1 &      nan &         0 &    9 &    Ia? &   incomplete &      nan &      nan &      nan &      nan &     NaN &    0.421 &    0.445 &    0.317 &    0.237 &      Ia \\
 4    &  aabp &     1 &    $1.477_{-0.032}^{+0.037}$ &         2 &   19 &  nonIa &   incomplete &    0.965 &    0.972 &    0.001 &    0.027 &      Ia &    0.882 &    0.888 &    0.033 &    0.079 &      Ia \\
 \vdots & & & & & & & & & & & & & & & & &\\
-907  &  bjrb &     1 &    $0.560_{-0.036}^{+0.024}$ &         3 &    1 &  nonIa &   incomplete &    0.004 &    0.005 &    0.006 &    0.988 &      II &    0.009 &    0.003 &    0.004 &    0.993 &      II \\
+907  &  bjrb &     1 &    $0.560_{-0.036}^{+0.024}$ &         3 &    1 &  unknown &   incomplete &    0.004 &    0.005 &    0.006 &    0.988 &      II &    0.009 &    0.003 &    0.004 &    0.993 &      II \\
 908  &  bjwo &     0 &    $1.449_{-0.063}^{+0.080}$ &         2 &   26 &     Ia &     OK &    0.893 &    0.919 &    0.003 &    0.078 &      Ia &    0.890 &    0.933 &    0.006 &    0.061 &      Ia \\
 909  &  bjya &     0 &    $1.128_{-0.000}^{+0.000}$ &         1 &   22 &  nonIa &     OK &    0.241 &    0.191 &    0.070 &    0.738 &      II &    0.311 &    0.177 &    0.083 &    0.740 &      II \\
 910  &  bjyn &     0 &    $0.626_{-0.000}^{+0.000}$ &         1 &   24 &     Ia &     OK &    0.881 &    0.881 &    0.028 &    0.091 &      Ia &    0.961 &    0.921 &    0.007 &    0.072 &      Ia \\
@@ -1195,10 +1196,10 @@ Index &    ID &  Flag &        z &  z\_stat &  dof & label1 & label2 &\multicolu
 915  &  bkem &     2 &    $0.609_{-0.000}^{+0.000}$ &         1 &   17 &     Ia &     OK &    0.906 &    0.873 &    0.001 &    0.126 &      Ia &    0.904 &    0.869 &    0.022 &    0.108 &      Ia \\
 916  &  bkfv &     0 &    $0.670_{-0.035}^{+0.035}$ &         3 &   23 &     Ia &     OK &    0.909 &    0.920 &    0.004 &    0.076 &      Ia &    0.943 &    0.934 &    0.020 &    0.047 &      Ia \\
 \vdots & & & & & & & & & & & & & & & & &\\
-1819 &  dskd &     0 &    $0.630_{-0.000}^{+0.000}$ &         1 &    3 &  nonIa &   incomplete &    0.882 &    0.855 &    0.081 &    0.063 &      Ia &    0.859 &    0.858 &    0.086 &    0.055 &      Ia \\
+1819 &  dskd &     0 &    $0.630_{-0.000}^{+0.000}$ &         1 &    3 &  unknown &   incomplete &    0.882 &    0.855 &    0.081 &    0.063 &      Ia &    0.859 &    0.858 &    0.086 &    0.055 &      Ia \\
 1820 &  dsng &     0 &    $1.331_{-0.048}^{+0.048}$ &         2 &    7 &    Ia? &   incomplete &    0.964 &    0.963 &    0.009 &    0.029 &      Ia &    0.939 &    0.906 &    0.010 &    0.084 &      Ia \\
-1821 &  dsoh &     0 &    $1.026_{-0.000}^{+0.000}$ &         1 &    2 &  nonIa &   incomplete &    0.967 &    0.970 &    0.012 &    0.018 &      Ia &    0.901 &    0.918 &    0.024 &    0.058 &      Ia \\
-1822 &  dsox &     0 &    $1.137_{-0.034}^{+0.041}$ &         2 &    2 &  nonIa &   incomplete &    0.769 &    0.787 &    0.156 &    0.057 &      Ia &    0.899 &    0.898 &    0.027 &    0.076 &      Ia \\
+1821 &  dsoh &     0 &    $1.026_{-0.000}^{+0.000}$ &         1 &    2 &  unknown &   incomplete &    0.967 &    0.970 &    0.012 &    0.018 &      Ia &    0.901 &    0.918 &    0.024 &    0.058 &      Ia \\
+1822 &  dsox &     0 &    $1.137_{-0.034}^{+0.041}$ &         2 &    2 &  unknown &   incomplete &    0.769 &    0.787 &    0.156 &    0.057 &      Ia &    0.899 &    0.898 &    0.027 &    0.076 &      Ia \\
 1823 &  dspl &     0 &    $0.624_{-0.000}^{+0.000}$ &         1 &    9 &  nonIa &   incomplete &    0.095 &    0.048 &    0.106 &    0.846 &      II &    0.074 &    0.054 &    0.078 &    0.868 &      II \\
 \hline
 \end{tabular}
@@ -1259,16 +1260,18 @@ Next, we summarize misclassifications in the classification of PLAsTiCC and HSC 
 For PLAsTiCC dataset, misclassified supernovae have the following characteristics:
 \begin{itemize}
 \item 45\% (46/107) of them do not include the supernova peak phase in the photometric data, while they are only 22\% of all events.
-\item Many others have similar probabilities.
-\item Most of quite wrong events misclassify Ibc as Ia or II.
+\item Of the rest, 28\% (17/61) are on the boundary where the difference in probability between the correct class and the predicted class is less than 0.1.
+\item More than half of the remaining events misclassify Ibc as Ia, II
 \end{itemize}
 Figure\ \ref{fig:misclass_rate_3class} shows the misclassification rate against redshift for the PLAsTiCC dataset.
 In the three-class classification of the PLAsTiCC data set, we found that the accuracy of Ibc was lower than that of other classes, and that the accuracy dropped significantly in the vicinity of redshift 1.0, and in addition, the accuracy also decreased for nearby Ibc supernovae.
 While some misclassified supernovae are so dark and indeterminate that they are difficult to classify even with traditional methods,There are also bright supernovae that are completely misclassified.
-In the binary classification of the 441 HSC light curve verified supernovae, 13 Ia labeled supernovae are classified as non Ia.
-Four of them are boundary events which have Ia probability of 40 to 50\%.
-Five of the remaining nine are events with relatively few input data points belonging to Flag1 and Flag3.
-The other supernovae have outlier values and poor photometry components.
+
+In the binary classification of 1446 labeled HSC supernovae, 263 of them are misclassified.
+As with the PLAsTiCC data, incomplete events are the majority in the HSC data, accounting for 58\% (153/263) of those misclassified.
+%Four of them are boundary events which have Ia probability of 40 to 50\%.
+%Five of the remaining nine are events with relatively few input data points belonging to Flag1 and Flag3.
+Some other events have outlier values and systematic flux offset in photometric data.
 %
 \begin{figure}[ht]
   \begin{center}
