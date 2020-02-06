@@ -101,7 +101,7 @@ Observations of the early phase Core Collapse Supernova provides us with a cruci
 Shock Breakout contains the information on projenitor radius \citep{nakar10a}, and HSC is expected to find these candidates as well \citep{tominaga11a}.
 
 Tidal Disruption Event (TDE) is also expected to be observed by HSC Transient survey.  The light curve is similar to
-the supernova, but it monotonically drops and the event happens at the core of the galaxy.  We expect to have a few
+the supernova, but it monotonically drops and the event happens on the core of the galaxy.  We expect to have a few
 events per season.
 
 It is always possible to discover something new when we explore a new parameter space which is the depth for the case
@@ -173,16 +173,19 @@ and apply that relationship to the simulated photometric data.
 For LSST simulation, we find the flux-error relation from the Deep Drilling Field (DDF) of the one
 used in Kaggle Competition \citep{malz19a} and applied that to the simulated photometric data.
 
+We have tested how many light curves are needed for training.  We use "accuracy" ref(Sec X) as a indicator to justify the number of light curves to use and based on the our test, we conclude we need to generate more than 10,000 light curves for training cite(fig).
+
 %Prior to the modeling, we did the convergence test
 Examples of simulated photometric data is shown in Figure \ref{fig:simLCsamples}.
 
 \subsection{Simulated Data for ML Validation}
 \label{sec:validation}
-To evaluate our machine, we need a data set which is labed by true identities.   In nature, we should expect
-to have a variety of transients besides SN~Ia, SN~Ibc, and SN~II.
+To evaluate our machine, we need a data set which is labed by true identities.   In nature, we should expect to have a variety of transients besides SN~Ia, SN~Ibc, and SN~II.
 LSST team has compiled a series of variables including AGNs, variable stars, microlensing events,
 and class 99 whose identity was not revealed at the time of competition \citep{malz19a,kessler19a}.   
 We take their test data set as a pseudo-real observed data and assess our accuracy of classification.
+The LSST DDF simulated data is the most similar to HSC survey data, and we use their XXXX objects 
+from Kaggle Competition \citep{malz19a} test data set.
 %Kaggle competition provided us with the training data set, but the number of objects are too 
 
 \subsection{Observed Data from Subaru/HSC Transient Survey}
