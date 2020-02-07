@@ -1422,10 +1422,12 @@ In at least nine of the other misclassified events that have no other misclassif
 In fact, as shown in the right panel of Figure 9, the performance for light curve verified supernovae, except for incomplete events and whose spec-z is known, is better than for all events classified.
 
 Another cause of the large difference in the results of the validation and test set is the inability to completely simulate the observed data.
+Outlier values and systematic flux offsets, which are considered to be one of the causes of misclassification described in Section \ref{sec:misclass}, are found only in observed data.
+As described in \citet{yasuda19a}, the photometric data of the supernova in the HSC survey is measured from the difference image obtained by subtracting the reference image from the observed image.
+
 It will be necessary to reduce or simulate these outlier values as much as possible to improve the performance of the classifier.
-
-The presence of anomalous events also reduces the performance of actual survey classifications.
-
+%The presence of anomalous events also reduces the performance of actual survey classifications.
+%
 %Of course, the labeling of the actual data class by the conventional method includes uncertainty, but the difference in the results should be minimized by making the learning data more similar to the actual data.
 %
 \subsection{Data uncertainty}
