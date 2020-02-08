@@ -25,7 +25,6 @@ Akisato Kimura\altaffilmark{3},
 Naonori Ueda\altaffilmark{3},
 Naoki Yoshida\altaffilmark{4,1,2},
 %
-
 }%
 \altaffiltext{1}{Kavli Institute for the Physics and Mathematics of the Universe (WPI), The University of Tokyo Institutes for Advanced Study, The University of Tokyo, 5-1-5 Kashiwanoha, Kashiwa, Chiba 277-8583, Japan}
 \altaffiltext{2}{CREST, JST, 4-1-8 Honcho, Kawaguchi, Saitama 332-0012, Japan}
@@ -161,7 +160,7 @@ Third, we apply our well trained machine to the real observed data ($\S$\ref{sec
 \subsection{Simulated Data for Training}
 \label{sec:training}
 We are in need of simulating observed photometric data to train the machine.  
-For normal SN~Ia, we use SALT-II \citep{guy10a} model ({\it ver} 2.4) which requires 2 input parameters:
+For normal SN~Ia, we use SALT2 \citep{guy10a} model ({\it ver} 2.4) which requires 2 input parameters:
 c for color and x1 for stretch.
 We adopt the asymetric gaussian distribution of c, and x1 from \citet{mosher14a}, and generate
 light curves and simulate photometric data points based on the observation schedule. 
@@ -484,8 +483,7 @@ flag4 & \checkmark &            & \checkmark & 5 & 379 & 4.21e-3   & 1  & sigmoi
 \end{tabular}
   }\label{tb:searched_hp_class}
 \begin{tabnote}
-* The photometric data selected as input to classifiers are displayed as check marks.
-$M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
+* Input to classifier is displayed as check mark. $M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
 \end{tabnote}
 \end{table*}
 
@@ -816,8 +814,7 @@ $M$ & $m$ & $f$ &  ROC &  Pre.-Rec. &\\
 \end{tabular}
 }\label{tab:p_validation}
 \begin{tabnote}
-* The photometric data selected as input to classifiers are displayed as check marks.
-$M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
+* Input to classifier is displayed as check mark. $M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
 \end{tabnote}
 \end{table}
 %
@@ -859,8 +856,7 @@ $M$ & $m$ & $f$ &  ROC &  Pre.-Rec. &\\
 \end{tabular}
 }\label{tab:p_test}
 \begin{tabnote}
-* The photometric data selected as input to classifiers are displayed as check marks.
-$M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
+* Input to classifier is displayed as check mark. $M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
 \end{tabnote}
 \end{table}
 %
@@ -990,8 +986,7 @@ Test& \checkmark &            & \checkmark &       0.938 &       0.921 &       0
 \end{tabular}
 }\label{tab:h2_AUC}
 \begin{tabnote}
-* The photometric data selected as input to classifiers are displayed as check marks.
-$M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
+* Input to classifier is displayed as check mark. $M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
 \end{tabnote}
 \end{table*}
 \begin{comment}
@@ -1158,8 +1153,7 @@ $M$ & $m$ & $f$  &  Flag\_0 &  Flag\_1 &  Flag\_2 &  Flag\_3 & Flag\_4 &  All \\
 \end{tabular}
 }\label{tab:h3_validation}
 \begin{tabnote}
-* The photometric data selected as input to classifiers are displayed as check marks.
-$M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
+* Input to classifier is displayed as check mark. $M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
 
 ** Accuracy for samples extracted from each flag according to the number ratio in the test dataset.
 \end{tabnote}
@@ -1199,12 +1193,12 @@ Each classification performance shown in sections \ref{sec:h2} and \ref{sec:h3} 
 \tbl{Example of classification result list for HSC supernovae.}{
 %\tiny
 \scriptsize
-\begin{tabular}{p{1.5em}p{1em}p{1em}p{4.0em}p{1.5em}p{0.6em}p{3.0em}p{4.5em}|p{2.9em}|p{1.3em}p{1.3em}p{1.3em}p{1em}|p{2.9em}|p{1.3em}p{1.3em}p{1.3em}p{1em}}
+\begin{tabular}{p{1.5em}p{1em}p{1em}p{4.0em}p{2.1em}|p{0.6em}p{3.0em}p{4.5em}|p{2.9em}|p{1.3em}p{1.3em}p{1.3em}p{1em}|p{2.9em}|p{1.3em}p{1.3em}p{1.3em}p{1em}}
 %\multicolumn{6}{|c}{Accuracy}
 \hline
-Index &    ID &  Flag &        z &  z\_stat &  dof & label1 & label2 &\multicolumn{5}{|p{14.5em}}{Input:\ absolute mag.+norm. flux} & \multicolumn{5}{|p{10.5em}}{Input:\ mag.+norm. flux}\\
+Index &    ID &  Flag &        z &  z\_src$^*$ &  \multicolumn{3}{p{10.0em}}{SALT2 fitting} &\multicolumn{5}{|p{14.5em}}{Classifier (Input$^{**}$: $M+f$)} & \multicolumn{5}{|p{12.0em}}{Classifier (Input$^{**}$: $m+f$)}\\
 \hline
-      &       &       &          &          &      &        &        & 2-class &\multicolumn{4}{p{10.0em}|}{3-class}&2-class &    \multicolumn{4}{p{10.0em}}{3-class}\\
+      &       &       &          &          &  dof & label1 & label2  & 2-class &\multicolumn{4}{p{10.0em}|}{3-class}&2-class &    \multicolumn{4}{p{10.0em}}{3-class}\\
 \hline
       &       &       &          &          &      &        &        &    Ia &    Ia &   Ibc &    II  &class &   Ia &    Ia &   Ibc &    II &class\\
 \hline
@@ -1233,6 +1227,12 @@ Index &    ID &  Flag &        z &  z\_stat &  dof & label1 & label2 &\multicolu
 \hline
 \end{tabular}
 }\label{tab:h_results}
+\begin{tabnote}
+* Code for redshift source.
+1: spec-z, 2: COSMOS photo-z, 3: HSC photo-z ultra-deep, 4: HSC photo-z deep, 0: hostless.
+
+** $M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
+\end{tabnote}
 \end{table*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1529,7 +1529,7 @@ Furthermore, this distributional difference of residuals leads to the fact that 
     \end{tabular}  \caption{%
     (Left) Relation between the machine predictions and the observed redshifts.
     The dashed line is the line of equality.
-    The color difference represents SALT-2 fit label.
+    The color difference represents SALT2 fit label.
     (Right) Normalized residual distribution for flag0 supernovae.
     }%
     \label{fig:redshift_estimation}
