@@ -1298,7 +1298,7 @@ In addition, there are some cases where SALT2 fitting does not work well during 
      \includegraphics[width=\columnwidth]{figures/misclass_rate_plastic_3class.eps}
   \end{center}
   \caption{%
-  Misclassification rate against redshift
+  Misclassification rate against redshift in the three-class classification of the PLAsTiCC data set.
   }%
   \label{fig:misclass_rate_3class}
 \end{figure}
@@ -1424,7 +1424,8 @@ In fact, as shown in the right panel of Figure 9, the performance for light curv
 Another cause of the large difference in the results of the validation and test set is the inability to completely simulate the observed data.
 Outlier values and systematic flux offsets, which are considered to be one of the causes of misclassification described in Section \ref{sec:misclass}, are found only in observed data.
 As described in \citet{yasuda19a}, the photometric data of the supernova in the HSC survey is measured from the difference image obtained by subtracting the reference image from the observed image.
-
+We believe that the unsimulated residual in this subtraction creates a difference between the photometric data for training and observation, and increases the misclassification rate of the classifier in the actual data.
+In fact, for the supernova aboi in the right panel of Figure \ref{fig:lcps}, it can be seen that flux offsets exist in the decline phase after the peak, and misclassification occurs in that part.
 It will be necessary to reduce or simulate these outlier values as much as possible to improve the performance of the classifier.
 %The presence of anomalous events also reduces the performance of actual survey classifications.
 %
