@@ -84,7 +84,7 @@ Our HST program uses non-disrupted ToO which means we send the observing request
 In other words, we are in need of finding good candidates 2-3 weeks prior to the maximum.  High-redshift (z$>$1) time dilation factor helps, but it is always a challenge to identify SNIa on the rise.
 
 Our international collaboration team executes spectroscopic follow-up using large telescopes in the world.  
-Our target, high-redshift SNIa, is faint ($\sim$ 24th mag in $i$-band) for spectroscopic identification even with the powerful large telescopes: GMOS Gemini \citep{hook04a}, GTC, Keck LRIS, VLT FORS, Subaru FOCAS \citep{kashikawa02a} and AAT.  
+Our target, high-redshift SNIa, is faint ($\sim$ 24th mag in $i-$band) for spectroscopic identification even with the powerful large telescopes: GMOS Gemini \citep{hook04a}, GTC, Keck LRIS, VLT FORS, Subaru FOCAS \citep{kashikawa02a} and AAT.  
 Thus, it is critical to hit the target at the time of maximum either by ToO (GTC), queue mode (VLT) or classical scheduled observation (Keck, Subaru, ATT).
 
 For SNIa, it takes about 18 days from its explosion to the maximum in rest frame \citep{conley06a,papadogiannakis19a}.   Given the fact, we are looking at high-redshift SNIa (z$>$1), we have about a month in observed frame for a SNIa from explosion to the maximum.   However, our task is to identify them 2 weeks prior to the maximum, meaning we have only 2 data points per a filter.   In addition to that, sky condition keeps changing, and we may not have the data as we originally had planned.   In reality, our identification has to be done through missing data points on the rise.
@@ -189,7 +189,7 @@ LSST team has compiled a series of variables including AGNs, variable stars, mic
 and class 99 whose identity was not revealed at the time of competition \citep{malz19a,kessler19a}.   
 We take their test data set as a pseudo-real observed data and assess our accuracy of classification.
 The LSST DDF simulated data is the most similar to HSC survey data, and we use their 2,297 objects 
-from Kaggle Competition \citep{malz19a} test data set.
+from Kaggle Competition \citep{malz19a} data set to test our machine.
 %Kaggle competition provided us with the training data set, but the number of objects are too 
 
 \subsection{Observed Data from Subaru/HSC Transient Survey}
@@ -200,7 +200,7 @@ The discovery of 1842 transients from a six-month HSC transient survey in the pe
 November 2016 through April 2017 are reported and described in \citet{yasuda19a}.
 The survey is composed of Ultra Deep Field (UD) and Deep Field in COSMOS \citep{scoville07a}.
 The median 5$\sigma$ limiting magnitues per epoch are 26.4, 26.3, 26.0, 25.6, and 24.6 mag (AB)
-for $g-$, $r-$, $i-$, $z-$, and $y-$ bands respectively for UD. 
+for $g$-, $r2$-, $i2$-, $z$-, and $y$- bands respectively for UD. 
 For DEEP field, the depth is 0.6 mag shallower.
 
 %We used SNANA \citep{Kessler_2009} and time series SED called "template" to simulate the light curve dataset for classifier training.
@@ -245,7 +245,8 @@ For DEEP field, the depth is 0.6 mag shallower.
 % われわれはシミュレーションデータを利用した実験の中で入力xは絶対等級と最大値が1になるようにスケーリングしたfluxを組み合わせるのが良いことを発見した。
 % 厳密な絶対等級の計算は複雑な計算が要求されるので、簡単のために以下の式を用いた。
 % また、等級の計算は観測したfluxが負の値の場合もあるので、Luptitude(Lupton magnitude)を用いて対応した。
-We found that in experiments using simulation data, it is better to be input x follow as,
+%We found that in experiments using simulation data, it is better to be input x follow as,
+Based on our pre-experiment with simulated data set, we found that the machines performs best if we normalize input data as follows:
 \begin{equation}
     x = \left( m_1^\mathrm{abs}, \ldots, m_P^\mathrm{abs}, f_{1}^{\mathrm{scale}}, \ldots, f_{P}^{\mathrm{scale}} \right)^T,
 \end{equation}
@@ -1459,7 +1460,7 @@ As shown in Table \ref{tab:class_flag}, 99.3\% of supernovae are classified by o
 
 \subsection{Type fractions of HSC supernovae}
 The elemental abundance of the solar system \citep{grevesse98a} originates from the cosmic history of 
-supernovae \citep{maraston05a,tsujimoto95a,kobayashi00a}.  
+supernovae \citep{maraston05a,kobayashi00a}.  
 Recent studies show that the solar abundance pattern is observed in other systems \citep{ramirez09a}
 and clusters \citep{mernier18a}.  It is important to investigate the origin of elements in the context
 of cosmic evolution \citep{fukugiata04}. 
