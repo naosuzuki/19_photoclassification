@@ -719,11 +719,13 @@ the model parameters (green boxes in Figure \ref{fig:dnnmodel}) are optimized by
 % モデルのハイパーパラメータについてはクラス分類の時と同様に行った。
 % 表?の値のデカルト積で作られる要素をグリッドサーチ、続いて表?の範囲の中をTPEアルゴリズムで探索を行った。
 % ハイパーパラメータの最適化は$R^2$決定係数を最大にするようにした。
-We estimated the redshift value $z$ of the object from the observed brightness。
-We cannot use absolute magnitude to estimate the redshift value because redshift value is required to calculate absolute magnitude.
-Therefore, we used magnitude instead of absolute magnitude as the input of the DNN.
+There exists cases that we may not have a photometric redshift or photometric redshift is not accurate.
+For these cases, we can estimate the redshift $z$ of a supernova from the observed brightness.
+%We cannot use absolute magnitude to estimate the redshift value because redshift value is required to calculate absolute magnitude.
+%Therefore, we used magnitude instead of absolute magnitude as the input of the DNN.
 
-We used a model with the same structure as in fig.\ref{fig:dnn_model} except that the DNN output was a scalar and there was no final softmax layer for redshift estimation.
+We use a model with the same structure as in Figure \ref{fig:dnn_model} except that the DNN output is a scalar,
+ and place no final softmax layer for redshift estimation.
 The objective function to optimize is the squared error between the ground truth $z$ and the output value $\hat{y}$.
 We measured the accuracy of the model with the coefficient of determination $R^2$, that is,
 \begin{eqnarray*}
