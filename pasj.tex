@@ -211,7 +211,7 @@ The goal of this project is to classify Subaru/HSC observed light curves.
 %\citet{yasuta19a} reports the 
 The discovery of 1842 transients from a six-month HSC transient survey in the period of
 November 2016 through April 2017 are reported and described in \citet{yasuda19a}.
-The survey is composed of Ultra Deep Field (UD) and Deep Field in COSMOS \citep{scoville07a}.
+The survey is composed of Ultra Deep Field (UD) and DEEP Field in COSMOS \citep{scoville07a}.
 The median 5$\sigma$ limiting magnitues per epoch are 26.4, 26.3, 26.0, 25.6, and 24.6 mag (AB)
 for $g$-, $r2$-, $i2$-, $z$-, and $y$- bands respectively for UD. 
 For DEEP field, the depth is 0.6 mag shallower.
@@ -254,23 +254,25 @@ For DEEP field, the depth is 0.6 mag shallower.
 \end{figure}
 %
 %
-\subsection{Preprocessing (normazliation absolute mag)}
+\subsection{Preprocessing of Input Data}
 % われわれはシミュレーションデータを利用した実験の中で入力xは絶対等級と最大値が1になるようにスケーリングしたfluxを組み合わせるのが良いことを発見した。
 % 厳密な絶対等級の計算は複雑な計算が要求されるので、簡単のために以下の式を用いた。
 % また、等級の計算は観測したfluxが負の値の場合もあるので、Luptitude(Lupton magnitude)を用いて対応した。
 %We found that in experiments using simulation data, it is better to be input x follow as,
-Based on our pre-experiment with simulated data set, we found that the machines performs best if we normalize input data as follows:
+Based on our pre-experiment with simulated data set, we found that the machines performs best if we 
+chose a combination of normalized flux ($f$) and pseudo-absolute magnitude ($M$):
 \begin{equation}
-    x = \left( m_1^\mathrm{abs}, \ldots, m_P^\mathrm{abs}, f_{1}^{\mathrm{scale}}, \ldots, f_{P}^{\mathrm{scale}} \right)^T,
+    x = \left( M_1^\mathrm{abs}, \ldots, M_P^\mathrm{abs}, f_{1}^{\mathrm{scale}}, \ldots, f_{P}^{\mathrm{scale}} \right)^T,
 \end{equation}
-where $m_i^\mathrm{abs}$ is i-th absolute magnitude, scaled flux $f_{i}^{\mathrm{scale}}$, that is,
+where $f_i$^{\mathrm{scale}} is $i$-th raw observed flux normalized by its maximum flux:
 \begin{equation}
     f_{i}^{\mathrm{scale}} = \frac{f_i}{\max \left(f_1, \ldots, f_P \right)},    \label{eq:scaled_flux}
 \end{equation}
-$f_i$ is i-th raw observed flux.
-Since the calculation of exact absolute magnitude requires complicated calculation, the following equation is used for simplicity.
+and $M_i^\mathrm{abs}$ is $i$-th pseudo-absolute observed magnitude.
+For simplicity, we ignore K-correction and use distance modulus based on $\Lambda$CDM with photometric redshift
+from its host galaxy.
 \begin{eqnarray}
-    m_i^\mathrm{abs} = m_i - \mathrm{DM}\left(z\right),
+    M_i^\mathrm{abs} = m_i - \mathrm{DM}\left(z\right),
 \end{eqnarray}
 where $m_i$ is i-th magnitude and $\mathrm{DM}\left(z\right)$ is distance modulus of the redshift value $z$.
 In addition, since the observed flux may be a negative value, the calculation of the magnitude was dealt with using Luptitude (Lupton magnitude). %simplified Lupton magnitude 
