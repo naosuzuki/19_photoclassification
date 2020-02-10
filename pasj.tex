@@ -82,7 +82,7 @@ Our unique attempt is to make use of the observed data as 'raw' as possible so t
 %\item PLAsTiCC
 %\end{itemize}
 %
-\section{Methods :}
+\section{Methods : Suzuki}
 \subsection{Tasks in HSC survey}
 \label{sec:tasks}
 Subaru Hyper-Suprime Cam (HSC) Transient survey is a part of Subaru Strategic Project (SSP) which is a five-year program with 300 dark nights \citep{aihara18a,miyazaki18a}.
@@ -113,9 +113,9 @@ Finding early phase SNIa is not trivial but HSC is yielding a new set of early p
 Observations of the early phase Core Collapse Supernova provides us with a crucial information on the size of the projenitors \citep{thompson03a,chevalier11a}.  Shock Breakout lasts only for a few $\sim$ several hours at the time of explosion and it becomes as luminous as at the time of the maximum \citep{gezari08a}. 
 Shock Breakout contains the information on projenitor radius \citep{nakar10a}, and HSC is expected to find these candidates as well \citep{tominaga11a}.
 
-Tidal Disruption Event (TDE) is also expected to be observed by HSC Transient survey.  The light curve is similar to
-the supernova, but it monotonically drops and the event happens on the core of the galaxy.  We expect to have a few
-events per season.
+Tidal Disruption Event \citep[TDE]{gezari08b,holoien14a} is also expected to be observed by HSC Transient survey.  The light curve is similar to
+the supernova, but it monotonically drops at a specific rate \citep[$t^{-5/3}$]{lodato11a} and the event happens on the core of the galaxy.  
+We expect to have a few events per season \citep{kochanek16a}.
 
 It is always possible to discover something new when we explore a new parameter space which is the depth for the case
 of Subaru HSC.   Rapid transients are discovered by HSC, but their identities are yet to be known (Tampo et al.  2020 in prep).  Similar objects are also reported by DES team \citep{pursianinen18a}.
@@ -146,7 +146,7 @@ We choose three classes for simplicity and in fact, the majority of supernovae g
 %
 %By simulating the light curve data and training the machine in advance before observation, type classification of supernova can be performed in a short time after observation.
 %
-\section{Data}
+\section{Data : Suzuki}
 In this section, we describe three kinds of data we use.
 First, we need a simulated photometric data to train the machine ($\S$ \ref{sec:training}).
 Second, we want to have a realistic data set which we know the answer so that we can assess the
@@ -264,18 +264,22 @@ chose a combination of normalized flux ($f$) and pseudo-absolute magnitude ($M$)
 \begin{equation}
     x = \left( M_1^\mathrm{abs}, \ldots, M_P^\mathrm{abs}, f_{1}^{\mathrm{scale}}, \ldots, f_{P}^{\mathrm{scale}} \right)^T,
 \end{equation}
-where $f_i$^{\mathrm{scale}} is $i$-th raw observed flux normalized by its maximum flux:
+where $f_{i}^{\mathrm{scale}}$ is $i$-th raw observed flux normalized by its maximum flux:
 \begin{equation}
     f_{i}^{\mathrm{scale}} = \frac{f_i}{\max \left(f_1, \ldots, f_P \right)},    \label{eq:scaled_flux}
 \end{equation}
 and $M_i^\mathrm{abs}$ is $i$-th pseudo-absolute observed magnitude.
-For simplicity, we ignore K-correction and use distance modulus based on $\Lambda$CDM with photometric redshift
+For a simplicity, we ignore K-correction and use distance modulus (DM(z)) based on $\Lambda$CDM with photometric redshift
 from its host galaxy.
 \begin{eqnarray}
     M_i^\mathrm{abs} = m_i - \mathrm{DM}\left(z\right),
 \end{eqnarray}
-where $m_i$ is i-th magnitude and $\mathrm{DM}\left(z\right)$ is distance modulus of the redshift value $z$.
-In addition, since the observed flux may be a negative value, the calculation of the magnitude was dealt with using Luptitude (Lupton magnitude). %simplified Lupton magnitude 
+We justify this operation because we treat training set and observed data set in the same way.
+It there existed K-correction offset, both data set experiences in the same way.
+%where $m_i$ is i-th magnitude and $\mathrm{DM}\left(z\right)$ is distance modulus of the redshift value $z$.
+In addition, since the observed flux could go to a negative value due to statistical fluctuation, 
+we adopt hyperbolic sine to imitate the magnitude system we use \citep{lupton99a}.  
+%the calculation of the magnitude was dealt with using Luptitude (Lupton magnitude). %simplified Lupton magnitude 
 \begin{eqnarray}
     m_i = 27.5 - \frac{2.5}{\log 10} \sinh^{-1} \frac{f_i}{2}. \label{eq:mag} 
 \end{eqnarray}
