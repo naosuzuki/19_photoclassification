@@ -600,31 +600,31 @@ Case 4& \checkmark &            & \checkmark & 5 & 379 & 4.21e-3   & 1  & sigmoi
 % layerの出力が恒等変換であればネットワークの深さが実質的に減少することになる。
 
 
-\subsubsection{Binary and Multi-type}
+\subsubsection{Binary and Multi-type Classification}
 % DNNでのクラス分類は、DNNの各出力を各クラスに対応させることで、クラス数$K$によらずに同じ方法で学習できる。
 % 多クラス分類の場合は、我々の実験ではクラス数が$K=3$なので、出力数も3となる。
 % 同様にbinaryクラス分類では出力数は2となる。
 We can train the DNN classifier in the same way regardless of the number of classes.
 In the case of multi-type classification, the number of classes is $K = 3$ in our experiment, so the number of outputs of the DNN classifier is also three.
-Similarly, in binary classification, the number of the outputs is two.
+In binary classification (SN~Ia or Non-SN~Ia), the number of the outputs is two.
 
 % モデルの学習はクロスエントロピー誤差$CE \left( t, y \right) = -\sum_{k=1}^K t_k \log y_k$を最小化するようにした。
 % $t$は$k$次元のone hotベクトルで正解のクラス$k$に対応する次元のみが1、残りは全て0のベクトルである。
 % $y$はDNNの出力ベクトルである。
 % モデルのパラメータの更新は勾配法でadam optimizerを利用して行った。
-We trained the model as minimizing the cross-entropy error 
+We train the model by minimizing the cross-entropy error: 
 \begin{equation}
 \mathrm{CE} \left(y, \hat{y} \right) =　-\sum_{k = 1}^K y_k \log \hat{y}_k,
 \end{equation}
 where $y$ is a ground truth vector which is one-hot encoding of $K$ dimension, and $\hat{y}$ is the DNN output vector.
-We used Adam optimizer, which is a kind of stochastic gradient method, to update model parameters.
+We deploy {\it Adam optimizer} which uses a stochastic gradient method to optimize model parameters.
 
 % 学習時のオーバーフィッティングを防ぐためにdata augmentationを行った。
-We performed data augmentation to prevent overfitting in training time.
+We introduce data augmentation to prevent overfitting at the time of training.
 % data augmentationによって見かけのデータ数を増やすことで、DNNが訓練データを暗記してしまうのを防ぐ効果がある。
-By increasing the number of apparent data by data augmentation, there is an effect to prevent DNN from memorizing training data.
+By increasing the number of input data by augmentation, we prevent DNN from memorizing all of the training data set.
 % 学習データに2種類のdata augmentationを適用した。
-We applied two kinds of data augmentation to the learning data.
+We apply two ways of data augmentation to the learning data.
 % 一つはfluxにガウス分布からサンプリングしたノイズを加えた。
 One is that the noise sampled from Gaussian distribution is added to flux
 % もう一つはmixup (\cite{mixup})を行った。
