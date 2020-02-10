@@ -118,7 +118,8 @@ the supernova, but it monotonically drops at a specific rate \citep[$t^{-5/3}$]{
 We expect to have a few events per season \citep{kochanek16a}.
 
 It is always possible to discover something new when we explore a new parameter space which is the depth for the case
-of Subaru HSC.   Rapid transients are discovered by HSC, but their identities are yet to be known (Tampo et al.  2020 in prep).  Similar objects are also reported by DES team \citep{pursianinen18a}.
+of Subaru HSC.   Rapid transients are discovered by HSC, but their identities are yet to be known (Tampo et al.  2020 in prep).  
+Similar objects are also reported by DES team \citep{pursianinen18a}.
 
 In many science cases, it is essential to have a timely classification at the early phase of transient so that we can trigger follow-up observations.
 %\citep{maeda18a,jiang18a}
@@ -274,8 +275,8 @@ from its host galaxy.
 \begin{eqnarray}
     M_i^\mathrm{abs} = m_i - \mathrm{DM}\left(z\right),
 \end{eqnarray}
-We justify this operation because we treat training set and observed data set in the same way.
-It there existed K-correction offset, both data set experiences in the same way.
+We can justify this operation because we treat the training set and the observed data set in the same way.
+It there existed K-correction offset, both data set would experience in the same way.
 %where $m_i$ is i-th magnitude and $\mathrm{DM}\left(z\right)$ is distance modulus of the redshift value $z$.
 In addition, since the observed flux could go to a negative value due to statistical fluctuation, 
 we adopt hyperbolic sine to imitate the magnitude system we use \citep{lupton99a}.  
@@ -283,11 +284,17 @@ we adopt hyperbolic sine to imitate the magnitude system we use \citep{lupton99a
 \begin{eqnarray}
     m_i = 27.5 - \frac{2.5}{\log 10} \sinh^{-1} \frac{f_i}{2}. \label{eq:mag} 
 \end{eqnarray}
+In fact, the combination of the flux and magnitudes are redundant.   If we know one, we can calculate the other
+in an explicit way.   
+However, based on our experiment, the score of machine gets better if we use both.  
+We suspect the distribution in flux and magnitude space are difference and it gives an extra clue to the machine.
+Thus, we use pseudo-absolute magnitude $M$ and max-value normalized flux $f$ as an input.
 
 \section{Deep Neural Network Clasifier : Imoto/Suzuki}
-On the rise of the era of Big Data, the use of machine learning technique plays a critical role on the analysis of astronomical data.  Techniques such as Random Forest, Support Vector Machine, Convolution Neural Network are being used for photometric data analysis, galaxy classifications and spectral classifications.
+On the rise of the era of Big Data, the use of machine learning technique plays a critical role on the analysis of astronomical data.  Techniques such as Random Forest, Support Vector Machine, Convolution Neural Network are being used for photometric data analysis \citep{pasquet19a}, galaxy classifications \citep{hausen19a} and spectral 
+classifications \citep{garciadias18a,muthukrishna19c,sharma20a}.
 
-We are in need of classifying supernova from photometric data.  We attempt to make use of the observed data as it is without parameterization.  It is the Deep Learning that makes this attempt possible.   On this paper, we test how good deep learning can do without extracting features such as color, light curve width and the peak magnitude.  It has been proven among PLAsTiCC competition that a combination of features can perform very well (cite Boone 2019), but it needs the data augmentation, interpolation or extrapolation to extract features.
+We are in need of classifying supernova from photometric data.  We attempt to make use of the observed data as it is without parameterization.  It is the Deep Learning that makes this attempt possible.   On this paper, we test how good deep learning can do without extracting features such as color, light curve width and the peak magnitude.  It has been proven among PLAsTiCC competition that a combination of features can perform very well \citep{boone19a}, but it needs the data augmentation, interpolation or extrapolation to extract features.
 
 We push one step further and use the observed data as raw as possible, meaning our input is a simple array of magnitudes.  Such attempt would not be possible ten years ago, but thanks for the advancement of computing and deep learning technique, now it becomes reality.  Among many other machine learning methods, deep neural network is our choice which enables us to classify astronomical objects from the raw observed data. 
 
@@ -303,7 +310,7 @@ At the end, each supernova is given a probability of being a certain astrophysic
 \end{equation}
 We do not use time or filter explicitly but it is recorded as an order inside the array.  The philosophy here is that the training set which is composed of the simulated data in the same array length holds the information on filter and dates.  For example, $j$-th magnitude in the array is the data taken on a certain date and by a certain filter.  The combination of the date and filter is identical to the ones in the training set.  Therefore, $j$-th component implicitly contains unique information about dates and filters.  
 %{\bf Memo Distance Modulus \& Normalized Flux needs to be written for preprocessing}
-Based on our experiment, described in $\S X$, the combination of absolute magnitude and normalized flux performs best, and therefore, our input array has a size of $1\times2N$ per a supernova where $N$ is the number of data points.
+Based on our experiments (Table \ref{tab:p_validation}, \ref{tab:p_test}), the combination of absolute magnitude and normalized flux performs best, and therefore, our input array has a size of $1\times2N$ per a supernova where $N$ is the number of data points.
 %The DNN model receives the total of P brightnesses observed in multiple bands as an input and outputs $C$ values, where $C$ is the number of classes in classification task, and $C = 1$ in regression task.
 
 {\bf First Fully Connected Layer:}
@@ -389,20 +396,21 @@ For the first iteration, we do not know what kind of transformation is the best,
 %D次元からC次元に隠れ層の次元数を変換する。
 After Highway Layer Block is stacked for 3-5 times, we are in need of converting the number of neurons to the number of supernovae times the number of supernova classes.   This is an opposite operation of the first fully connected layers.
 
-{\bf Softmax layer}
-softmax layer normalize the value $h$ with following formula,
+{\bf Softmax layer:}
+Softmax layer normalize the value $h$ with following formula,
 \begin{equation}
     \hat{y}_j = \frac{\exp \left( h_j \right)}{\sum_{k=1}^C \exp \left( h_k \right)}.
 \end{equation}
 The normalized value $\hat{y}$ satisfies $\hat{y}_j \geq 0$ and $\sum_j^C \hat{y}_j =1$.
 We can interpret $\hat{y}_j$ as the probability that the input $x$ belongs to  class $c=j$.
+However, we note that this is a pseudo probability and it differs from the one we use in statistics.
   
 \subsection{Hyper Parameter Search}\label{hyperparametersearch}
 % fig.\ref{fig:dnn_model}の赤色の背景の値をDNNの精度が最も高くなるように決定する。ハイパーパラメータの値とDNNの精度の関係を陽に求めることは非常に難しく計算コストも高いので、それらの間の関係はブラックボックスとしてハイパーパラメータの最適化を行う。
 % 今回、われわれは最初にグリッドサーチを行い、その後、TPEアルゴリズムによる探索を行った。グリッドサーチは探索点を任意に指定できることと複数の点の評価を同時に行えるので時間的な効率が良いことから採用した。また、TPEアルゴリズムは探索履歴に基づいて次の探索点を決定するので、履歴にグリッドサーチの結果を含めることでグリッドサーチでは見つけられなかったより良い点を探索できる。
 % グリッドサーチの探索グリッドは予備実験で良かった点とその周辺の点を設定した。各グリッド点の評価は並列で行った。
 % ハイパーパラメータの探索にはグリッドサーチとTPE(Tree-structured Parzen Estimator)アルゴリズムを組み合わせる方法で行った。
-We performed hyperparameter search by combining grid search and TPE (Tree-structured Parzen Estimator) algorithm.
+We performe hyperparameter search by combining grid search and TPE (Tree-structured Parzen Estimator) algorithm.
 % グリッドサーチは高次元空間の探索はあまり適していないが、並列に複数の点を探索できるメリットがある。
 Grid search is not suitable for high-dimensional space search, but has the advantage of searching for multiple points in parallel.
 % 加えて、アルゴリズムが単純なので、予備実験の結果などの知見を探索点の設定に反映させやすいメリットがある。
