@@ -34,7 +34,7 @@ Naoki Yoshida\altaffilmark{4,1,2},
 %\altaffiltext{}{Astronomical Society of Japan, c/o National Astoronomical Observatory of Japan, 2-21-1 Osawa, Mitaka, Tokyo 181-8588, Japan }
 \email{ichiro.takahashi@ipmu.jp}
 
-\KeyWords{key word${}_1$ --- key word${}_2$ --- \dots --- key word${}_n$}
+\KeyWords{supernovae: general --- methods: statistical --- surveys}
 
 \maketitle
 %
@@ -43,7 +43,7 @@ Naoki Yoshida\altaffilmark{4,1,2},
 The progress of observation technology in recent years has brought the rapid increase in the number of discovered supernovae. More than 1,800 supernova candidates were discovered in transient survey with the Subaru Hyper Suprime-Cam (HSC). In order to select follow-up candidates efficiently among supernovae discovered in the HSC survey, we study type classification of supernovae using machine learning. Our classifier using Deep Neural Network enables classification in a short time after observation by learning with simulated data before observation and directly inputting photometric data. We adopt the published templates of “The Photometric LSST Astronomical Time-Series Classification Challenge (PLAsTiCC)” to simulate the learning data. As a result of classifier verification using PLAsTiCC dataset, the classification performances in binary classification and three-class classification are measured as area under the curve (AUC) of 0.996 and accuracy of 95.3\% respectively. In addition, when we apply this classifier to the observation data of HSC transient survey conducted from 2016 to 2017, the AUC score in binary classification is 0.921. We also investigated the classification results while increasing the number of input dimensions only with the complete light curves in the HSC survey, and found out the followings: 1) The performance of type classification improves as input increases, and accuracy exceeds 0.8 at 20 photometric points. 2) When considered based on the supernova phase, our classifier can classify with 85\% accuracy by inputting two weeks of data from the first detection. These results and findings show that our classifier has sufficient classification performance to select the follow-up targets even in the actual survey.
 \end{abstract}
 
-\section{Introduction : Suzuki}
+\section{Introduction}
 Time domain science becomes one of the major fields of astronomical study today.  The discovery of accelerating universe \citep{perlmutter99a,riess98a} evoked a series of large supernova surveys in the last decade \citep{astier06b,wood-vasey07a,kessler09a,law09a}.  
 These surveys revealed that there exist a whole new family of transients and the search for unknown populations is of great interest today \citep{howell06a,phillips07a,quimby07b}. 
 For the precision cosmology, it is very important to keep the purity of Type Ia supernova (SNIa) while having uniform sampling from bright to faint SNeIa.  Spectroscopic follow-up has been essential to distinguish faint SNIa from SNIbc which has a similar light curve behavior \citep{scolnic14a}.   A large amount of precious telescope time is dedicated to the follow-up programs, and we would like to make an efficient use of those telescopes.
@@ -82,7 +82,7 @@ Our unique attempt is to make use of the observed data as 'raw' as possible so t
 %\item PLAsTiCC
 %\end{itemize}
 %
-\section{Methods :}
+\section{Methods}
 \subsection{Tasks in HSC survey}
 \label{sec:tasks}
 Subaru Hyper-Suprime Cam (HSC) Transient survey is a part of Subaru Strategic Project (SSP) which is a five-year program with 300 dark nights \citep{aihara18a,miyazaki18a}.
@@ -280,7 +280,7 @@ In addition, since the observed flux may be a negative value, the calculation of
     m_i = 27.5 - \frac{2.5}{\log 10} \sinh^{-1} \frac{f_i}{2}. \label{eq:mag} 
 \end{eqnarray}
 
-\section{Deep Neural Network Clasifier : Imoto/Suzuki}
+\section{Deep Neural Network Clasifier}
 On the rise of the era of Big Data, the use of machine learning technique plays a critical role on the analysis of astronomical data.  Techniques such as Random Forest, Support Vector Machine, Convolution Neural Network are being used for photometric data analysis, galaxy classifications and spectral classifications.
 
 We are in need of classifying supernova from photometric data.  We attempt to make use of the observed data as it is without parameterization.  It is the Deep Learning that makes this attempt possible.   On this paper, we test how good deep learning can do without extracting features such as color, light curve width and the peak magnitude.  It has been proven among PLAsTiCC competition that a combination of features can perform very well (cite Boone 2019), but it needs the data augmentation, interpolation or extrapolation to extract features.
@@ -964,11 +964,11 @@ The numbers of supernovae with Ia probabilities above 0.5, 0.7 and 0.9 are 530, 
 %Ver. 1.2.0 
 \begin{table*}[h]
 \tbl{AUC of each input in the HSC binary classification.}{
-\begin{tabular}{c|ccc|p{2em}p{2em}p{2em}p{2em}p{2em}p{2em}|p{2em}p{2em}p{2em}p{2em}p{2em}p{2em}}
+\begin{tabular}{c|ccc|p{3em}p{1.8em}p{1.8em}p{1.8em}p{1.8em}p{1.8em}|p{3em}p{1.8em}p{1.8em}p{1.8em}p{1.8em}p{1.8em}}
 \hline
 Dataset & \multicolumn{3}{c}{Input$^*$} & \multicolumn{6}{|c|}{ROC} & \multicolumn{6}{c}{Pre.-Rec.} \\
 \hline
- & $M$ & $m$ & $f$ & Case 0 & Case 1 & Case 2 & Case 3 & Case 4 & All & Case 0 & Case 1 & Case 2 & Case 3 & Case 4 & All \\
+ & $M$ & $m$ & $f$ & Case 0 & 1 & 2 & 3 & 4 & All & Case 0 & 1 & 2 & 3 & 4 & All \\
 \hline
 Validation &\checkmark &            & \checkmark &       1.000&       0.990 &       0.987 &       0.976 &       0.887 &        0.993 &          1.000 &          0.993 &          0.991 &          0.983 &          0.917 &           0.995 \\
 & \checkmark &            &            &       0.999&       0.980 &       0.975 &       0.959 &       0.845 &        0.987 &          0.999 &          0.986 &          0.982 &          0.972 &          0.886 &           0.991 \\
@@ -1068,11 +1068,11 @@ Test& \checkmark &            & \checkmark &       0.938 &       0.921 &       0
 %
 \begin{table*}[ht]
 \tbl{Accuracy of each input in the HSC binary classification.}{
-\begin{tabular}{c|ccc|p{2em}p{2em}p{2em}p{2em}p{2em}p{2em}}
+\begin{tabular}{c|ccc|p{3em}p{1.8em}p{1.8em}p{1.8em}p{1.8em}p{1.8em}}
 \hline
 Dataset & \multicolumn{3}{|c}{Input} & \multicolumn{6}{|c}{Accuracy} \\
 \hline
- & $M$ & $m$ & $f$  &  Case 0 &  Case 1 &  Case 2 &  Case 3 & Case 4 &  All \\
+ & $M$ & $m$ & $f$  &  Case 0 & 1 & 2 & 3 & 4 &  All \\
 \hline
 Test& \checkmark &            & \checkmark &        0.947 &        0.902 &        0.877 &        0.789 &        0.923 &         0.914 \\
 (Light curve verified)& \checkmark &            &            &        0.931 &        0.902 &        0.912 &        0.789 &        0.769 &         0.907 \\
@@ -1143,11 +1143,11 @@ is an integrated value throughout the redshift and includes incomplete sampling 
 %Ver. 1.2.1
 \begin{table}[ht]
 \tbl{Accuracy of each input in the HSC three class classification for validation dataset.}{
-\begin{tabular}{ccc|p{2em}p{2em}p{2em}p{2em}p{2em}p{2em}}
+\begin{tabular}{ccc|p{3em}p{1.8em}p{1.8em}p{1.8em}p{1.8em}p{1.8em}}
 \hline
 \multicolumn{3}{c}{Input$^*$} & \multicolumn{6}{|c}{Accuracy$^{**}$} \\
 \hline
-$M$ & $m$ & $f$  &  Case 0 &  Case 1 &  Case 2 &  Case 3 & Case 4 &  All \\
+$M$ & $m$ & $f$  &  Case 0 & 1 & 2 & 3 & 4 &  All \\
 \hline
 \checkmark &            & \checkmark &        0.985 &        0.926 &        0.920 &        0.890 &        0.774 &         0.940 \\
 \checkmark &            &            &        0.971 &        0.894 &        0.886 &        0.844 &        0.729 &         0.914 \\
