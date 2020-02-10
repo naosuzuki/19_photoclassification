@@ -113,7 +113,7 @@ Finding early phase SNIa is not trivial but HSC is yielding a new set of early p
 Observations of the early phase Core Collapse Supernova provides us with a crucial information on the size of the projenitors \citep{thompson03a,chevalier11a}.  Shock Breakout lasts only for a few $\sim$ several hours at the time of explosion and it becomes as luminous as at the time of the maximum \citep{gezari08a}. 
 Shock Breakout contains the information on projenitor radius \citep{nakar10a}, and HSC is expected to find these candidates as well \citep{tominaga11a}.
 
-Tidal Disruption Event \citep[TDE]{gezari08b,holoien14a} is also expected to be observed by HSC Transient survey.  The light curve is similar to
+Tidal Disruption Event \citep[TDE][]{gezari08b,holoien14a} is also expected to be observed by HSC Transient survey.  The light curve is similar to
 the supernova, but it monotonically drops at a specific rate \citep[$t^{-5/3}$]{lodato11a} and the event happens on the core of the galaxy.  
 We expect to have a few events per season \citep{kochanek16a}.
 
@@ -405,32 +405,35 @@ The normalized value $\hat{y}$ satisfies $\hat{y}_j \geq 0$ and $\sum_j^C \hat{y
 We can interpret $\hat{y}_j$ as the probability that the input $x$ belongs to  class $c=j$.
 However, we note that this is a pseudo probability and it differs from the one we use in statistics.
   
-\subsection{Hyper Parameter Search}\label{hyperparametersearch}
+\subsection{Hyperparameter Search}\label{hyperparametersearch}
 % fig.\ref{fig:dnn_model}の赤色の背景の値をDNNの精度が最も高くなるように決定する。ハイパーパラメータの値とDNNの精度の関係を陽に求めることは非常に難しく計算コストも高いので、それらの間の関係はブラックボックスとしてハイパーパラメータの最適化を行う。
 % 今回、われわれは最初にグリッドサーチを行い、その後、TPEアルゴリズムによる探索を行った。グリッドサーチは探索点を任意に指定できることと複数の点の評価を同時に行えるので時間的な効率が良いことから採用した。また、TPEアルゴリズムは探索履歴に基づいて次の探索点を決定するので、履歴にグリッドサーチの結果を含めることでグリッドサーチでは見つけられなかったより良い点を探索できる。
 % グリッドサーチの探索グリッドは予備実験で良かった点とその周辺の点を設定した。各グリッド点の評価は並列で行った。
 % ハイパーパラメータの探索にはグリッドサーチとTPE(Tree-structured Parzen Estimator)アルゴリズムを組み合わせる方法で行った。
-We performe hyperparameter search by combining grid search and TPE (Tree-structured Parzen Estimator) algorithm.
+We performe a hyperparameter search (red boxes in Figure \ref{fig:dnn_model}) by combining grid search and TPE (Tree-structured Parzen Estimator) algorithm.
 % グリッドサーチは高次元空間の探索はあまり適していないが、並列に複数の点を探索できるメリットがある。
-Grid search is not suitable for high-dimensional space search, but has the advantage of searching for multiple points in parallel.
+Grid search is not suitable for high-dimensional space search, but has an advantage of searching for multiple points in parallel.
 % 加えて、アルゴリズムが単純なので、予備実験の結果などの知見を探索点の設定に反映させやすいメリットがある。
-In addition, since the algorithm is simple, there is a merit that it is easy to reflect knowledge such as the results of preliminary experiments in the setting of search points.
+In addition, since the algorithm is simple, there is another advantage to convery the knowledge of preliminary experiments for parameter initialization.
 % 一方で、TPEアルゴリズムは高次元空間の探索に適しているが、現在までの探索結果に基づいて次の探索点を決定するので探索が逐次的になるデメリットがある。
-On the other hand, the TPE algorithm is suitable for searching a high-dimensional space, but has a demerit that the search is sequential because the next search point is determined based on the search results up to now.
+On the other hand, the TPE algorithm is suitable for searching a high-dimensional space, but has a disadvantage of not knowing where to start for the first time.
+%he search is sequential because the next search point is determined based on the search results up to now.
 % そこで今回は予備実験でよかったハイパーパラメータの周辺をグリッドサーチで探索を行い、続いてその結果に基づいてTPEアルゴリズムでの探索を行った。
-Therefore, this time, we searched around the hyperparameters that were good in the preliminary experiment by grid search, and then searched by TPE algorithm based on the result.
+Therefore, this time, we searched around the hyperparameters that were good in the preliminary experiment by grid search, and then searched by TPE algorithm based 
+on the grid search result.
 % 組み合わせることで、予備実験で得た知識を利用でき、探索にかかる時間を短縮できるメリットがある。
-By combining them, there are merits that the knowledge obtained in the preliminary experiment can be used and the time required for the search can be shortened.
+%By combining them, there are merits that the knowledge obtained in the preliminary experiment can be used and the time required for the search can be shortened.
 
 %% DNNのハイパーパラメータはoptunaを用いて最適化を行った。
 % ハイパーパラメータの最適化は、学習用データセットを訓練データとバリデーションデータに分割して、バリデーションデータでの精度が最も高くなるように最適化した。
 % 最適化によって得られたハイパーパラメータを用いてモデルの最適化を行い、そのモデルの性能の評価を行った。
 %% note: 参考文献にはOputunaのソースコード https://github.com/pfnet/optunaではなく、元論文の方を指定した
 % We optimized the hyperparameters of the DNN model using the library, optuna(\cite{optuna}).
-In optimizing the hyperparameters, we evaluated the hyperparameters with validation accuracy.
-We divided the data set into training data and validation data.
-We used training data for optimizing DNN and used validation data for measuring the accuracy.
-We trained the DNN model using the hyper parameters obtained by optimization, and evaluated the performance of the DNN model.
+As a usual strategy, we divide the data set into a training data and a validation data set.
+We use the training data for optimizing DNN, and use the validation data for measuring the accuracy.
+In optimizing the hyperparameters, we evaluated the hyperparameters with validation data set sot
+that the accuracy of validation data set becomes maximum.
+%We trained the DNN model using the hyper parameters obtained by optimization, and evaluated the performance of the DNN model.
 
 %\section{Results (TBD Experiment/Execution)}
 \begin{figure}[ht]
@@ -438,7 +441,9 @@ We trained the DNN model using the hyper parameters obtained by optimization, an
      \includegraphics[width=\columnwidth]{figures/size_accuracy.eps}
   \end{center}
   \caption{%
-  the relation between the number of samples of training dataset and the accuracy measured with test dataset. The solid line shows the mean accuracy of five classifiers. The shade area shows the standard deviation of the classifiers. The classifiers are trained with 5 fold cross validation using the training dataset. (The validation data is used to stop the training.)
+%  the relation between the number of samples of training dataset and the accuracy measured with test dataset. 
+A convergence test: We tested how many light curves needs to be generated to train a machine. 
+The solid line shows the mean accuracy of five classifiers. The shade area shows the standard deviation of the classifiers. The classifiers are trained with 5 fold cross validation using the training dataset.  We conclude we need more than 10,000 light curves for training.
   }%
   \label{fig:size_convergence_test}
 \end{figure}
