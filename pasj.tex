@@ -432,10 +432,11 @@ on the grid search result.
 % We optimized the hyperparameters of the DNN model using the library, optuna(\cite{optuna}).
 As a usual strategy, we divide the dataset into a training data and a validation dataset.
 We use the training data for optimizing DNN, and use the validation data for measuring the accuracy.
-In optimizing the hyperparameters, we evaluated the hyperparameters with validation dataset sot
+In optimizing the hyperparameters, we evaluated the hyperparameters with validation dataset so
 that the accuracy of validation dataset becomes maximum.
-%We trained the DNN model using the hyper parameters obtained by optimization, and evaluated the performance of the DNN model.
+We iterate this process for 100 times so that the accuracy converges to its maximum (Figre \ref{fig:hp_test}).
 
+%We trained the DNN model using the hyper parameters obtained by optimization, and evaluated the performance of the DNN model.
 %\section{Results (TBD Experiment/Execution)}
 \begin{figure}[ht]
   \begin{center}
@@ -448,14 +449,16 @@ The solid line shows the mean accuracy of five classifiers. The shade area shows
   }%
   \label{fig:size_convergence_test}
 \end{figure}
+
 \begin{figure}[ht]
   \begin{center}
      \includegraphics[width=\columnwidth]{figures/hp_iterations_accuracy.eps}
   \end{center}
   \caption{%
-  binary classification, case=0
+  We iterate hyperparameter search for 100 times where it converges to its maximum performance in 
+terms of accuracy.   What is shown is the case of a binary classification wit case=0.
   }%
-  \label{fig:size_convergence_test}
+  \label{fig:hp_test}
 \end{figure}
 %
 %\subsubsection{}
