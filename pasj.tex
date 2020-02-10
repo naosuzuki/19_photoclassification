@@ -113,7 +113,7 @@ Finding early phase SNIa is not trivial but HSC is yielding a new set of early p
 Observations of the early phase Core Collapse Supernova provides us with a crucial information on the size of the projenitors \citep{thompson03a,chevalier11a}.  Shock Breakout lasts only for a few $\sim$ several hours at the time of explosion and it becomes as luminous as at the time of the maximum \citep{gezari08a}. 
 Shock Breakout contains the information on projenitor radius \citep{nakar10a}, and HSC is expected to find these candidates as well \citep{tominaga11a}.
 
-Tidal Disruption Event \citep[TDE][]{gezari08b,holoien14a} is also expected to be observed by HSC Transient survey.  The light curve is similar to
+Tidal Disruption Event \citep[TDE]{gezari08b,holoien14a} is also expected to be observed by HSC Transient survey.  The light curve is similar to
 the supernova, but it monotonically drops at a specific rate \citep[$t^{-5/3}$]{lodato11a} and the event happens on the core of the galaxy.  
 We expect to have a few events per season \citep{kochanek16a}.
 
@@ -187,9 +187,10 @@ and apply that relationship to the simulated photometric data.
 For LSST simulation, we find the flux-error relation from the Deep Drilling Field (DDF) of the one
 used in Kaggle Competition \citep{malz19a} and applied that to the simulated photometric data.
 
-We have tested how many light curves are needed for training.  We use "accuracy" ref(Sec X) as an 
-indicator to justify the number of light curves to use and based on the our test, we conclude we need 
-to generate more than 100,000 light curves for training as shown Figure \ref{fig:size_convergence_test}.
+We have tested how many light curves are needed for training.  We use "accuracy" ($\S$ \ref{hyperparametersearch}) 
+as a guide on how many light curves to use.  
+Based on the our convergence test, we conclude we need to generate more than 100,000 light curves 
+for training as shown Figure \ref{fig:size_convergence_test}.
 For training, 370,345 light curves are generated for LSST DDF, and 514,954 for HSC observed data.
 We dropped ones which has less than 3$\sigma$ detection at the maximum since our detection criterion
 is 5$\simga$.  %Prior to the modeling, we did the convergence test
@@ -443,7 +444,7 @@ that the accuracy of validation data set becomes maximum.
   \caption{%
 %  the relation between the number of samples of training dataset and the accuracy measured with test dataset. 
 A convergence test: We tested how many light curves needs to be generated to train a machine. 
-The solid line shows the mean accuracy of five classifiers. The shade area shows the standard deviation of the classifiers. The classifiers are trained with 5 fold cross validation using the training dataset.  We conclude we need more than 10,000 light curves for training.
+The solid line shows the mean accuracy of five classifiers. The shade area shows the standard deviation of the classifiers. The classifiers are trained with 5 fold cross validation using the training dataset.  We conclude we need more than 100,000 light curves for training.
   }%
   \label{fig:size_convergence_test}
 \end{figure}
