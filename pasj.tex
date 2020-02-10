@@ -711,7 +711,7 @@ the model parameters (green boxes in Figure \ref{fig:dnnmodel}) are optimized by
 %
 %
 
-\subsubsection{Regression of Redshift Value}
+\subsubsection{Estimating Redshift}
 
 % 観測した明るさからその天体のredshiftを推定した
 % DNNの出力がスカラーになって最後のsoftmat layerがないことを除けば、図2と同じ構造のモデルを利用した。
@@ -719,27 +719,31 @@ the model parameters (green boxes in Figure \ref{fig:dnnmodel}) are optimized by
 % モデルのハイパーパラメータについてはクラス分類の時と同様に行った。
 % 表?の値のデカルト積で作られる要素をグリッドサーチ、続いて表?の範囲の中をTPEアルゴリズムで探索を行った。
 % ハイパーパラメータの最適化は$R^2$決定係数を最大にするようにした。
-There exists cases that we may not have a photometric redshift or photometric redshift is not accurate.
+There exists cases that we may not have a photometric redshift (hostless supernvoae)
+or photometric redshift is not accurate.
 For these cases, we can estimate the redshift $z$ of a supernova from the observed brightness.
 %We cannot use absolute magnitude to estimate the redshift value because redshift value is required to calculate absolute magnitude.
 %Therefore, we used magnitude instead of absolute magnitude as the input of the DNN.
 
-We use a model with the same structure as in Figure \ref{fig:dnn_model} except that the DNN output is a scalar,
- and place no final softmax layer for redshift estimation.
+We use a model with the same structure as in Figure \ref{fig:dnn_model} except that the DNN output 
+is a scalar, and place no final softmax layer for redshift estimation.
 The objective function to optimize is the squared error between the ground truth $z$ and the output value $\hat{y}$.
-We measured the accuracy of the model with the coefficient of determination $R^2$, that is,
+We measure the accuracy of the model with the coefficient of determination $R^2$, that is,
 \begin{eqnarray*}
     R^2 = 1 - \frac{\sum_n \left| z_n - \hat{y}_n \right|^2}{\sum_n \left| z_n - \bar{z} \right|^2}, 
 \end{eqnarray*}
-where $z_n$ is the redshift value of n-th sample, $\hat{y}_n$ is the output of n-th sample, and $\bar{z}$ is the mean redshift of the dataset.
+where $z_n$ is the redshift value of $n$-th sample, $\hat{y}_n$ is the output of $n$-th sample, 
+and $\bar{z}$ is the mean redshift of the dataset.
 % $\mathrm{SE} \left(z, y\right) = \frac{1}{2} \left| z - y \right|^2 $
-We performed hyperparameter search in the model as in the case of classification.
+We perform the same hyperparameter search in the model as in $\S$ \ref{hyperparametersearch} 
+including the data augmentation.
 %The element created by the Cartesian product of the values in Table \ref{tb:hp_grid_redshift} was searched by grid search, and then the range in Table \ref{tb:hp_search_redshift} was searched by the TPE algorithm.
-The search values, ranges and candidates are surmalized in Table \ref{tb:hp_redshift}.
+%The search values, ranges and candidates are surmalized in Table \ref{tb:hp_redshift}.
 % 学習時にfluxにノイズを加えるdata augmentationを行った。一方で、クラス分類の場合とは異なりmixupは行っていない。
-We performed data augmentation that adds noise to the flux in training time.
-On the other hand, unlike the case of classification, no mixup is performed.
+%We performed data augmentation that adds noise to the flux in training time.
+%On the other hand, unlike the case of classification, no mixup is performed.
 
+\begin{comment}
 \begin{table}[ht]
   \tbl{Settings of hyper parameter search in redshift estimation}{
      \begin{tabular}{lcc} 
@@ -755,7 +759,6 @@ On the other hand, unlike the case of classification, no mixup is performed.
   }\label{tb:hp_redshift}
 \end{table}
 
-\begin{comment}
 % ハイパーパラメータ探索の初期で探索する各ハイパーパラメータの候補
 \begin{table}[ht]
   \tbl{The settings of hyper parameter search}{
