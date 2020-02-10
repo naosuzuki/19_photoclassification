@@ -160,7 +160,7 @@ Third, we apply our well trained machine to the real observed data ($\S$\ref{sec
 \subsection{Simulated Data for Training}
 \label{sec:training}
 We are in need of simulating observed photometric data to train the machine.  
-For normal SN~Ia, we use SALT2 \citep{guy10a} model ({\it ver} 2.4) which requires 2 input parameters:
+For normal SN~Ia, we use SALT2 \citep{guy10b} model ({\it ver} 2.4) which requires 2 input parameters:
 c for color and x1 for stretch.
 We adopt the asymetric gaussian distribution of c, and x1 from \citet{mosher14a}, and generate
 light curves and simulate photometric data points based on the observation schedule. 
@@ -1128,9 +1128,11 @@ It represents that our classifier has a very high sensitivity to Ia supernova wh
 
 In addition, we describe the predicted classes of actual supernovae classified by the three-class classifier.
 Figure \ref{fig:h3_class_ratio} shows the predicted class ratio.
-Our classifier predicts 1812 supernova classes with a ratio of Ia : Ibc : II = 0.43 : 0.06 : 0.51.
-This faraction is between them in volume-limited and magnitude-limited samples in \citet{Li_2011}, which is close to that in volume-limited samples.
-However, it should be noted that this ratio is calculated including misclassificaion.
+Our machine classifies 1812 supernova classes with a ratio of Ia : Ibc : II = 0.43 : 0.06 : 0.51, which 
+is an integrated value throughout the redshift and includes incomplete sampling of faint supernovae.
+
+%This faraction is between them in volume-limited and magnitude-limited samples in \citet{Li_2011}, which is close to that in volume-limited samples.
+%However, it should be noted that this ratio is calculated including misclassificaion.
 %Table\  summarizes the classification results of all the actual supernova.
 %
 %Need to write that "ALL" accuracy is weighted
