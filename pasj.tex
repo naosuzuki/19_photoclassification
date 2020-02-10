@@ -34,7 +34,7 @@ Naoki Yoshida\altaffilmark{4,1,2},
 %\altaffiltext{}{Astronomical Society of Japan, c/o National Astoronomical Observatory of Japan, 2-21-1 Osawa, Mitaka, Tokyo 181-8588, Japan }
 \email{ichiro.takahashi@ipmu.jp}
 
-\KeyWords{key word${}_1$ --- key word${}_2$ --- \dots --- key word${}_n$}
+\KeyWords{supernovae: general --- methods: statistical --- surveys}
 
 \maketitle
 %
@@ -43,7 +43,7 @@ Naoki Yoshida\altaffilmark{4,1,2},
 The progress of observation technology in recent years has brought the rapid increase in the number of discovered supernovae. More than 1,800 supernova candidates were discovered in transient survey with the Subaru Hyper Suprime-Cam (HSC). In order to select follow-up candidates efficiently among supernovae discovered in the HSC survey, we study type classification of supernovae using machine learning. Our classifier using Deep Neural Network enables classification in a short time after observation by learning with simulated data before observation and directly inputting photometric data. We adopt the published templates of “The Photometric LSST Astronomical Time-Series Classification Challenge (PLAsTiCC)” to simulate the learning data. As a result of classifier verification using PLAsTiCC dataset, the classification performances in binary classification and three-class classification are measured as area under the curve (AUC) of 0.996 and accuracy of 95.3\% respectively. In addition, when we apply this classifier to the observation data of HSC transient survey conducted from 2016 to 2017, the AUC score in binary classification is 0.921. We also investigated the classification results while increasing the number of input dimensions only with the complete light curves in the HSC survey, and found out the followings: 1) The performance of type classification improves as input increases, and accuracy exceeds 0.8 at 20 photometric points. 2) When considered based on the supernova phase, our classifier can classify with 85\% accuracy by inputting two weeks of data from the first detection. These results and findings show that our classifier has sufficient classification performance to select the follow-up targets even in the actual survey.
 \end{abstract}
 
-\section{Introduction : Suzuki}
+\section{Introduction}
 Time domain science becomes one of the major fields of astronomical study today.  The discovery of accelerating universe \citep{perlmutter99a,riess98a} evoked a series of large supernova surveys in the last decade \citep{astier06b,wood-vasey07a,kessler09a,law09a}.  
 These surveys revealed that there exist a whole new family of transients and the search for unknown populations is of great interest today \citep{howell06a,phillips07a,quimby07b}. 
 For the precision cosmology, it is very important to keep the purity of Type Ia supernova (SNIa) while having uniform sampling from bright to faint SNeIa.  Spectroscopic follow-up has been essential to distinguish faint SNIa from SNIbc which has a similar light curve behavior \citep{scolnic14a}.   A large amount of precious telescope time is dedicated to the follow-up programs, and we would like to make an efficient use of those telescopes.
@@ -82,7 +82,7 @@ Our unique attempt is to make use of the observed data as 'raw' as possible so t
 %\item PLAsTiCC
 %\end{itemize}
 %
-\section{Methods : Suzuki}
+\section{Methods}
 \subsection{Tasks in HSC survey}
 \label{sec:tasks}
 Subaru Hyper-Suprime Cam (HSC) Transient survey is a part of Subaru Strategic Project (SSP) which is a five-year program with 300 dark nights \citep{aihara18a,miyazaki18a}.
@@ -146,7 +146,7 @@ We choose three classes for simplicity and in fact, the majority of supernovae g
 %
 %By simulating the light curve data and training the machine in advance before observation, type classification of supernova can be performed in a short time after observation.
 %
-\section{Data : Suzuki}
+\section{Data}
 In this section, we describe three kinds of data we use.
 First, we need a simulated photometric data to train the machine ($\S$ \ref{sec:training}).
 Second, we want to have a realistic data set which we know the answer so that we can assess the
@@ -1364,7 +1364,7 @@ This means that our classifier accomplishes the task described in Section \ref{s
   \end{center}
   \caption{%
   Relationship between the number of inputs to the classifier and classification performance in binary classification for HSC datasets. 
-  The horizontal axis is the elapsed days of HSC survey, and the vertical dot line shows the scale of input photometric point number. 
+  The horizontal axis is the elapsed days of the HSC survey, and the vertical dot line shows the scale of input photometric point number. 
   The color of each mark in accuracy indicates the band of the added photometric point.
   }%
   \label{fig:n_observations}
