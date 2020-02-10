@@ -150,12 +150,12 @@ We choose three classes for simplicity and in fact, the majority of supernovae g
 \section{Data}
 In this section, we describe three kinds of data we use.
 First, we need a simulated photometric data to train the machine ($\S$ \ref{sec:training}).
-Second, we want to have a realistic data set which we know the answer so that we can assess the
+Second, we want to have a realistic dataset which we know the answer so that we can assess the
 accuracy of the machine ($\S$\ref{sec:validation}).  We would not know how good/bad the machine 
 is without labeled answer.
 Third, we apply our well trained machine to the real observed data ($\S$\ref{sec:hscdata}).
 
-%For the assessment of the accuracy of the machine, we need a data set which we know the answer.
+%For the assessment of the accuracy of the machine, we need a dataset which we know the answer.
 %As is described in $\S$X, we adopt a simulated photometric data which was generated for 
 
 \subsection{Simulated Data for Training}
@@ -198,14 +198,14 @@ Examples of simulated photometric data is shown in Figure \ref{fig:simLCsamples}
 
 \subsection{Simulated Data for ML Validation}
 \label{sec:validation}
-To evaluate our machine, we need a data set which is labed by true identities.   In nature, we should 
+To evaluate our machine, we need a dataset which is labed by true identities.   In nature, we should 
 expect to have a variety of transients besides SN~Ia, SN~Ibc, and SN~II.
 LSST team has compiled a series of variables including AGNs, variable stars, microlensing events,
 and class 99 whose identity was not revealed at the time of competition \citep{malz19a,kessler19a}.   
-We take their test data set as a pseudo-real observed data and assess our accuracy of classification.
+We take their test dataset as a pseudo-real observed data and assess our accuracy of classification.
 The LSST DDF simulated data is the most similar to HSC survey data, and we use their 2,297 objects 
-from Kaggle Competition \citep{malz19a} data set to test our machine.
-%Kaggle competition provided us with the training data set, but the number of objects are too 
+from Kaggle Competition \citep{malz19a} dataset to test our machine.
+%Kaggle competition provided us with the training dataset, but the number of objects are too 
 
 \subsection{Observed Data from Subaru/HSC Transient Survey}
 \label{sec:hscdata}
@@ -261,7 +261,7 @@ For DEEP field, the depth is 0.6 mag shallower.
 % 厳密な絶対等級の計算は複雑な計算が要求されるので、簡単のために以下の式を用いた。
 % また、等級の計算は観測したfluxが負の値の場合もあるので、Luptitude(Lupton magnitude)を用いて対応した。
 %We found that in experiments using simulation data, it is better to be input x follow as,
-Based on our pre-experiment with simulated data set, we found that the machines performs best if we 
+Based on our pre-experiment with simulated dataset, we found that the machines performs best if we 
 chose a combination of normalized flux ($f$) and pseudo-absolute magnitude ($M$):
 \begin{equation}
     x = \left( M_1^\mathrm{abs}, \ldots, M_P^\mathrm{abs}, f_{1}^{\mathrm{scale}}, \ldots, f_{P}^{\mathrm{scale}} \right)^T,
@@ -276,8 +276,8 @@ from its host galaxy.
 \begin{eqnarray}
     M_i^\mathrm{abs} = m_i - \mathrm{DM}\left(z\right),
 \end{eqnarray}
-We can justify this operation because we treat the training set and the observed data set in the same way.
-It there existed K-correction offset, both data set would experience in the same way.
+We can justify this operation because we treat the training set and the observed dataset in the same way.
+It there existed K-correction offset, both dataset would experience in the same way.
 %where $m_i$ is i-th magnitude and $\mathrm{DM}\left(z\right)$ is distance modulus of the redshift value $z$.
 In addition, since the observed flux could go to a negative value due to statistical fluctuation, 
 we adopt hyperbolic sine to imitate the magnitude system we use \citep{lupton99a}.  
@@ -430,10 +430,10 @@ on the grid search result.
 % 最適化によって得られたハイパーパラメータを用いてモデルの最適化を行い、そのモデルの性能の評価を行った。
 %% note: 参考文献にはOputunaのソースコード https://github.com/pfnet/optunaではなく、元論文の方を指定した
 % We optimized the hyperparameters of the DNN model using the library, optuna(\cite{optuna}).
-As a usual strategy, we divide the data set into a training data and a validation data set.
+As a usual strategy, we divide the dataset into a training data and a validation dataset.
 We use the training data for optimizing DNN, and use the validation data for measuring the accuracy.
-In optimizing the hyperparameters, we evaluated the hyperparameters with validation data set sot
-that the accuracy of validation data set becomes maximum.
+In optimizing the hyperparameters, we evaluated the hyperparameters with validation dataset sot
+that the accuracy of validation dataset becomes maximum.
 %We trained the DNN model using the hyper parameters obtained by optimization, and evaluated the performance of the DNN model.
 
 %\section{Results (TBD Experiment/Execution)}
@@ -808,7 +808,7 @@ Prior to validation of PLAsTiCC data, we evaluated classification performance fo
 The simulated light curve has a class ratio of Ia : Ibc : II = 0.60 : 0.06 : 0.34, and the positions of these peaks are randomly shifted between 450 days.
 Table\ \ref{tab:p_validation} shows the AUC of ROC curve and Precision recall curve in two-class classification, and accuracy in three-class classification.
 The classifier given absolute magnitudes and normalized flux performed best in both two-class and three-class in the simulated data classification.
-The accuracy in the three-class classification is 98.5\%.
+The best accuracy in the three-class classification is 98.5\%.
 From these results, we confirmed that the classifier can classify simlated data with high accuracy.
 %There is almost no difference in performance between the two input type models of magnitude and absolute magnitude.
 %It may be necessary to summarize the ratio of each class
@@ -851,7 +851,7 @@ Whereas we extracted and classified a part of the simulated data for learning in
 We used simullated data for learning, and compared the classification result for PLAsTiCC data with true label.
 Tables \ref{tab:p_test} show the AUC in two-class classification and Accuracy in three-class classification in PLAsTiCC data, respectively.
 As with the case of the simulated data, the classifier with absolute magnitudes and normalized flux provides the best classification results for PLAsTiCC data.
-The AUC for the ROC curve and Precision recal curve are 0.996 and 0.995 respectively.
+The AUC for the ROC curve and precision recal curve are 0.996 and 0.995 respectively.
 %, and these curves in this model are shown in figure\ \ref{fig:plasticc_2class_ROC} and figure\ \ref{fig:plasticc_2class_PreRec}.
 Figure\ \ref{fig:plasticc_3class_CM} shows the confusion matrix in the three-class classification, and the total accuracy is calculated as 95\%.
 Although the classification performance for Ibc is not high, since the number of them is small, the effect on total accuracy is relatively small.
@@ -1278,7 +1278,7 @@ Furthermore, this classifier classifies 15 classes including variable objects ot
 we used 2,297 PLASTiCC supernova predictions, classified by both classifier, for comparison.
 Since the number of classified classes is different between our classifier and the best classifier, we divide the classification results into Ia and the other, and compare as binary classification.
 Figure\ \ref{fig:comp_plasticc_1st} shows the confusion matrix of each classifier.
-While our classifier and PLATiTiCC 1st classifier cannot be strictly compared because of the different training data sets and number of classification classes,
+While our classifier and PLATiTiCC 1st classifier cannot be strictly compared because of the different training datasets and number of classification classes,
 only for the compared supernovae, our classifier is about 6\% better in total accuracy than the PLAsTiCC 1st classifier and 6\% better in Ia accuracy.
 Considering that our classifier only uses the middle one year data out of the original three year data as input, our classifier classifies PLAsTiCC data with better accuracy with less data than that of PLAsTiCC 1st.
 However, since our method fixes the observation schedule to input, it is not possible to apply to all PLAsTiCC data with one classifier.
@@ -1315,7 +1315,7 @@ For PLAsTiCC dataset, misclassified 107 supernovae have the following characteri
 \item More than half of the remaining events misclassify Ibc as Ia, II
 \end{itemize}
 Figure\ \ref{fig:misclass_rate_3class} shows the misclassification rate against redshift for the PLAsTiCC dataset.
-In the three-class classification of the PLAsTiCC data set, we found that the accuracy of Ibc was lower than that of other classes, and that the accuracy dropped significantly in the vicinity of redshift 1.0, and in addition, the accuracy also decreased for nearby Ibc supernovae.
+In the three-class classification of the PLAsTiCC dataset, we found that the accuracy of Ibc was lower than that of other classes, and that the accuracy dropped significantly in the vicinity of redshift 1.0, and in addition, the accuracy also decreased for nearby Ibc supernovae.
 While some misclassified supernovae are so dark and indeterminate that they are difficult to classify even with traditional methods,There are also bright supernovae that are completely misclassified.
 
 In the binary classification of 1256 labeled HSC supernovae, 190 of them are misclassified.
@@ -1334,7 +1334,7 @@ In addition, there are some cases where SALT2 fitting does not work well during 
      \includegraphics[width=\columnwidth]{figures/misclass_rate_plastic_3class.eps}
   \end{center}
   \caption{%
-  Misclassification rate against redshift in the three-class classification of the PLAsTiCC data set.
+  Misclassification rate against redshift in the three-class classification of the PLAsTiCC dataset.
   }%
   \label{fig:misclass_rate_3class}
 \end{figure}
