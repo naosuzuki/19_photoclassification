@@ -1291,7 +1291,7 @@ Figure\ \ref{fig:comp_plasticc_1st} shows the confusion matrix of each classifie
 While our classifier and PLATiTiCC 1st classifier cannot be strictly compared because of the different training datasets and number of classification classes,
 only for the compared supernovae, our classifier is about 6\% better in total accuracy than the PLAsTiCC 1st classifier and 6\% better in Ia accuracy.
 Considering that our classifier only uses the middle one year data out of the original three year data as input, our classifier classifies PLAsTiCC data with better accuracy with less data than that of PLAsTiCC 1st.
-However, since our method fixes the observation schedule to input, it is not possible to apply to all PLAsTiCC data with one classifier.
+However, since our method fixes the observation schedule to input, it is impossible to apply to all PLAsTiCC data with one classifier.
 %How many patterns
 Our method is not useful for surveys that sweep a wide area like LSST survey, but for surveys that keep observing at the same field of view like HSC transient survey.
 %
@@ -1326,7 +1326,7 @@ For PLAsTiCC dataset, misclassified 107 supernovae have the following characteri
 \end{itemize}
 Figure\ \ref{fig:misclass_rate_3class} shows the misclassification rate against redshift for the PLAsTiCC dataset.
 In the three-class classification of the PLAsTiCC dataset, we found that the accuracy of Ibc was lower than that of other classes, and that the accuracy dropped significantly in the vicinity of redshift 1.0, and in addition, the accuracy also decreased for nearby Ibc supernovae.
-While some misclassified supernovae are so dark and indeterminate that they are difficult to classify even with traditional methods,There are also bright supernovae that are completely misclassified.
+While some misclassified supernovae are so dark and indeterminate that they are difficult to classify even with traditional methods, there are also bright supernovae that are completely misclassified.
 
 In the binary classification of 1256 labeled HSC supernovae, 190 of them are misclassified.
 The misclassification rate for each case is different, and tends to increase as the number of input dimensions decreases.
@@ -1353,7 +1353,7 @@ In addition, there are some cases where SALT2 fitting does not work well during 
 \subsection{Performance depending on input configuration}
 %
 When using our classification method, the number of dimension input to the classifier, the number of photometric data points, increases as the survey progresses in the actual survey.
-Therefore, we discuss about the transition of performance against the number of inputs.
+Therefore, we discuss about the transition of performance against the number of input.
 We classified the HSC dataset by increasing the number of input dimensions one by one, and investigated the relationship between the number of input photometric data pionts and the classification performance.
 Binary classifiers are used for classification, and evaluation is performed using accuracy calculated from the confusion matrix.
 Figure\ \ref{fig:n_observations} shows the transition of classification performance along with the number of inputs.
@@ -1363,7 +1363,7 @@ The partial decrease in accuracy is thought to be due to the new supernova found
 We also investigated the classification performance during each supernova phase by regrouping all events according to the length of period since the first detection.
 %examples of probability
 Figure\ \ref{fig:lcps} illustrates the light curves and Ia probability transitions since the first detection of three HSC supernovae.
-We define "first detection" as the first day when the supernova is detected with 5sigma confidence in flux, and flagged as a real object by the real-bogus classifier using convolutional neural network \citep{yasuda19a}.
+We define "first detection" as the first day when the supernova is detected with 5$\sigma$ confidence in flux, and flagged as a real object by the real-bogus classifier using convolutional neural network \citep{yasuda19a}.
 The probability is updated at each new epoch.
 While there are events where the probability increases as the supernova phase progresses, there are also some events where the probabilities fluctuate around 0.5 even as the observation progresses and cannot be clearly classified.
 Figure\ \ref{fig:n_observations_SNphase} shows the relationship between the number of days from first detection to classification, the accuracy of the classification, and the cumulative number of supernovae classified as Ia with high probability.
@@ -1373,9 +1373,9 @@ As mentioned in section \ref{sec:misclass}, the classification performance is lo
 %Since the observation interval in the HSC survey is not constant, the number of inputs is different even for supernovae with the same detected period.
 %Due to this fact, there is a variation in the average input dimension number of samples in each phase, which causes a fluctuation in accuracy.
 However, due to events whose probabilities fluctuate with the progress of the supernova phase illustrated in Figure \ref{fig:lcps}, there are some cases where the accuracy slightly decreases even if the period until classification becomes long.
-In addition, considering the cumulative number of supernovae classified as Ia with high probability from 6 months data, it is estimated that our classifier can classify at least four or more Ia supernovae candidate to follow-up in one month observation of the Ultra-deep area.
+In addition, considering the cumulative number of supernovae classified as Ia with high probability from six months data, it is estimated that our classifier can classify at least four or more Ia supernovae candidate to follow-up in one month observation of the Ultra-deep area.
 
-Lastly, we discuss the transition of the Ia probability output by the classifier along the supernova phase.
+Lastly, we discuss the transition of the Ia probability output by the classifier along supernova phase.
 Each time the supernova photometric data input to the classifier increases, Ia probability, the output of the classifier, is updated.
 For each of 100 supernovae labeled Ia and non-Ia with SALT2 fitting, we extracted its Ia probability for each duration from the various classification results, and plotted its transition as Figure\ \ref{fig:n_observations_SNphase}.
 Although the Ia probability fluctuates greatly in the earliest phase, it begins to divide in about two weeks, and it can be clearly separated in one month.
@@ -1425,7 +1425,7 @@ This means that our classifier accomplishes the task described in Section \ref{s
   \end{center}
   \caption{%
   Classification accuracy and cumulative number of type Ia supernovae classified with high probability against supernova phase.
-  The orange line indicates the number of supernovae with Ia probability $>$ 95\%, and green line are that for distant supernovae at z $>$ 1. %Average number of observation points with red lines.
+  The orange line indicates the cumulative number of supernovae with Ia probability $>$ 95\%, and green line are that for distant supernovae at z $>$ 1. %Average number of observation points with red lines.
   }%
   \label{fig:n_observations_SNphase}
 \end{figure}
@@ -1465,7 +1465,7 @@ SALT2 fitting is also not good at fitting incomplete events due to its specifica
 These facts suggests the existence of uncertainty in labeling with conventional classification methods.
 Another cause of uncertainty in labeling is due to the uncertainty of redshift information used in SALT2 fitting.
 In at least nine of the other misclassified events that have no other misclassification factors, the fitting determined color parameters are far outside the criteria for Ia, and the wrong redshift is probably used for fitting.
-In fact, as shown in the right panel of Figure 9, the performance for light curve verified supernovae, except for incomplete events and whose spec-z is known, is better than for all events classified.
+In fact, as shown in the right panel of Figure \ref{fig:h2_test_CM}, the performance for light curve verified supernovae, except for incomplete events and whose spec-z is known, is better than for all classified events.
 
 Another cause of the large difference in the results of the validation and test set is the inability to completely simulate the observed data.
 Outlier values and systematic flux offsets, which are considered to be one of the causes of misclassification described in Section \ref{sec:misclass}, are found only in observed data.
