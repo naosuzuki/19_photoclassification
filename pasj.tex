@@ -624,28 +624,30 @@ We introduce data augmentation to prevent overfitting at the time of training.
 % data augmentationによって見かけのデータ数を増やすことで、DNNが訓練データを暗記してしまうのを防ぐ効果がある。
 By increasing the number of input data by augmentation, we prevent DNN from memorizing all of the training data set.
 % 学習データに2種類のdata augmentationを適用した。
-We apply two ways of data augmentation to the learning data.
+We apply two ways of data augmentation to the training data set.
 % 一つはfluxにガウス分布からサンプリングしたノイズを加えた。
-One is that the noise sampled from Gaussian distribution is added to flux
+One is adding gaussian noise (based on the expected observed uncertainty) to the simulated flux.
 % もう一つはmixup (\cite{mixup})を行った。
 The other is mixup (\cite{mixup}).
 
 % ノイズの追加は、以下のように、eq.\ref{eq:scaled_flux}, eq.\ref{eq:abs_mag}において$\hat{f}_i$を$\hat{f}_i + \epsilon_i$で置き換えた。ここで、$\epsion_i \sim \mathcal{N} \left(0, e_i\right)$、$\mathcal{N}\left(\bullet, \bullet\right)$は標準正規分布、$e_i$は$\hat{f}_i$に対応するflux eroorである。
-To add noise to flux, as follows, we replaced $f_i$ with $f_i + \epsilon_i$ in eq.\ref{eq:scaled_flux} and eq.\ref{eq:mag},
-where $\epsilon_i$ is a random noise drawn from the Gaussian distribution with zero mean and $e_i^2$ variance, and $e_i$ is the flux error corresponding to $f_i$.
-Mixup generates new virtual training examples as follows:
+%To add noise to flux, as follows, we replaced $f_i$ with $f_i + \epsilon_i$ in eq.\ref{eq:scaled_flux} and eq.\ref{eq:mag},
+%where $\epsilon_i$ is a random noise drawn from the Gaussian distribution with zero mean and $e_i^2$ variance, and $e_i$ is the flux error corresponding to $f_i$.
+Mixup generates a new virtual training data set as follows:
 \begin{eqnarray*}
     \tilde{x} &=& \lambda x_s + \left( 1-\lambda \right) x_t, \\
     \tilde{y} &=& \lambda y_s + \left( 1-\lambda \right) y_t,
 \end{eqnarray*}
-where $\left(x_s, y_s\right)$ and $\left(x_t, y_t\right)$ are samples drawn at random from the training dataset, $x$ is input vector, $y$ is one-hot label vector, and a mixing ratio $\lambda \in \left[0, 1\right]$ is drawn from a random distribution which is low density around 0 and 1 and higher density around 0.5. 
-The generated samples are suitable for DNN to learn the classification boundaries.
+where $\left(x_s, y_s\right)$ and $\left(x_t, y_t\right)$ are samples drawn at random from the training dataset, $x$ is input vector, $y$ is one-hot label vector, 
+and a mixing ratio $\lambda \in \left[0, 1\right]$ is drawn from a random distribution which is low density around 0 and 1 and higher density around 0.5. 
+The generated data sets are suitable for DNN to learn the classification boundaries.
 
 % 前述のとおり、モデルのハイパーパラメータは探索を行い決定した。
-As described above, the hyperparameters of the model were determined by searching.
+As described above, the hyperparameters (red boxes in Figure \ref{fig:dnnmodel}) of the model are optimized by maximizing the accuracy, while 
+the model parameters (green boxes in Figure \ref{fig:dnnmodel}) are optimized by minimizing cross-entropy error.
 % グリッドサーチの設定は表1の通りで、TPEアルゴリズムでの探索の設定は表2のとおりである。
 %Table\ref{tb:hp_grid} shows the grid search settings, and Table\ref{tb:hp_search} shows the search settings for the TPE algorithm.
-Table\ref{tb:hp} shows the grid search settings and the search settings for the TPE algorithm.
+%Table\ref{tb:hp} shows the grid search settings and the search settings for the TPE algorithm.
 % われわれはハイパーパラメータ探索によってクラス分類に最適なDNNの大きさを決定した。
 % モデルの良さを測る尺度には学習に用いなかったバリデーションデータの精度とした。
 % われわれはハイパーパラメータ探索の第一段階として表?の値のデカルト積で作られる各要素についてグリッド探索を行った。
