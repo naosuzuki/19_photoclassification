@@ -473,7 +473,7 @@ The solid line shows the mean accuracy of five classifiers. The shade area shows
   \end{center}
   \caption{%
   We iterate hyperparameter search for 100 times where it converges to its maximum performance in 
-terms of accuracy.   What is shown is the case of a binary classification wit case=0.
+terms of accuracy.   What is shown is the case of a binary classification.
   }%
   \label{fig:hp_test}
 \end{figure}
@@ -494,7 +494,7 @@ terms of accuracy.   What is shown is the case of a binary classification wit ca
 \end{figure}
 
 \begin{table*}[t]
-  \tbl{Optimized hyperparameters for Classification}{
+  \tbl{Optimized hyperparameters for classification}{
       \begin{tabular}{lcccllllllllll}
 \hline
 %      & $M$        & $m$        & $f$        & the number of blocks T & hidden size D & drop rate & bn & type    \\ \hline
@@ -800,7 +800,7 @@ WFD data is not suitable for classification by our proposed method, because it c
 In contrast, DDF data is suitable for the verification of our method because it has photometric data that simulates the observation of specific areas with the same cadence as the HSC survey.
 Therefore, we validated the classifier using DDF data which have the fixed observation schedule for each object.
 A total of 2,297 events extracted from PLAsTiCC DDF data were used for the test set.
-These are three types of supernovae, Ia, Ibc, and II, which are simulated to occur in the COSMOS field \citep{scoville2007cosmos}, the target region of HSC survey.
+These are three types of supernovae, Ia, Ibc, and II, which are simulated to occur in the COSMOS field \citep{scoville2007cosmos}, the target region of the HSC survey.
 For these events, we extracted only the light curves for about one year during which supernovae occur from the original three-year data and input them into the classifier.
 %
 We prepared multiple classifiers with different inputs for comparison.
@@ -816,11 +816,11 @@ We adopt the area under the curve (AUC) of receiver operating characteristic (RO
 %\end{itemize}
 %
 Prior to validation of PLAsTiCC data, we evaluated classification performance for simulated lightcurves by performing cross-validation on 370,345 events simulated using PLAsTiCC template.
-The simulated light curve has a class ratio of Ia : Ibc : II = 0.60 : 0.06 : 0.34, and the positions of these peaks are randomly shifted between 450 days.
-Table\ \ref{tab:p_validation} shows the AUC of ROC curve and Precision recall curve in two-class classification, and accuracy in three-class classification.
+The simulated light curve has a class ratio of SNIa:Ibc:II=0.60: 0.06:0.34, and the positions of these peaks are randomly shifted between 450 days.
+Table\ \ref{tab:p_validation} shows the AUC of ROC curve and precision-recall curve in two-class classification, and accuracy in three-class classification.
 The classifier given absolute magnitudes and normalized flux performed best in both two-class and three-class in the simulated data classification.
 The best accuracy in the three-class classification is 98.5\%.
-From these results, we confirmed that the classifier can classify simlated data with high accuracy.
+From these results, we confirmed that the classifier can classify simulated data with high accuracy.
 %There is almost no difference in performance between the two input type models of magnitude and absolute magnitude.
 %It may be necessary to summarize the ratio of each class
 %
@@ -860,11 +860,11 @@ $M$ & $m$ & $f$ &  ROC &  Pre.-Rec. &\\
 %\end{itemize}
 Whereas we extracted and classified a part of the simulated data for learning in the previous subsection, here we verify the classification performance for PLAsTiCC data.
 We used simullated data for learning, and compared the classification result for PLAsTiCC data with true label.
-Tables \ref{tab:p_test} show the AUC in two-class classification and Accuracy in three-class classification in PLAsTiCC data, respectively.
+Tables \ref{tab:p_test} show the AUC in two-class classification and accuracy in three-class classification in PLAsTiCC data, respectively.
 As with the case of the simulated data, the classifier with absolute magnitudes and normalized flux provides the best classification results for PLAsTiCC data.
-The AUC for the ROC curve and precision recal curve are 0.996 and 0.995 respectively.
+The AUC for the ROC curve and precision-recall curve are 0.996 and 0.995 respectively.
 %, and these curves in this model are shown in figure\ \ref{fig:plasticc_2class_ROC} and figure\ \ref{fig:plasticc_2class_PreRec}.
-Figure\ \ref{fig:plasticc_3class_CM} shows the confusion matrix in the three-class classification, and the total accuracy is calculated as 95\%.
+Figure\ \ref{fig:plasticc_3class_CM} shows the confusion matrix in the three-class classification, and the total accuracy is calculated as 95.3\%.
 Although the classification performance for Ibc is not high, since the number of them is small, the effect on total accuracy is relatively small.
 %
 %
@@ -915,7 +915,7 @@ The combination of these classifiers enables the classification of 1812 supernov
 The remaining 12 supernovae are excluded in this classification because they have many missing data.
 For example, the number of supernovae in Case 0 using photometric data of all observation epochs in the survey is 705.
 They are detected in the Ultra-deep area, and have 42 epochs of photometric data in four bands of g, r, i, z excluding Y band.
-Because part of the y-band photometric data has residuals due to improper background subtraction influenced by scattered light,
+Because part of the Y-band photometric data has residuals due to improper background subtraction influenced by scattered light,
 %need reference
 we exclude the Y band data, considering the impact on classification performance.
 The number of epochs and the schedule for each filer are summarized in Table\ \ref{tab:HSCsurvey_schedule}.
@@ -963,7 +963,7 @@ For those without spec-z information, the photometric redshifts (photo-z) are ad
 %training set
 We applied both two-class and three-class classification tasks to HSC data, as with PLAsTiCC data.
 The classifiers were trained using 514,954 simulated light curve data created in the same way as the validation with PLAsTiCC data.
-Their class ratio is Ia: Ibc: II = 0.59 : 0.07 : 0.34, and the shift range of the peaks is the same as that of PLAsTiCC data, 450 days.
+Their class ratio is SNIa:Ibc:II=0.59:0.07:0.34, and the shift range of the peaks is the same as that of PLAsTiCC data, 450 days.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Binary classification}
@@ -973,14 +973,14 @@ In binary classification, we prepared four versions of classifiers with differen
 %The performance for each input of binary classification are summarized in Table\ \ref{tab:h2_validation},\ref{tab:h2_test_gold} and \ref{tab:h2_test_all}.
 The performance for each input of binary classification are summarized in Table\ \ref{tab:h2_AUC}.
 For the validation dataset, the higher the number of input dimensions, the better the results, and any classifier can classify them with very high AUCs.
-The AUCs for all classified events are 0.993 and 0.995 for the ROC curve and precision-recall curve, respectively.
+The best AUCs for all classified events are 0.993 and 0.995 for the ROC curve and precision-recall curve, respectively.
 %Figure\ \ref{fig:h2_validation} show ROC curves and precision-recall curves in the best performing classifier for the validation set.
 For the test set, the classification performance is verified using 1332 supernovae (1256 with redshift) labeled by the SALT2 light curve fitter \citep{guy2007,Guy_2010}, one of the conventional classification methods.
-In addition, we extracted 441 "light curve verified supernovae" that have redshift estimated from the spectrum and have photometric information before and after peak, and also verified their classification results.
-Figures\ \ref{fig:h2_test_all} and \ref{fig:h2_test_gold} show the AUCs of the best classifier for all labeled supernovae and light curve verified supernovae respectively.
+In addition, we extracted 441 "light curve verified supernovae" that have spec-z and photometric information before and after peak, and also verified their classification results.
+Figures\ \ref{fig:h2_test_all} and \ref{fig:h2_test_gold} show the AUCs of the best classifier for all labeled HSC supernovae and light curve verified HSC supernovae respectively.
 The confusion matrices for each case are shown in Figure\ \ref{fig:h2_test_CM}.
 %need reference
-The best performing classifier shows the same classification results as the conventional method with an accuracy of 82\% for all labeled supernovae and 91\% for the light curve verified supernovae.
+The best performing classifier shows the same classification results as the conventional method with an accuracy of 84.9\% for all labeled supernovae and 91.4\% for the light curve verified supernovae.
 The final classification result of the HSC supernovae is the combination of outputs from the classifier using the absolute magnitude for those with redshift information, and from that using the magnitude for those without redshift information.
 The numbers of supernovae with Ia probabilities above 0.5, 0.7 and 0.9 are 530, 386 and 170 out of 1332, respectively.
 %The numbers of supernovae with Ia probabilities above 0.5, 0.7 and 0.9 are 613, 437 and 186 out of 1540, respectively. (in old ver.)
@@ -1010,7 +1010,7 @@ Test& \checkmark &            & \checkmark &       0.972 &       0.973 &       0
 &           & \checkmark &            &       0.926 &       0.887 &       0.868 &       0.822 &       0.611 &        0.894 &          0.757 &          0.775 &          0.775 &          0.693 &          0.374 &           0.751 \\
 \hline
 Test& \checkmark &            & \checkmark &       0.938 &       0.921 &       0.906 &       0.896 &       0.865 &        0.921 &          0.842 &          0.845 &          0.809 &          0.849 &          0.672 &           0.830 \\
-(All)& \checkmark &            &            &       0.941 &       0.921 &       0.893 &       0.892 &       0.879 &        0.918 &          0.861 &          0.829 &          0.757 &          0.870 &          0.729 &           0.810 \\
+(All labeled)& \checkmark &            &            &       0.941 &       0.921 &       0.893 &       0.892 &       0.879 &        0.918 &          0.861 &          0.829 &          0.757 &          0.870 &          0.729 &           0.810 \\
 &           & \checkmark & \checkmark &       0.898 &       0.883 &       0.867 &       0.721 &       0.706 &        0.874 &          0.719 &          0.743 &          0.744 &          0.574 &          0.362 &           0.709 \\
 &           & \checkmark &            &       0.891 &       0.845 &       0.847 &       0.700 &       0.677 &        0.853 &          0.693 &          0.693 &          0.689 &          0.519 &          0.377 &           0.676 \\
 \hline
@@ -1061,7 +1061,7 @@ Test& \checkmark &            & \checkmark &       0.938 &       0.921 &       0
         \end{minipage}
     \end{tabular}
     \caption{%
-    ROC curves and precision Recall curves in two-class classification of test dataset(All labeled).
+    ROC curves and precision Recall curves in two-class classification of HSC spernovae (All labeled).
     }
     \label{fig:h2_test_all}
 \end{figure*}
@@ -1083,7 +1083,7 @@ Test& \checkmark &            & \checkmark &       0.938 &       0.921 &       0
         \end{minipage}
     \end{tabular}
     \caption{%
-  ROC curves and precision Recall curves in two-class classification of test dataset(Light curve verified).
+  ROC curves and precision Recall curves in two-class classification of HSC supernovae (Light curve verified).
 }%
     \label{fig:h2_test_gold}
 \end{figure*}
@@ -1153,14 +1153,13 @@ In this paper, we show the classification performance only for the validation da
 %
 % Classification performance of each model (3class, HSC, validation)
 The accuracy for each input in the three-class classification of the validation dataset are summarized in Table\ \ref{tab:h3_validation}.
-The best accuracy for the validation dataset is 0.940 in the three-class classification.
+The best accuracy for the validation dataset is 94.0\% in the three-class classification.
 The confusion matrix of the best classifier is shown in Fig.\ \ref{fig:h3_validation_CM}.
 It represents that our classifier has a very high sensitivity to Ia supernova while it is not good at classifying Ibc.
 
 In addition, we describe the predicted classes of actual supernovae classified by the three-class classifier.
 Figure \ref{fig:h3_class_ratio} shows the predicted class ratio.
-Our machine classifies 1812 supernova classes with a ratio of Ia : Ibc : II = 0.43 : 0.06 : 0.51, which 
-is an integrated value throughout the redshift and includes incomplete sampling of faint supernovae.
+Our machine classifies 1812 supernova classes with a ratio of SNIa:Ibc:II=0.43:0.06:0.51, which is an integrated value throughout the redshift and includes incomplete sampling of faint supernovae.
 
 %This faraction is between them in volume-limited and magnitude-limited samples in \citet{Li_2011}, which is close to that in volume-limited samples.
 %However, it should be noted that this ratio is calculated including misclassificaion.
@@ -1276,13 +1275,13 @@ Index &    ID &  Case &        z &  z\_src$^*$ &  \multicolumn{3}{p{10.0em}}{SAL
 %
 When comparing the classification results of the classifiers, it is difficult to make a direct comparison if there are differences in the method and number of training sets used, the number of input dimensions and output classes. 
 Here, we simply compare the recent supernova type classifier based on machine learning and our classifier with AUC of ROC in the binary classification of Ia or not.
-For comparison, we use the classification results of the simulated supernova light curves with redshift information from \citet{Lochner_2016}, \citet{charnock17a} and \citep{Muthukrishna_2019}.
+For comparison, we use the classification results of the simulated supernova light curves with redshift information from \citet{Lochner_2016}, \citet{charnock17a} and \citet{Muthukrishna_2019}.
 \citet{Lochner_2016} obtained AUC of 0.984 by classification with boosted decision trees (BDTs) using the SALT2 fitting parameters as input features.
 \citet{charnock17a} reported AUC of 0.986 for classification of SNPCC data using deep recurrent neural networks (RNN) with unidirectional long short-term memory (LSTM) units.
-\citep{Muthukrishna_2019} used deep RNN with Gated Recurrent Units (GRUs) to classify  ZTF light curves simulated with PLAsTiCC templates and archived an AUC of 0.99 40 days after the trigger.
+\citet{Muthukrishna_2019} used deep RNN with Gated Recurrent Units (GRUs) to classify  ZTF light curves simulated with PLAsTiCC templates and archived an AUC of 0.99 40 days after the trigger.
 The AUC of our classifier, 0.996, is is more than comparable to those of these recent classifiers in binary classification.
 
-Next, we compare the results of our classifiers and those ranked first place in the PLAsTiCC Kaggle competition.
+Next, we compare the results of our classifiers and those ranked first place in the PLAsTiCC Kaggle competition \citep{malz19a}.
 The best classifier in the PLAsTiCC competition \citep{Boone_2019} is based on Light-GBM and trained with features extracted from photometric data modeled by Gaussian process regression.
 The training set of this classifier includes a total of 591,410 light curves by augmenting 100 new light curves under different observation conditions and different redshifts for each light curve of the original PLAsTiCC training set.
 Furthermore, this classifier classifies 15 classes including variable objects other than supernova such as microlensing events and active galactic nuclei.
