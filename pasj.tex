@@ -210,7 +210,6 @@ from Kaggle Competition \citep{malz19a} dataset to test our machine.
 \subsection{Observed Data from Subaru/HSC Transient Survey}
 \label{sec:hscdata}
 The goal of this project is to classify Subaru/HSC observed light curves. 
-%\citet{yasuta19a} reports the 
 The discovery of 1842 transients from a six-month HSC transient survey in the period of
 November 2016 through April 2017 are reported and described in \citet{yasuda19a}.
 The survey is composed of Ultra Deep Field (UD) and DEEP Field in COSMOS \citep{scoville07a}.
@@ -792,22 +791,34 @@ including the data augmentation.
 %
 \end{comment}
 
-\section{Validation with PLAsTiCC data} %Takahashi
+\section{Testing DNN Model with PLAsTiCC data} 
 %
-We verify the performance of the classifier described in the previous section using the PLAsTiCC dataset \citep{plasticc_dataset}.
-PLAsTiCC data is mainly divided into two components, Wide-Fast-Deep (WFD) and Deep-Drilling-Fields (DDF), based on survey styles with different cadences.
-WFD data is not suitable for classification by our proposed method, because it consists of a group of light curves simulated assuming a wide area survey of almost half of the whole sky, and have various observation schedules.
-In contrast, DDF data is suitable for the verification of our method because it has photometric data that simulates the observation of specific areas with the same cadence as the HSC survey.
-Therefore, we validated the classifier using DDF data which have the fixed observation schedule for each object.
-A total of 2,297 events extracted from PLAsTiCC DDF data were used for the test set.
-These are three types of supernovae, Ia, Ibc, and II, which are simulated to occur in the COSMOS field \citep{scoville2007cosmos}, the target region of the HSC survey.
-For these events, we extracted only the light curves for about one year during which supernovae occur from the original three-year data and input them into the classifier.
+%We verify the performance of the classifier described in the previous section using the PLAsTiCC dataset \citep{plasticc_dataset}.
+Before we apply our model to the HSC observed data, we test it with LSST simulated
+classification challenge data set, PLAsTiCC \citep{allam18a} which is composed of realistic
+photometric data set with errors on time-variable objects.
+To evaluate our model, we are in need of data set with labels of true identity. 
+PLAsTiCC DDF data set is similar to HSC transient survey, and we took advantage of it.
+However, our primary purpose is to extract SN~Ia, and we generate the training set by 
+ourselves ($\S$\ref{sec:training}) and do not use the training set PLAsTiCC team has
+provided because we knew that the number of training data set is not good enough to
+achieve the maximum performance (Figure \ref{fig:size_convergence_test}).
+
+%PLAsTiCC data is mainly divided into two components, Wide-Fast-Deep (WFD) and Deep-Drilling-Fields (DDF), based on survey styles with different cadences.
+%WFD data is not suitable for classification by our proposed method, because it consists of a group of light curves simulated assuming a wide area survey of almost half of the whole sky, and have various observation schedules.
+%In contrast, DDF data is suitable for the verification of our method because it has photometric data that simulates the observation of specific areas with the same cadence as the HSC survey.
+%Therefore, we validated the classifier using DDF data which have the fixed observation schedule for each object.
+%A total of 2,297 events extracted from PLAsTiCC DDF data were used for the test set.
+%These are three types of supernovae, Ia, Ibc, and II, which are simulated to occur in the COSMOS field \citep{scoville2007cosmos}, the target region of the HSC survey.
+%For these events, we extracted only the light curves for about one year during which supernovae occur from the original three-year data and input them into the classifier.
 %
-We prepared multiple classifiers with different inputs for comparison.
-Specifically, there are two types of inputs, magnitude or absolute magnitude, and a total of four types of classifiers including cases where normalized flux is added to the input. 
-Two cases of classification tasks were explored in this study: two-class classification (Ia or non Ia) and three-class classification (Ia, Ibc or II).
-The performance of each classifier is evaluated based on the probabilities of each class, which are the outputs from the classifier, described in section \ref{sec:model}.
-We adopt the area under the curve (AUC) of receiver operating characteristic (ROC) curve and precision-recall curve in two-class classification, and the accuracy from confusion matrix in three-class classification, as the evaluation criteria.
+%We prepared multiple classifiers with different inputs for comparison.
+%Specifically, there are two types of inputs, magnitude or absolute magnitude, and a total of four types of classifiers including cases where normalized flux is added to the input. 
+%Two cases of classification tasks were explored in this study: two-class classification (Ia or non Ia) and three-class classification (Ia, Ibc or II).
+%The performance of each classifier is evaluated based on the probabilities of each class, which are the outputs from the classifier, described in section \ref{sec:model}.
+
+
+\begin{comment}
 %
 \subsection{Simulated data}
 %\begin{itemize}
@@ -820,12 +831,9 @@ The simulated light curve has a class ratio of SNIa:Ibc:II=0.60: 0.06:0.34, and 
 Table\ \ref{tab:p_validation} shows the AUC of ROC curve and precision-recall curve in two-class classification, and accuracy in three-class classification.
 The classifier given absolute magnitudes and normalized flux performed best in both two-class and three-class in the simulated data classification.
 The best accuracy in the three-class classification is 98.5\%.
-From these results, we confirmed that the classifier can classify simulated data with high accuracy.
+%From these results, we confirmed that the classifier can classify simulated data with high accuracy.
 %There is almost no difference in performance between the two input type models of magnitude and absolute magnitude.
 %It may be necessary to summarize the ratio of each class
-%
-%
-%
 %PLAsTiCC, validation(v1.2.1)
 %
 \begin{table}[ht]
@@ -848,23 +856,31 @@ $M$ & $m$ & $f$ &  ROC &  Pre.-Rec. &\\
 * Input to classifier is displayed as check mark. $M$: absolute magnitude, $m$: magnitude, $f$: normalized flux.
 \end{tabnote}
 \end{table}
+
+\end{comment}
 %
-%
-\subsection{PLAsTiCC data}
+\subsection{PLAsTiCC data for Validation}
 %\begin{itemize}
 %\item Validation using a part of samples with answers
 %\item ROC curve and Precision-Recall curve in binary classification(figure)
 %\item Confusion matrix in 3 class classification(figure)
 %\item Comparison with the 1st model in PLAsTiCC (If possible)
 %\end{itemize}
-Whereas we extracted and classified a part of the simulated data for learning in the previous subsection, here we verify the classification performance for PLAsTiCC data.
-We used simullated data for learning, and compared the classification result for PLAsTiCC data with true label.
+%Whereas we extracted and classified a part of the simulated data for learning in the previous subsection, here we verify the classification performance for PLAsTiCC data.
+%We used simulated data for learning, and compared the classification result for PLAsTiCC data with true label.
+For training, we generated 370,345 light curves ($\S$\ref{sec:training}) which is composed of supernova
+types by SN~Ia:SN~Ibc:SN~II=0.60:0.06:0.34, and the light curve peaks are randomly shifted.
+For test data set, we extract 2,297 light curves from PLAsTiCC data set, and applied our model to it.
+We use the area under the curve (AUC) of receiver operating characteristic (ROC) curve, precision-recall curve in two-class classification, and the accuracy from confusion matrix in three-class classification  as a metrc to evaluate our model.
+We test which combination of inputs performs best.  Our input could be a combination of arrays of max-normalized flux ($f$), magnitude ($m$), pseudo-absolute magnitude ($M$).
 Tables \ref{tab:p_test} show the AUC in two-class classification and accuracy in three-class classification in PLAsTiCC data, respectively.
-As with the case of the simulated data, the classifier with absolute magnitudes and normalized flux provides the best classification results for PLAsTiCC data.
+We find that the combination of max-normalized flux ($f$) and pseudo-absolute magnitude ($M$) performs
+best, although the information is reduntant, we suspect the different distribution of the data gives extra clue to the machine.
+%As with the case of the simulated data, the classifier with absolute magnitudes and normalized flux provides the best classification results for PLAsTiCC data.
 The AUC for the ROC curve and precision-recall curve are 0.996 and 0.995 respectively.
 %, and these curves in this model are shown in figure\ \ref{fig:plasticc_2class_ROC} and figure\ \ref{fig:plasticc_2class_PreRec}.
 Figure\ \ref{fig:plasticc_3class_CM} shows the confusion matrix in the three-class classification, and the total accuracy is calculated as 95.3\%.
-Although the classification performance for Ibc is not high, since the number of them is small, the effect on total accuracy is relatively small.
+As is always the case in the real world, it is hard to classify SN~Ibc, but the effect on total accuracy is relatively small.
 %PLAsTiCC, test(v1.2.1)
 %
 \begin{table}[ht]
