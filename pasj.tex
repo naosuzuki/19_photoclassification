@@ -112,18 +112,19 @@ For SLSN project, timely spectroscopic follow-up is also critical \citep{moriya1
 Early phase SNIa gives us clues on explosion mechanism \citep{maeda18a} and progenitors \citep{cao15a}, and it is a hot topic to study.
 HSC has an advantage of surveying a large volume and has revealed long standing theory prediction of Helium-shell detonation \citep{jiang18a}.
 Finding early phase SNIa is not trivial but HSC is yielding a new set of early phase SNIa (Jiang et al. 2020 in prep).
-Observations of the early phase Core Collapse Supernova provides us with a crucial information on the size of the projenitors \citep{thompson03a,chevalier11a}.  Shock Breakout lasts only for a few $\sim$ several hours at the time of explosion and it becomes as luminous as at the time of the maximum \citep{gezari08a}. 
-Shock Breakout contains the information on projenitor radius \citep{nakar10a}, and HSC is expected to find these candidates as well \citep{tominaga11a}.
+Observations of the early phase Core Collapse Supernova provides us with a crucial information on the size of the projenitors \citep{thompson03a,chevalier11a}.  
+%Shock Breakout lasts only for a few $\sim$ several hours at the time of explosion and it becomes as luminous as at the time of the maximum \citep{gezari08a}. 
+%Shock Breakout contains the information on projenitor radius \citep{nakar10a}, and HSC is expected to find these candidates as well \citep{tominaga11a}.
 
-Tidal Disruption Event \citep[TDE]{gezari08b,holoien14a} is also expected to be observed by HSC Transient survey.  The light curve is similar to
-the supernova, but it monotonically drops at a specific rate \citep[$t^{-5/3}$]{lodato11a} and the event happens on the core of the galaxy.  
-We expect to have a few events per season \citep{kochanek16a}.
+%Tidal Disruption Event \citep[TDE]{gezari08b,holoien14a} is also expected to be observed by HSC Transient survey.  The light curve is similar to
+%the supernova, but it monotonically drops at a specific rate \citep[$t^{-5/3}$]{lodato11a} and the event happens on the core of the galaxy.  
+%We expect to have a few events per season \citep{kochanek16a}.
 
-It is always possible to discover something new when we explore a new parameter space which is the depth for the case
-of Subaru HSC.   Rapid transients are discovered by HSC, but their identities are yet to be known (Tampo et al.  2020 in prep).  
-Similar objects are also reported by DES team \citep{pursianinen18a}.
+%It is always possible to discover something new when we explore a new parameter space which is the depth for the case
+%of Subaru HSC.   Rapid transients are discovered by HSC, but their identities are yet to be known (Tampo et al.  2020 in prep).  
+%Similar objects are also reported by DES team \citep{pursianinen18a}.
 
-In many science cases, it is essential to have a timely classification at the early phase of transient so that we can trigger follow-up observations.
+%In many science cases, it is essential to have a timely classification at the early phase of transient so that we can trigger follow-up observations.
 %\citep{maeda18a,jiang18a}
 %\citep{moriya19b}
 
@@ -186,14 +187,15 @@ of the simulated data so that the simulated data point behaves like one of the m
 For HSC simulation, the size of error varies night to night due to sky condition. 
 We measure and derive flux vs. error relationship from the actual observed data at simulating epoch 
 and apply that relationship to the simulated photometric data.
-For LSST simulation, we find the flux-error relation from the Deep Drilling Field (DDF) of the one
-used in Kaggle Competition \citep{malz19a} and applied that to the simulated photometric data.
+%For LSST simulation, we find the flux-error relation from the Deep Drilling Field (DDF) of the one
+%used in Kaggle Competition \citep{malz19a} and applied that to the simulated photometric data.
 
 We have tested how many light curves are needed for training.  We use "accuracy" ($\S$ \ref{hyperparametersearch}) 
 as a guide on how many light curves to use.  
 Based on the our convergence test, we conclude we need to generate more than 100,000 light curves 
 for training as shown Figure \ref{fig:size_convergence_test}.
-For training, 370,345 light curves are generated for LSST DDF, and 514,954 for HSC observed data.
+For training, 370,345 light curves are generated for LSST Deep Drilling Field (DDF), and 514,954 for 
+HSC observed data.
 We dropped ones which has less than 3$\sigma$ detection at the maximum since our detection criterion
 is 5$\simga$.  %Prior to the modeling, we did the convergence test
 Examples of simulated photometric data is shown in Figure \ref{fig:simLCsamples}.
@@ -205,8 +207,11 @@ expect to have a variety of transients besides SN~Ia, SN~Ibc, and SN~II.
 LSST team has compiled a series of variables including AGNs, variable stars, microlensing events,
 and class 99 whose identity was not revealed at the time of competition \citep{malz19a,kessler19a}.   
 We take their test dataset as a pseudo-real observed data and assess our accuracy of classification.
-The LSST DDF simulated data is the most similar to HSC survey data, and we use their 2,297 objects 
-from Kaggle Competition \citep{malz19a} dataset to test our machine.
+In 2018, the data classification challenge was invoked by Kaggle \citep{malz19a}, called PLASTiCC, 
+and they simulated a realistic photometric data set for LSST.
+Inside the PLASTiCC data, simulated data for Deep Drilling Field is the most similar data set to 
+HSC survey data, and we extract their 2,297 objects from PLASTiCC \citep{malz19a} dataset 
+to test our machine.
 %Kaggle competition provided us with the training dataset, but the number of objects are too 
 
 \subsection{Observed Data from Subaru/HSC Transient Survey}
