@@ -50,7 +50,7 @@ We also investigated the classification results while increasing the number of i
 \section{Introduction}
 Time domain science becomes one of the major fields of astronomical study today.  The discovery of accelerating universe \citep{perlmutter99a,riess98a} evoked a series of large supernova surveys in the last decade \citep{astier06b,wood-vasey07a,kessler09a,law09a}.  
 These surveys revealed that there exist a whole new family of transients and the search for unknown populations is of great interest today \citep{howell06a,phillips07a,quimby07b}. 
-For the precision cosmology, it is very important to keep the purity of Type Ia supernova (SNIa) while having uniform sampling from bright to faint SNeIa.  Spectroscopic follow-up has been essential to distinguish faint SN~Ia from SN~Ibc which has a similar light curve behavior \citep{scolnic14a}.   A large amount of precious telescope time is dedicated to the follow-up programs, and we would like to make an efficient use of those telescopes.
+For the precision cosmology, it is very important to keep the purity of Type Ia supernova (SN~Ia) while having uniform sampling from bright to faint SNe~Ia.  Spectroscopic follow-up has been essential to distinguish faint SN~Ia from SN~Ibc which has a similar light curve behavior \citep{scolnic14a}.   A large amount of precious telescope time is dedicated to the follow-up programs, and we would like to make an efficient use of those telescopes.
 
 The scale of survey is getting larger, and it becomes impossible to trigger spectroscopic follow-up for all of the candidates in real time, and we are in need of developing new classification scheme.  It is a natural path to perform photometric classification \citep{sako11a}.  With the rise of Machine Learning Technologies, it is getting common that an astronomical big data is being analyzed through Machine Learning.   
 
@@ -60,8 +60,8 @@ Deep Neural Network (DNN) is now being used for imaging data for finding strong 
 In this paper, we introduce our attempt to apply machine learning (DNN) to the real transient survey data.
 %our attempt to apply the latest techniques to the real astronomical data is reported in this paper.  
 %It is getting to common to see the applications of machine learning in the astronomical community.  (to be continued)
-Hyper Suprime-Cam (HSC) on Subaru Telescope enables us to probe wide filed (1.77 deg$^2$ Field of View) and deep space (26th mag in $i-$band / epoch).  Our primary scientific goals are Type Ia Supernova (SNIa) cosmology, Type II Supernova Cosmology, Super Luminous Supernova (SLSN) studies as well as probing unknown population of transients.  
-As is reported in \citet{yasuda19a}, more than 1800 SNe are discovered in a 6-month campaign. 
+Hyper Suprime-Cam (HSC) on Subaru Telescope enables us to probe wide filed (1.77 deg$^2$ Field of View) and deep space (26th mag in $i-$band / epoch).  Our primary scientific goals are Type Ia Supernova (SN~Ia) cosmology, Type II Supernova Cosmology, Super Luminous Supernova (SLSN) studies as well as probing unknown population of transients.  
+As is reported in \citet{yasuda19a}, more than 1800 supernovae are discovered in a 6-month campaign. 
 We deployed a machine learning (AUC boosting) for transient detection \citep{morii16a}, where 'real' vs. 'bogus' is determined by a machine.
 In \citet{kimura17a}, we adopted DNN for supernova type classification from 2 dimentional image, and highway block is introduced for the optimization of layers.
 This paper is an extension of \citet{kimura17a} and applies DNN to the photometric classification of transients.   
@@ -100,22 +100,22 @@ A detailed survey strategies and the observing logs are reported in \citet{yasud
 One of our primary goals of HSC Transient survey is Type Ia Supernova Cosmology which aims to perform the most precise measurement of dark energy at high-redshift and test if dark energy is changing in time or not \citep{linder03b}.
 We are awarded 96 orbits of the Hubble Space Telescope time (WFC3 Camera) to execute a precise photometry on IR at the time of maximum.
 Our HST program uses non-disrupted ToO which means we send the observing request by Wednesday, 2 weeks prior to the observation.
-In other words, we are in need of finding good candidates 2-3 weeks prior to the maximum.  High-redshift (z$>$1) time dilation factor helps, but it is always a challenge to identify SNIa on the rise.
+In other words, we are in need of finding good candidates 2-3 weeks prior to the maximum.  High-redshift (z$>$1) time dilation factor helps, but it is always a challenge to identify SN~Ia on the rise.
 
 Our international collaboration team executes spectroscopic follow-up using large telescopes in the world.  
-Our target, high-redshift SNIa, is faint ($\sim$ 24th mag in $i-$band) for spectroscopic identification even with the powerful large telescopes: GMOS Gemini \citep{hook04a}, GTC, Keck LRIS, VLT FORS, Subaru FOCAS \citep{kashikawa02a} and AAT.  
+Our target, high-redshift SN~Ia, is faint ($\sim$ 24th mag in $i-$band) for spectroscopic identification even with the powerful large telescopes: GMOS Gemini \citep{hook04a}, GTC, Keck LRIS, VLT FORS, Subaru FOCAS \citep{kashikawa02a} and AAT.  
 Thus, it is critical to hit the target at the time of maximum either by ToO (GTC), queue mode (VLT) or classical scheduled observation (Keck, Subaru, ATT).
 
-For SNIa, it takes about 18 days from its explosion to the maximum in rest frame \citep{conley06a,papadogiannakis19a}.   Given the fact, we are looking at high-redshift SNIa (z$>$1), we have about a month in observed frame for a SNIa from explosion to the maximum.   However, our task is to identify them 2 weeks prior to the maximum, meaning we have only 2 data points per a filter.   In addition to that, sky condition keeps changing, and we may not have the data as we originally had planned.   In reality, our identification has to be done through missing data points on the rise.
+For SN~Ia, it takes about 18 days from its explosion to the maximum in rest frame \citep{conley06a,papadogiannakis19a}.   Given the fact, we are looking at high-redshift SN~Ia (z$>$1), we have about a month in observed frame for a SN~Ia from explosion to the maximum.   However, our task is to identify them 2 weeks prior to the maximum, meaning we have only 2 data points per a filter.   In addition to that, sky condition keeps changing, and we may not have the data as we originally had planned.   In reality, our identification has to be done through missing data points on the rise.
 
-In parallel to SNIa Cosmology program, our sister projects also needs identification and classification of HSC transient.   
+In parallel to SN~Ia Cosmology program, our sister projects also needs identification and classification of HSC transient.   
 Type II supernova cosmology program needs a timely spectroscopic follow-up to measure the expansion velocity of photosphere from H$\beta$ line \citep{dejaeger17a}.
 Superluminous Supernova (SLSN) is of great interest today, it is relatively a rare event\citep{quimby11a} and its mechanism has quite a diversity \citep{galyam12a,moriya12a}, and it can probe high redshift universe \citep{cooke12a}.    
 For SLSN project, timely spectroscopic follow-up is also critical \citep{moriya19a,curtin19a}.
 
-Early phase SNIa gives us clues on explosion mechanism \citep{maeda18a} and progenitors \citep{cao15a}, and it is a hot topic to study.
+Early phase SN~Ia gives us clues on explosion mechanism \citep{maeda18a} and progenitors \citep{cao15a}, and it is a hot topic to study.
 HSC has an advantage of surveying a large volume and has revealed long standing theory prediction of Helium-shell detonation \citep{jiang18a}.
-Finding early phase SNIa is not trivial but HSC is yielding a new set of early phase SNIa (Jiang et al. 2020 in prep).
+Finding early phase SN~Ia is not trivial but HSC is yielding a new set of early phase SN~Ia (Jiang et al. 2020 in prep).
 Observations of the early phase Core Collapse Supernova provides us with a crucial information on the size of the projenitors \citep{thompson03a,chevalier11a}.  
 
 %Shock Breakout lasts only for a few $\sim$ several hours at the time of explosion and it becomes as luminous as at the time of the maximum \citep{gezari08a}. 
@@ -139,7 +139,7 @@ Observations of the early phase Core Collapse Supernova provides us with a cruci
 %\item Type classification before peak
 %\end{itemize}
 \subsection{Classification Method for HSC Transient Survey}
-We designed two models of machine learning with emphasis on identifying SNIa which requires time sensitive trigger for HST IR follow-up.  One model is in a binary mode and classifies if a transient is SNIa or not.
+We designed two models of machine learning with emphasis on identifying SN~Ia which requires time sensitive trigger for HST IR follow-up.  One model is in a binary mode and classifies if a transient is SN~Ia or not.
 It has been known that the majority of high-redshift transients are SN~Ia, and we seek for other unknown transients
 from the ones labeled as non-SN~Ia.   
 The other model classifies a transient into 3 classes: SN~Ia, SN~Ibc and SN~II.  
@@ -844,7 +844,7 @@ achieve the maximum performance (Figure \ref{fig:size_convergence_test}).
 %\end{itemize}
 %
 Prior to validation of PLAsTiCC data, we evaluated classification performance for simulated lightcurves by performing cross-validation on 370,345 events simulated using PLAsTiCC template.
-The simulated light curve has a class ratio of SNIa:Ibc:II=0.60: 0.06:0.34, and the positions of these peaks are randomly shifted between 450 days.
+The simulated light curve has a class ratio of SN~Ia:Ibc:II=0.60: 0.06:0.34, and the positions of these peaks are randomly shifted between 450 days.
 Table\ \ref{tab:p_validation} shows the AUC of ROC curve and precision-recall curve in two-class classification, and accuracy in three-class classification.
 The classifier given absolute magnitudes and normalized flux performed best in both two-class and three-class in the simulated data classification.
 The best accuracy in the three-class classification is 98.5\%.
@@ -886,7 +886,7 @@ $M$ & $m$ & $f$ &  ROC &  Pre.-Rec. &\\
 %Whereas we extracted and classified a part of the simulated data for learning in the previous subsection, here we verify the classification performance for PLAsTiCC data.
 %We used simulated data for learning, and compared the classification result for PLAsTiCC data with true label.
 For training, we generated 370,345 light curves ($\S$\ref{sec:training}) which is composed of supernova
-types by SN~Ia:SN~Ibc:SN~II=0.60:0.06:0.34, and the light curve peaks are randomly shifted.
+types by SN~Ia:Ibc:II=0.60:0.06:0.34, and the light curve peaks are randomly shifted.
 For test data set, we extract 2,297 light curves from PLAsTiCC data set, and applied our model to it.
 We use the area under the curve (AUC) of receiver operating characteristic (ROC) curve, precision-recall curve in two-class classification, and the accuracy from confusion matrix in three-class classification  as a metrc to evaluate our model.
 We test which combination of inputs performs best.  Our input could be a combination of arrays of max-normalized flux ($f$), magnitude ($m$), pseudo-absolute magnitude ($M$).
@@ -993,7 +993,7 @@ For those without spec-z information, the photometric redshifts (photo-z) are ad
 %training set
 We applied both two-class and three-class classification tasks to HSC data, as with PLAsTiCC data.
 The classifiers were trained using 514,954 simulated light curve data created in the same way as the validation with PLAsTiCC data.
-Their class ratio is SNIa:Ibc:II=0.59:0.07:0.34, and the shift range of the peaks is the same as that of PLAsTiCC data, 450 days.
+Their class ratio is SN~Ia:Ibc:II=0.59:0.07:0.34, and the shift range of the peaks is the same as that of PLAsTiCC data, 450 days.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Binary classification}
@@ -1006,6 +1006,14 @@ For the validation dataset, the higher the number of input dimensions, the bette
 The best AUCs for all classified events are 0.993 and 0.995 for the ROC curve and precision-recall curve, respectively.
 %Figure\ \ref{fig:h2_validation} show ROC curves and precision-recall curves in the best performing classifier for the validation set.
 For the test set, the classification performance is verified using 1332 supernovae (1256 with redshift) labeled by the SALT2 light curve fitter \citep{guy2007,Guy_2010}, one of the conventional classification methods.
+The verification label for HSC supernovae conforms to \citet{yasuda19a}, which defines SN~Ia as supernovae that satisfy all the following four criteria for the SALT2 fitting results:
+(1)color ($c$), and stretch ($x_1$) within the $3\sigma$ range of \citet{scolnickessler2016} "All G10" distribution, 
+(2)absolute magnitude in B band $M_B$ brighter than −18.5 mag, 
+(3)reduced $\chi ^{2}$ of less than 10,
+(4)number of degrees of freedom (dof) is greater than or equal to 5.
+Other candidates that satisfy the looser set of conditions above are labeled "Ia?".
+Specifically, the range of (1) is expanded to within 5 sigma, and the thresholds of (2) and (3) are set to -17.5 mag and 20 respectively.
+
 In addition, we extracted 441 "light curve verified supernovae" that have spec-z and photometric information before and after peak, and also verified their classification results.
 Figures\ \ref{fig:h2_test_all} and \ref{fig:h2_test_gold} show the AUCs of the best classifier for all labeled HSC supernovae and light curve verified HSC supernovae respectively.
 The confusion matrices for each case are shown in Figure\ \ref{fig:h2_test_CM}.
@@ -1190,7 +1198,7 @@ It represents that our classifier has a very high sensitivity to Ia supernova wh
 
 In addition, we describe the predicted classes of actual supernovae classified by the three-class classifier.
 Figure \ref{fig:h3_class_ratio} shows the predicted class ratio.
-Our machine classifies 1812 supernova classes with a ratio of SNIa:Ibc:II=0.43:0.06:0.51, which is an integrated value throughout the redshift and includes incomplete sampling of faint supernovae.
+Our machine classifies 1812 supernova classes with a ratio of SN~Ia:Ibc:II=0.43:0.06:0.51, which is an integrated value throughout the redshift and includes incomplete sampling of faint supernovae.
 
 %This faraction is between them in volume-limited and magnitude-limited samples in \citet{Li_2011}, which is close to that in volume-limited samples.
 %However, it should be noted that this ratio is calculated including misclassificaion.
@@ -1355,8 +1363,8 @@ For PLAsTiCC dataset, misclassified 107 supernovae have the following characteri
 \item Of the rest, 28\% (17/61) are on the boundary where the difference in probability between the correct class and the predicted class is less than 0.1.
 \item More than half of the remaining events misclassify Ibc as Ia, II
 \end{itemize}
-Figure\ \ref{fig:misclass_rate_3class} shows the misclassification rate against redshift for the PLAsTiCC dataset.
-In the three-class classification of the PLAsTiCC dataset, we found that the accuracy of Ibc was lower than that of other classes, and that the accuracy dropped significantly in the vicinity of redshift 1.0, and in addition, the accuracy also decreased for nearby Ibc supernovae.
+Figure\ \ref{fig:misclass_rate_3class} shows the accuracy against redshift for the PLAsTiCC dataset.
+In the three-class classification of the PLAsTiCC dataset, we found that the accuracy of Ibc was lower than that of other classes, and that the accuracy dropped significantly in the vicinity of redshift 1.0, and the accuracy also decreased for nearby Ibc supernovae.
 While some misclassified supernovae are so dark and indeterminate that they are difficult to classify even with traditional methods, there are also bright supernovae that are completely misclassified.
 
 In the binary classification of 1256 labeled HSC supernovae, 190 of them are misclassified.
@@ -1375,7 +1383,7 @@ In addition, there are some cases where SALT2 fitting does not work well during 
      \includegraphics[width=\columnwidth]{figures/misclass_rate_plastic_3class.eps}
   \end{center}
   \caption{%
-  Misclassification rate against redshift in the three-class classification of the PLAsTiCC dataset.
+  Accuracy against redshift in the three-class classification of the PLAsTiCC dataset.
   }%
   \label{fig:misclass_rate_3class}
 \end{figure}
@@ -1545,7 +1553,7 @@ It is now well established that star formation rate is peaking at z$\sim$2, and 
 of our system is a mixture of SN~Ia and Core Collapse Supernovae \citep{tsujimoto95a,kobayashi11a}.
 Deriving supernova rate needs a careful analysis \citep{dilday08a,brown19a,frohmaier19a} and it is beyond the scope 
 of this paper, but at least we can check the consistency with previous work on relative fraction.
-Lick Observatory Supernova Survey \citep{li11a} reports the relative ratio between SNIa:Ibc:II to 
+Lick Observatory Supernova Survey \citep{li11a} reports the relative ratio between SN~Ia:Ibc:II to 
 be 0.24:0.19:0.57, while we have 0.24:0.17:0.59 at z$\lesssim$0.2. 
 Based on our survey depth, we have a complete sampling of SN~Ia up to z$\sim$1.1 while we lose
 completenss of core collapse supernova in much lower redshift given the fact that the magnitudes of
@@ -1557,7 +1565,7 @@ supernova rates.
 If we adopt the SN~Ia rate from \citet{graur14a}, and Core-Collapse SN rate from \citet{strolger15a},
 and we can estimate the completness of Core-Collapse SN is 72\% at z$\sim$0.3 and it drops to 28\% at
 z$\sim$0.5. 
-The reason why SN~II fraction does not go to zero at z$\sim$1 in Figure \ref{fig:h3_class_ratio} is 
+The reason why SN~II fraction does not go to zero at z$\sim$1 in Figure \ref{fig:hsc3_type_frac_alongz} is 
 that the magnitude dispersion is much larger in Core-Collapose SN \citep[$\sigma$ $\sim$ 1.2 mag]{li11a,kessler19b} 
 than that of SN~Ia \citep[$\sigma$ $\sim$ 0.5 mag]{rubin15a}, and they are factor of 4-5 more abundant 
 at z$\sim$1 \citep{madau98a,hounsell18a}. 
@@ -1575,7 +1583,7 @@ is 16\%.
   \caption{%
   Type fractions along redshift in HSC three-class classification.
   }%
-  \label{fig:misclass_rate_3class}
+  \label{fig:hsc3_type_frac_alongz}
 \end{figure}
 %
 %
