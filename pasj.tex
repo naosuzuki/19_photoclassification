@@ -1419,7 +1419,10 @@ As mentioned in section \ref{sec:misclass}, the classification performance is lo
 %Since the observation interval in the HSC survey is not constant, the number of inputs is different even for supernovae with the same detected period.
 %Due to this fact, there is a variation in the average input dimension number of samples in each phase, which causes a fluctuation in accuracy.
 However, due to events whose probabilities fluctuate with the progress of the supernova phase illustrated in Figure \ref{fig:lcps}, there are some cases where the accuracy slightly decreases even if the period until classification becomes long.
-In addition, considering the cumulative number of supernovae classified as Ia with high probability from six months data, it is estimated that our classifier can classify at least four or more Ia supernovae candidate to follow-up in one month observation of the Ultra-deep area.
+%In addition, considering the cumulative number of supernovae classified as Ia with high probability from six months data, it is estimated that our classifier can classify at least four or more Ia supernovae candidate to follow-up in one month observation of the Ultra-deep area.
+In addition, the number of follow-up supernovae classified by the classifier can be estimated from the cumulative number in Figure \ref{fig:lcps}.
+Using data within one month from the first detection, 28 supernovae with z >= 1 are classified with Ia probability of 95\% or more.
+Since the number of these supernovae is a cumulative number for six months, dividing this by six corresponds to the number of follow-up supernovae classified during a one-month survey, which is 4 to 5 events.
 
 Lastly, we discuss the transition of the Ia probability output by the classifier along supernova phase.
 Each time the supernova photometric data input to the classifier increases, Ia probability, the output of the classifier, is updated.
