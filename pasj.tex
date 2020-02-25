@@ -328,7 +328,7 @@ At the end, each supernova is given a probability of being a certain astrophysic
 \end{equation}
 We do not use time or filter explicitly but it is recorded as an order inside the array.  The philosophy here is that the training set which is composed of the simulated data in the same array length holds the information on filter and dates.  For example, $j$-th magnitude in the array is the data taken on a certain date and by a certain filter.  The combination of the date and filter is identical to the ones in the training set.  Therefore, $j$-th component implicitly contains unique information about dates and filters.  
 %{\bf Memo Distance Modulus \& Normalized Flux needs to be written for preprocessing}
-Based on our experiments (Table \ref{tab:p_validation}, \ref{tab:p_test}), the combination of absolute magnitude and normalized flux performs best, and therefore, our input array has a size of $1\times2N$ per a supernova where $N$ is the number of data points.
+Based on our experiments (Table \ref{tab:p_test}), the combination of absolute magnitude and normalized flux performs best, and therefore, our input array has a size of $1\times2N$ per a supernova where $N$ is the number of data points.
 %The DNN model receives the total of P brightnesses observed in multiple bands as an input and outputs $C$ values, where $C$ is the number of classes in classification task, and $C = 1$ in regression task.
 
 {\bf First Fully Connected Layer:}
@@ -847,7 +847,7 @@ achieve the maximum performance (Figure \ref{fig:size_convergence_test}).
 Prior to validation of PLAsTiCC data, we evaluated classification performance for simulated lightcurves by performing cross-validation on 370,345 events simulated using PLAsTiCC template.
 The simulated light curve has a class ratio of SN~Ia:Ibc:II=0.60: 0.06:0.34, and the positions of these peaks are randomly shifted between 450 days.
 Table\ \ref{tab:p_validation} shows the AUC of ROC curve and precision-recall curve in two-class classification, and accuracy in three-class classification.
-The classifier given absolute magnitudes and normalized flux performed best in both two-class and three-class in the simulated data classification.
+The classifier given absolute magnitude and normalized flux performed best in both two-class and three-class in the simulated data classification.
 The best accuracy in the three-class classification is 98.5\%.
 %From these results, we confirmed that the classifier can classify simulated data with high accuracy.
 %There is almost no difference in performance between the two input type models of magnitude and absolute magnitude.
@@ -927,7 +927,7 @@ $M$ & $m$ & $f$ &  ROC &  Pre.-Rec. &\\
      \includegraphics[width=\columnwidth]{figures/06_CM_abs-mag_scaled-flux_w-mixup_predictions_test_2.eps}
   \end{center}
   \caption{%
-  Confusion matrix in three-class classification of PLAsTiCC test set. The numbers in parentheses represent the raw numbers.
+  Confusion matrix in three-class classification of PLAsTiCC test set. The input to the classifier is absolute magnitude and normalized flux. The numbers in parentheses represent the raw numbers.
   }%
   \label{fig:plasticc_3class_CM}
 \end{figure}
@@ -1353,7 +1353,7 @@ Our method is not useful for surveys that sweep a wide area like LSST survey, bu
             \end{center}
         \end{minipage}
     \end{tabular}  \caption{%
-    Confusion matrices in the two-class classification of PLAsTiCC 1st (left) and our classifier (right).
+    Confusion matrices in the two-class classification of the PLAsTiCC 1st classifier (left) and our best classifier given absolute magnitude and normalized flux (right).
     }%
     \label{fig:comp_plasticc_1st}
 \end{figure*}
