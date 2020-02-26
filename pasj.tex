@@ -1103,8 +1103,11 @@ Test& \checkmark &            & \checkmark &       0.938 &       0.921 &       0
             \end{center}
         \end{minipage}
     \end{tabular}
+    \vspace{2mm}
     \caption{%
-    ROC curves and precision Recall curves in two-class classification of HSC spernovae (All labeled).
+    ROC curves and precision Recall curves in two-class classification of all labeled HSC supernovae.
+    The input to the classifier is absolute magnitude and normalized flux.
+    Each colored line represents the performance for each of the five classifiers with different input cases, and the that for all of their outputs.
     }
     \label{fig:h2_test_all}
 \end{figure*}
@@ -1125,8 +1128,11 @@ Test& \checkmark &            & \checkmark &       0.938 &       0.921 &       0
             \end{center}
         \end{minipage}
     \end{tabular}
+    \vspace{2mm}
     \caption{%
-  ROC curves and precision Recall curves in two-class classification of HSC supernovae (Light curve verified).
+  ROC curves and precision Recall curves in two-class classification of light curve verified HSC supernovae. 
+  The input to the classifier is absolute magnitude and normalized flux.
+  Each colored line represents the performance for each of the five classifiers with different input cases, and the that for all of their outputs.
 }%
     \label{fig:h2_test_gold}
 \end{figure*}
@@ -1182,6 +1188,7 @@ Test& \checkmark &            & \checkmark &        0.859 &        0.816 &      
     \end{tabular}
     \caption{%
   Confusion matrices in binary classification of 1256 labeled HSC supernovae (left) and 441 light curve verified supernovae (right).
+  The inputs for both classifications are absolute magnitude and normalized flux.
 }%
     \label{fig:h2_test_CM}
 \end{figure*}
