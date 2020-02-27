@@ -305,8 +305,9 @@ we adopt hyperbolic sine to imitate the magnitude system we use \citep{lupton99a
 In fact, the combination of the flux and magnitudes are redundant.   If we know one, we can calculate the other
 in an explicit way.   
 However, based on our experiment, the score of machine gets better if we use both.  
-We suspect the distribution in flux and magnitude space are difference and it gives an extra clue to the machine.
-Thus, we use pseudo-absolute magnitude $M$ and max-value normalized flux $f$ as an input.
+We suspect the distribution in flux (linear) and magnitude space (log) are different, 
+and it gives an extra clue to the machine.
+Thus, we use pseudo-absolute magnitude ($M$) and max-value normalized flux ($f$) as an input.
 
 \section{Deep Neural Network Clasifier}
 On the rise of the era of Big Data, the use of machine learning technique plays a critical role on the analysis of astronomical data.  Techniques such as Random Forest, Support Vector Machine, Convolution Neural Network are being used for photometric data analysis \citep{pasquet19a}, galaxy classifications \citep{hausen19a} and spectral 
