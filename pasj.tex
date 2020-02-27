@@ -1386,8 +1386,9 @@ While some misclassified supernovae are so dark and indeterminate that they are 
 In the binary classification of 1256 labeled HSC supernovae, 190 of them are misclassified.
 The misclassification rate for each case is different, and tends to increase as the number of input dimensions decreases.
 Although the rate is 11\% for Case 0, it is 22\% for Case 4.
+%need edit
 As with the PLAsTiCC data, incomplete events are the majority of misclassified events in HSC data, accounting for 44\% (83/190) of them.
-The second most common cause of misclassification are boundary events with an Ia probability of 40 to 60\%, corresponding to the remaining 28\% (30/107).
+The second most common cause of misclassification is boundary events with an Ia probability of 40 to 60\%, corresponding to the remaining 28\% (30/107).
 As a result of individually checking the light curves of other misclassified supernovae, we found that most of them have outlier values or systematic flux offset in photometric data.
 In addition, there are some cases where SALT2 fitting does not work well during labeling.
 %Four of them are boundary events which have Ia probability of 40 to 50\%.
@@ -1405,10 +1406,10 @@ In addition, there are some cases where SALT2 fitting does not work well during 
 \end{figure}
 %
 %
-\subsection{Performance depending on input configuration}
+\subsection{Dependence on the number of epochs}
 %
 When using our classification method, the number of dimension input to the classifier, the number of photometric data points, increases as the survey progresses in the actual survey.
-Therefore, we discuss about the transition of performance against the number of input.
+Therefore, we discuss the transition of performance against the number of input.
 We classified the HSC dataset by increasing the number of input dimensions one by one, and investigated the relationship between the number of input photometric data pionts and the classification performance.
 Binary classifiers are used for classification, and evaluation is performed using accuracy calculated from the confusion matrix.
 Figure\ \ref{fig:n_observations} shows the transition of classification performance along with the number of inputs.
@@ -1430,7 +1431,7 @@ As mentioned in section \ref{sec:misclass}, the classification performance is lo
 However, due to events whose probabilities fluctuate with the progress of the supernova phase illustrated in Figure \ref{fig:lcps}, there are some cases where the accuracy slightly decreases even if the period until classification becomes long.
 %In addition, considering the cumulative number of supernovae classified as Ia with high probability from six months data, it is estimated that our classifier can classify at least four or more Ia supernovae candidate to follow-up in one month observation of the Ultra-deep area.
 In addition, the number of follow-up supernovae classified by the classifier can be estimated from the cumulative number in Figure \ref{fig:lcps}.
-Using data within one month from the first detection, 28 supernovae with z >= 1 are classified with Ia probability of 95\% or more.
+Using data within one month from the first detection, 28 supernovae with z $>=$ 1 are classified with Ia probability of 95\% or more.
 Since the number of these supernovae is a cumulative number for six months, dividing this by six corresponds to the number of follow-up supernovae classified during a one-month survey, which is 4 to 5 events.
 
 Lastly, we discuss the transition of the Ia probability output by the classifier along supernova phase.
