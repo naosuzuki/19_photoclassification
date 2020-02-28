@@ -51,7 +51,7 @@ We also investigated the classification results while increasing the number of i
 Time domain science becomes one of the major fields of astronomical study today.  The discovery of accelerating universe \citep{perlmutter99a,riess98a} evoked a series of large supernova surveys in the last decades 
 \citep{betoule14a,scolnic18a,brout19a}.  
 These surveys revealed that there exist a whole new family of transients and the search for unknown populations is of great interest today \citep{howell06a,phillips07a,quimby07b}. 
-For the precision cosmology, it is very important to keep the purity of Type Ia supernova (SN~Ia) while having uniform sampling from bright to faint SNe~Ia.  Spectroscopic follow-up has been essential to distinguish faint SN~Ia from SN~Ibc which has a similar light curve behavior \citep{scolnic14a}.   A large amount of precious telescope time is dedicated to the follow-up programs, and we would like to make an efficient use of those telescopes.
+For the precision cosmology, it is very important to keep the purity of Type Ia supernova (SN~Ia) while having uniform sampling from bright to faint SNe~Ia.  Spectroscopic follow-up has been essential to distinguish faint SN~Ia from SN~Ib and SN~Ic which have similar light curve behavior \citep{scolnic14a}.   A large amount of precious telescope time is dedicated to the follow-up programs, and we would like to make an efficient use of those telescopes.
 
 The scale of survey is getting larger, and it becomes impossible to trigger spectroscopic follow-up for all of the candidates in real time, and we are in need of developing new classification scheme.  It is a natural path to perform photometric classification \citep{sako11a,jonesl8a}.  With the rise of Machine Learning Technologies, it is getting common that an astronomical big data is being analyzed through Machine Learning.   
 
@@ -111,11 +111,11 @@ For SN~Ia, it takes about 18 days from its explosion to the maximum in rest fram
 
 In parallel to SN~Ia Cosmology program, our sister projects also needs identification and classification of HSC transient.   
 Type II supernova cosmology program needs a timely spectroscopic follow-up to measure the expansion velocity of photosphere from H$\beta$ line \citep{dejaeger17a}.
-Superluminous Supernova (SLSN) is of great interest today, it is relatively a rare event\citep{quimby11a} and its mechanism has quite a diversity \citep{galyam12a,moriya12a}, and it can probe high redshift universe \citep{cooke12a}.    
+Superluminous Supernova (SLSN) is of great interest today, it is relatively a rare event\citep{quimby11a} and its mechanism has quite a diversity \citep{galyam12a,Moriya18SLSN}, and it can probe high redshift universe \citep{cooke12a}.    
 For SLSN project, timely spectroscopic follow-up is also critical \citep{moriya19a,curtin19a}.
 
 Early phase SN~Ia gives us clues on explosion mechanism \citep{maeda18a} and progenitors \citep{cao15a}, and it is a hot topic to study.
-HSC has an advantage of surveying a large volume and has revealed long standing theory prediction of Helium-shell detonation \citep{jiang18a}.
+HSC has an advantage of surveying a large volume and has revealed long standing theory prediction of Helium-shell detonation \citep{Jiang2017}.
 Finding early phase SN~Ia is not trivial but HSC is yielding a new set of early phase SN~Ia \citep{jiang20a}.
 Observations of the early phase Core Collapse Supernova provides us with a crucial information on the size of the progenitors \citep{thompson03a,chevalier11a}.  
 
@@ -147,8 +147,7 @@ The other model classifies a transient into 3 classes: SN~Ia, SN~Ibc and SN~II.
 We choose three classes for simplicity and in fact, the majority of supernovae goes to one of these three categories.
 SN~Ia is a thermonuclear explosion, and its brightness can be calibrated empirically.
 SN~Ib, SN~Ic and SN~II are all core collapose supernovae and classified by the spectral features \citep{filippenko97a}.
-The light curves of SN~Ib and SN~Ic are similar to that of SN~Ia and it always contaminates SN~Ia cosmology program,
-and togheter we call them SN~Ibc.  They are fainter than SN~Ia and redder in general.  
+The light curves of SN~Ib and SN~Ic are similar to that of SN~Ia and it always contaminates SN~Ia cosmology program, and togheter we call them SN~Ibc.  They are fainter than SN~Ia and redder in general.  
 One of our challenges in this paper is if we can segregate SN~Ibc from SN~Ia.
 %
 %We designed a supernova type classifier using machine learning specialized for HSC survey.
@@ -175,8 +174,7 @@ Third, we apply our well trained machine to the real observed data ($\S$\ref{sec
 \subsection{Simulated Data for Training}
 \label{sec:training}
 We are in need of simulating observed photometric data to train the machine.  
-For normal SN~Ia, we use SALT2 \citep{guy10b} model ({\it ver} 2.4) which requires 2 input parameters:
-c for color and x1 for stretch.
+For normal SN~Ia, we use SALT2 \citep{guy10b} model ({\it ver} 2.4) which requires 2 input parameters: c for color and x1 for stretch.
 We adopt the asymetric gaussian distribution of c, and x1 from \citet{mosher14a}, and generate
 light curves and simulate photometric data points based on the observation schedule. 
 Besides SN~Ia, we use spectral time series from \citet{kessler19b} which contains both observed
@@ -185,36 +183,28 @@ We mix equal number of SN~Ia and Non-SN~Ia to approximate the observed fractions
 These fraction does not need to be exact for our purpose of classification, but it is important
 that the minority is not buried in the majority.
 For three class classification, we set the ratio of SN~Ia:SN~Ibc:SN~II=10:3:7.
-The redshfit distribution of galaxies is taken from COSMOS survey \citep{laigle16a}, and we distributed
-simulated supernova accordingly from $z$=0.1 through $z=$2.0.
+The redshfit distribution of galaxies is taken from COSMOS survey \citep{laigle16a}, and we distributed simulated supernova accordingly from $z$=0.1 through $z=$2.0.
 Throughout this paper, we use $\Lambda$CDM cosmology with $\Omega_{m}$=0.3 and h=0.7.
 We use filter responses including system throughput from \citet{kawanomoto18a} for Subaru/HSC and
 \citet{ivezic19a} for LSST ($\S$\ref{sec:validation}). 
+Examples of simulated photometric data is shown in Figure \ref{fig:simLCsamples}.
 
-One complication in simulating realistic data is that the machine does not accept expected errors,
-or we have not identified a good method to include errors.   
-For this study, we take a path of brute force, namely, we place expected photometric error on top 
-of the simulated data so that the simulated data point behaves like one of the many realizations.
+One complication in simulating realistic data is that the machine does not accept expected errors, or we have not identified a good method to include errors.   
+For this study, we take a path of brute force, namely, we place expected photometric error on top of the simulated data so that the simulated data point behaves like one of the many realizations.
 For HSC simulation, the size of error varies night to night due to sky condition. 
-We measure and derive flux vs. error relationship from the actual observed data at simulating epoch 
-and apply that relationship to the simulated photometric data.
+We measure and derive flux vs. error relationship from the actual observed data at simulating epoch and apply that relationship to the simulated photometric data.
 %For LSST simulation, we find the flux-error relation from the Deep Drilling Field (DDF) of the one
 %used in Kaggle Competition \citep{malz19a} and applied that to the simulated photometric data.
 
-We have tested how many light curves are needed for training.  We use "accuracy" ($\S$ \ref{hyperparametersearch}) 
-as a guide on how many light curves to use.  
-Based on the our convergence test, we conclude we need to generate more than 100,000 light curves 
-for training as shown Figure \ref{fig:size_convergence_test}.
-For training, 370,345 light curves are generated for LSST Deep Drilling Field (DDF), and 514,954 for 
-HSC observed data.
-We dropped ones which has less than 3$\sigma$ detection at the maximum since our detection criterion
-is 5$\simga$.  %Prior to the modeling, we did the convergence test
-Examples of simulated photometric data is shown in Figure \ref{fig:simLCsamples}.
+We have tested how many light curves are needed for training.  We use "accuracy" ($\S$ \ref{hyperparametersearch}) as a guide on how many light curves to use.  
+Based on the our convergence test, we conclude we need to generate more than 100,000 light curves for training as shown Figure \ref{fig:size_convergence_test}.
+For training, 370,345 light curves are generated for LSST Deep Drilling Field (DDF), and 514,954 for HSC observed data.
+We dropped ones which has less than 3$\sigma$ detection at the maximum since our detection criterion is 5$\simga$.  %Prior to the modeling, we did the convergence test
 
 \subsection{Simulated Data for ML Validation}
 \label{sec:validation}
-To evaluate our machine, we need a dataset which is labed by true identities.   In nature, we should 
-expect to have a variety of transients besides SN~Ia, SN~Ibc, and SN~II.
+To evaluate our machine, we need a dataset which is labed by true identities. 
+In nature, we should expect to have a variety of transients besides SN~Ia, SN~Ibc, and SN~II.
 LSST team has compiled a series of variables including AGNs, variable stars, microlensing events,
 and class 99 whose identity was not revealed at the time of competition \citep{malz19a,kessler19a}.   
 We take their test dataset as a pseudo-real observed data and assess our accuracy of classification.
@@ -232,7 +222,7 @@ The discovery of 1842 transients from a six-month HSC-SSP Transient Survey in th
 November 2016 through April 2017 are reported and described in \citet{yasuda19a}.
 The survey is composed of Ultra Deep Field (UD) and DEEP Field in COSMOS \citep{scoville07a}.
 The median 5$\sigma$ limiting magnitues per epoch are 26.4, 26.3, 26.0, 25.6, and 24.6 mag (AB)
-for $g$-, $r2$-, $i2$-, $z$-, and $y$- bands respectively for UD. 
+for $g$-, $r2$-, $i2$-, $z$-, and $Y$- bands respectively for UD. 
 For DEEP field, the depth is 0.6 mag shallower.
 
 %We used SNANA \citep{Kessler_2009} and time series SED called "template" to simulate the light curve dataset for classifier training.
@@ -928,7 +918,7 @@ $M$ & $m$ & $f$ &  ROC &  Pre.-Rec. &\\
      \includegraphics[width=\columnwidth]{figures/06_CM_abs-mag_scaled-flux_w-mixup_predictions_test_2.eps}
   \end{center}
   \caption{%
-  Confusion matrix in three-class classification of PLAsTiCC test set. The input to the classifier is absolute magnitude and normalized flux. The numbers in parentheses represent the raw numbers.
+  Normalized confusion matrix in three-class classification of PLAsTiCC test set. The input to the classifier is absolute magnitude and normalized flux. The proportions in each row sum to 1. The numbers in parentheses represent the raw numbers.
   }%
   \label{fig:plasticc_3class_CM}
 \end{figure}
@@ -1021,7 +1011,7 @@ The numbers labeled Ia and non Ia are 904 and 428 (847 and 409, with redshift), 
 Those with the number of dof less than 5 are labeled as "unclassified", which is not classified by SALT2 fit, and are not used  for the evaluation.
 
 We also extracted 441 "light curve verified supernovae" that have spec-z and photometric information before and after peak, and also verified their classification results.
-Figures\ \ref{fig:h2_test_all} and \ref{fig:h2_test_gold} show the AUCs of the best classifier for all labeled HSC supernovae and light curve verified HSC supernovae respectively.
+Figures\ \ref{fig:h2_test_all} and \ref{fig:h2_test_gold} show the AUCs of the best classifier for all labeled HSC supernovae and the light curve verified HSC supernovae respectively.
 The confusion matrices for each case are shown in Figure\ \ref{fig:h2_test_CM}.
 %need reference
 The best performing classifier shows the same classification results as the conventional method with an accuracy of 84.9\% for all labeled supernovae and 91.4\% for the light curve verified supernovae.
@@ -1131,9 +1121,10 @@ Test& \checkmark &            & \checkmark &       0.938 &       0.921 &       0
     \end{tabular}
     \vspace{2mm}
     \caption{%
-  ROC curves and precision Recall curves in two-class classification of light curve verified HSC supernovae. 
-  The input to the classifier is absolute magnitude and normalized flux.
-  Each colored line represents the performance for each of the five classifiers with different input cases, and the that for all of their outputs.
+  As in Figure \ref{fig:h2_test_all}, but for the light curve verified HSC supernovae. 
+  %Recall curves in two-class classification of light curve verified HSC supernovae. 
+  %The input to the classifier is absolute magnitude and normalized flux.
+  %Each colored line represents the performance for each of the five classifiers with different input cases, and the that for all of their outputs.
 }%
     \label{fig:h2_test_gold}
 \end{figure*}
@@ -1188,7 +1179,7 @@ Test& \checkmark &            & \checkmark &        0.859 &        0.816 &      
         \end{minipage}
     \end{tabular}
     \caption{%
-  Confusion matrices in binary classification of 1256 labeled HSC supernovae (left) and 441 light curve verified supernovae (right).
+  Normalized confusion matrices in binary classification of 1256 labeled HSC supernovae (left) and 441 light curve verified supernovae (right).
   The inputs for both classifications are absolute magnitude and normalized flux.
 }%
     \label{fig:h2_test_CM}
@@ -1249,7 +1240,9 @@ $M$ & $m$ & $f$  &  Case 0 & 1 & 2 & 3 & 4 &  All \\
      \includegraphics[width=\columnwidth]{figures/13_CM_abs-mag_scaled-flux_w-mixup_remove-y_predictions_validation_2_Flagall_weighted.eps}
   \end{center}
   \caption{%
-  Confusion matrix in three-class classification of validation dataset.
+  Normalized confusion matrix for validation dataset in the HSC three-class classification.
+  The input is absolute magnitude and normalized flux.
+  The proportions in each row sum to 1 (within rounding error).
   }%
   \label{fig:h3_validation_CM}
 \end{figure}
@@ -1261,6 +1254,7 @@ $M$ & $m$ & $f$  &  Case 0 & 1 & 2 & 3 & 4 &  All \\
   \end{center}
   \caption{%
   Type fractions in the three-class classification of 1812 HSC supernovae.
+  The numbers in parentheses represent the raw numbers.
   }%
   \label{fig:h3_class_ratio}
 \end{figure}
@@ -1277,37 +1271,37 @@ Each classification performance shown in sections \ref{sec:h2} and \ref{sec:h3} 
 \tbl{Example of classification result list for HSC supernovae.}{
 %\tiny
 \scriptsize
-\begin{tabular}{p{1.5em}p{1em}p{1em}p{4.0em}p{2.1em}|p{0.6em}p{3.0em}p{4.5em}|p{2.9em}|p{1.3em}p{1.3em}p{1.3em}p{1em}|p{2.9em}|p{1.3em}p{1.3em}p{1.3em}p{1em}}
+\begin{tabular}{p{4em}p{1em}p{4.0em}p{2.1em}|p{0.6em}p{4.0em}p{4.5em}|p{2.9em}|p{1.2em}p{1.2em}p{1.2em}p{0.6em}|p{2.9em}|p{1.2em}p{1.2em}p{1.2em}p{0.6em}}
 %\multicolumn{6}{|c}{Accuracy}
 \hline
-Index &    ID &  Case &        z &  z\_src$^*$ &  \multicolumn{3}{p{10.0em}}{SALT2 fitting} &\multicolumn{5}{|p{14.5em}}{Classifier (Input$^{**}$: $M+f$)} & \multicolumn{5}{|p{12.0em}}{Classifier (Input$^{**}$: $m+f$)}\\
+Name  &  Case &        z &  z\_src$^*$ &  \multicolumn{3}{p{10.0em}}{SALT2 fitting} &\multicolumn{5}{|p{13.5em}}{Classifier (Input$^{**}$: $M+f$)} & \multicolumn{5}{|p{12.0em}}{Classifier (Input$^{**}$: $m+f$)}\\
 \hline
-      &       &       &          &          &  dof & label1 & label2  & 2-class &\multicolumn{4}{p{10.0em}|}{3-class}&2-class &    \multicolumn{4}{p{10.0em}}{3-class}\\
+      &       &          &          &  dof & label1 & label2  & 2-class &\multicolumn{4}{p{10.0em}|}{3-class}&2-class &    \multicolumn{4}{p{10.0em}}{3-class}\\
 \hline
-      &       &       &          &          &      &        &        &    Ia &    Ia &   Ibc &    II  &class &   Ia &    Ia &   Ibc &    II &class\\
+      &       &          &          &      &        &        &    Ia &    Ia &   Ibc &    II  &class &   Ia &    Ia &   Ibc &    II &class\\
 \hline
-0    &  aaau &     1 &    $0.370_{-0.072}^{+0.110}$ &         3 &    7 &    Ia? &   incomplete &    0.399 &    0.414 &    0.041 &    0.545 &      II &    0.401 &    0.447 &    0.013 &    0.541 &      II \\
-1    &  aaav &     1 &    $3.280_{-2.423}^{+0.167}$ &         4 &   17 &  nonIa &     OK &    0.157 &    0.074 &    0.001 &    0.925 &      II &    0.269 &    0.314 &    0.168 &    0.518 &      II \\
-2    &  aabj &     0 &    $0.361_{-0.008}^{+0.007}$ &         2 &    8 &  nonIa &   incomplete &    0.641 &    0.680 &    0.010 &    0.310 &      Ia &    0.574 &    0.583 &    0.020 &    0.396 &      Ia \\
-3    &  aabk &     1 &      nan &         0 &    9 &    Ia? &   incomplete &      nan &      nan &      nan &      nan &     NaN &    0.421 &    0.445 &    0.317 &    0.237 &      Ia \\
-4    &  aabp &     1 &    $1.477_{-0.032}^{+0.037}$ &         2 &   19 &  nonIa &   incomplete &    0.965 &    0.972 &    0.001 &    0.027 &      Ia &    0.882 &    0.888 &    0.033 &    0.079 &      Ia \\
-\vdots & & & & & & & & & & & & & & & & &\\
-907  &  bjrb &     1 &    $0.560_{-0.036}^{+0.024}$ &         3 &    1 &  unknown &   incomplete &    0.004 &    0.005 &    0.006 &    0.988 &      II &    0.009 &    0.003 &    0.004 &    0.993 &      II \\
-908  &  bjwo &     0 &    $1.449_{-0.063}^{+0.080}$ &         2 &   26 &     Ia &     OK &    0.893 &    0.919 &    0.003 &    0.078 &      Ia &    0.890 &    0.933 &    0.006 &    0.061 &      Ia \\
-909  &  bjya &     0 &    $1.128_{-0.000}^{+0.000}$ &         1 &   22 &  nonIa &     OK &    0.241 &    0.191 &    0.070 &    0.738 &      II &    0.311 &    0.177 &    0.083 &    0.740 &      II \\
-910  &  bjyn &     0 &    $0.626_{-0.000}^{+0.000}$ &         1 &   24 &     Ia &     OK &    0.881 &    0.881 &    0.028 &    0.091 &      Ia &    0.961 &    0.921 &    0.007 &    0.072 &      Ia \\
-911  &  bjza &     1 &    $1.350_{-0.156}^{+1.142}$ &         4 &   13 &  nonIa &     OK &    0.012 &    0.030 &    0.023 &    0.947 &      II &    0.060 &    0.040 &    0.004 &    0.956 &      II \\
-912  &  bkbn &     0 &    $0.863_{-0.012}^{+0.036}$ &         2 &   23 &  nonIa &     OK &    0.010 &    0.009 &    0.000 &    0.991 &      II &    0.013 &    0.010 &    0.002 &    0.988 &      II \\
-913  &  bkcz &     0 &    $0.795_{-0.000}^{+0.000}$ &         1 &   27 &     Ia &     OK &    0.666 &    0.656 &    0.050 &    0.293 &      Ia &    0.637 &    0.767 &    0.022 &    0.211 &      Ia \\
-914  &  bkef &     0 &    $2.940_{-0.087}^{+0.119}$ &         2 &    0 &   fail &    NaN &    0.237 &    0.446 &    0.000 &    0.554 &      II &    0.942 &    0.935 &    0.012 &    0.052 &      Ia \\
-915  &  bkem &     2 &    $0.609_{-0.000}^{+0.000}$ &         1 &   17 &     Ia &     OK &    0.906 &    0.873 &    0.001 &    0.126 &      Ia &    0.904 &    0.869 &    0.022 &    0.108 &      Ia \\
-916  &  bkfv &     0 &    $0.670_{-0.035}^{+0.035}$ &         3 &   23 &     Ia &     OK &    0.909 &    0.920 &    0.004 &    0.076 &      Ia &    0.943 &    0.934 &    0.020 &    0.047 &      Ia \\
-\vdots & & & & & & & & & & & & & & & & &\\
-1819 &  dskd &     0 &    $0.630_{-0.000}^{+0.000}$ &         1 &    3 &  unknown &   incomplete &    0.882 &    0.855 &    0.081 &    0.063 &      Ia &    0.859 &    0.858 &    0.086 &    0.055 &      Ia \\
-1820 &  dsng &     0 &    $1.331_{-0.048}^{+0.048}$ &         2 &    7 &    Ia? &   incomplete &    0.964 &    0.963 &    0.009 &    0.029 &      Ia &    0.939 &    0.906 &    0.010 &    0.084 &      Ia \\
-1821 &  dsoh &     0 &    $1.026_{-0.000}^{+0.000}$ &         1 &    2 &  unknown &   incomplete &    0.967 &    0.970 &    0.012 &    0.018 &      Ia &    0.901 &    0.918 &    0.024 &    0.058 &      Ia \\
-1822 &  dsox &     0 &    $1.137_{-0.034}^{+0.041}$ &         2 &    2 &  unknown &   incomplete &    0.769 &    0.787 &    0.156 &    0.057 &      Ia &    0.899 &    0.898 &    0.027 &    0.076 &      Ia \\
-1823 &  dspl &     0 &    $0.624_{-0.000}^{+0.000}$ &         1 &    9 &  nonIa &   incomplete &    0.095 &    0.048 &    0.106 &    0.846 &      II &    0.074 &    0.054 &    0.078 &    0.868 &      II \\
+HSC16aaau &     1 &    $0.370_{-0.072}^{+0.110}$ &         3 &    7 &    Ia? &   incomplete &    0.399 &    0.414 &    0.041 &    0.545 &      II &    0.401 &    0.447 &    0.013 &    0.541 &      II \\
+HSC16aaav &     1 &    $3.280_{-2.423}^{+0.167}$ &         4 &   17 &  nonIa &     OK &    0.157 &    0.074 &    0.001 &    0.925 &      II &    0.269 &    0.314 &    0.168 &    0.518 &      II \\
+HSC16aabj &     0 &    $0.361_{-0.008}^{+0.007}$ &         2 &    8 &  nonIa &   incomplete &    0.641 &    0.680 &    0.010 &    0.310 &      Ia &    0.574 &    0.583 &    0.020 &    0.396 &      Ia \\
+HSC16aabk &     1 &      nan &         0 &    9 &    Ia? &   incomplete &      nan &      nan &      nan &      nan &     NaN &    0.421 &    0.445 &    0.317 &    0.237 &      Ia \\
+HSC16aabp &     1 &    $1.477_{-0.032}^{+0.037}$ &         2 &   19 &  nonIa &   incomplete &    0.965 &    0.972 &    0.001 &    0.027 &      Ia &    0.882 &    0.888 &    0.033 &    0.079 &      Ia \\
+\vdots & & & & & & & & & & & & & & & &\\
+HSC17bjrb &     1 &    $0.560_{-0.036}^{+0.024}$ &         3 &    1 &  unclassified &   incomplete &    0.004 &    0.005 &    0.006 &    0.988 &      II &    0.009 &    0.003 &    0.004 &    0.993 &      II \\
+HSC17bjwo &     0 &    $1.449_{-0.063}^{+0.080}$ &         2 &   26 &     Ia &     OK &    0.893 &    0.919 &    0.003 &    0.078 &      Ia &    0.890 &    0.933 &    0.006 &    0.061 &      Ia \\
+HSC17bjya &     0 &    $1.128_{-0.000}^{+0.000}$ &         1 &   22 &  nonIa &     OK &    0.241 &    0.191 &    0.070 &    0.738 &      II &    0.311 &    0.177 &    0.083 &    0.740 &      II \\
+HSC17bjyn &     0 &    $0.626_{-0.000}^{+0.000}$ &         1 &   24 &     Ia &     OK &    0.881 &    0.881 &    0.028 &    0.091 &      Ia &    0.961 &    0.921 &    0.007 &    0.072 &      Ia \\
+HSC17bjza &     1 &    $1.350_{-0.156}^{+1.142}$ &         4 &   13 &  nonIa &     OK &    0.012 &    0.030 &    0.023 &    0.947 &      II &    0.060 &    0.040 &    0.004 &    0.956 &      II \\
+HSC17bkbn &     0 &    $0.863_{-0.012}^{+0.036}$ &         2 &   23 &  nonIa &     OK &    0.010 &    0.009 &    0.000 &    0.991 &      II &    0.013 &    0.010 &    0.002 &    0.988 &      II \\
+HSC17bkcz &     0 &    $0.795_{-0.000}^{+0.000}$ &         1 &   27 &     Ia &     OK &    0.666 &    0.656 &    0.050 &    0.293 &      Ia &    0.637 &    0.767 &    0.022 &    0.211 &      Ia \\
+HSC17bkef &     0 &    $2.940_{-0.087}^{+0.119}$ &         2 &    0 &   fail &    NaN &    0.237 &    0.446 &    0.000 &    0.554 &      II &    0.942 &    0.935 &    0.012 &    0.052 &      Ia \\
+HSC17bkem &     2 &    $0.609_{-0.000}^{+0.000}$ &         1 &   17 &     Ia &     OK &    0.906 &    0.873 &    0.001 &    0.126 &      Ia &    0.904 &    0.869 &    0.022 &    0.108 &      Ia \\
+HSC17bkfv &     0 &    $0.670_{-0.035}^{+0.035}$ &         3 &   23 &     Ia &     OK &    0.909 &    0.920 &    0.004 &    0.076 &      Ia &    0.943 &    0.934 &    0.020 &    0.047 &      Ia \\
+\vdots & & & & & & & & & & & & & & & &\\
+HSC17dskd &     0 &    $0.630_{-0.000}^{+0.000}$ &         1 &    3 &  unclassified &   incomplete &    0.882 &    0.855 &    0.081 &    0.063 &      Ia &    0.859 &    0.858 &    0.086 &    0.055 &      Ia \\
+HSC17dsng &     0 &    $1.331_{-0.048}^{+0.048}$ &         2 &    7 &    Ia? &   incomplete &    0.964 &    0.963 &    0.009 &    0.029 &      Ia &    0.939 &    0.906 &    0.010 &    0.084 &      Ia \\
+HSC17dsoh &     0 &    $1.026_{-0.000}^{+0.000}$ &         1 &    2 &  unclassified &   incomplete &    0.967 &    0.970 &    0.012 &    0.018 &      Ia &    0.901 &    0.918 &    0.024 &    0.058 &      Ia \\
+HSC17dsox &     0 &    $1.137_{-0.034}^{+0.041}$ &         2 &    2 &  unclassified &   incomplete &    0.769 &    0.787 &    0.156 &    0.057 &      Ia &    0.899 &    0.898 &    0.027 &    0.076 &      Ia \\
+HSC17dspl &     0 &    $0.624_{-0.000}^{+0.000}$ &         1 &    9 &  nonIa &   incomplete &    0.095 &    0.048 &    0.106 &    0.846 &      II &    0.074 &    0.054 &    0.078 &    0.868 &      II \\
 \hline
 \end{tabular}
 }\label{tab:h_results}
@@ -1361,8 +1355,8 @@ Our method is not useful for surveys that sweep a wide area like LSST survey, bu
             \end{center}
         \end{minipage}
     \end{tabular}  \caption{%
-    Confusion matrices in the two-class classification of the PLAsTiCC 1st classifier (left) and our best classifier given absolute magnitude and normalized flux (right).
-    }%
+    Normalized confusion matrices of two-class classification results for the PLAsTiCC test set by \citet{boone19a} (left) and our best classifier given absolute magnitude and normalized flux (right).
+    }%                                                                                           
     \label{fig:comp_plasticc_1st}
 \end{figure*}
 %
@@ -1431,7 +1425,7 @@ As mentioned in section \ref{sec:misclass}, the classification performance is lo
 However, due to events whose probabilities fluctuate with the progress of the supernova phase illustrated in Figure \ref{fig:lcps}, there are some cases where the accuracy slightly decreases even if the period until classification becomes long.
 %In addition, considering the cumulative number of supernovae classified as Ia with high probability from six months data, it is estimated that our classifier can classify at least four or more Ia supernovae candidate to follow-up in one month observation of the Ultra-deep area.
 In addition, the number of follow-up supernovae classified by the classifier can be estimated from the cumulative number in Figure \ref{fig:lcps}.
-Using data within one month from the first detection, 28 supernovae with z $>=$ 1 are classified with Ia probability of 95\% or more.
+Using data within one month from the first detection, 28 supernovae with z $>$ 1 are classified with Ia probability of 95\% or more.
 Since the number of these supernovae is a cumulative number for six months, dividing this by six corresponds to the number of follow-up supernovae classified during a one-month survey, which is 4 to 5 events.
 
 Lastly, we discuss the transition of the Ia probability output by the classifier along supernova phase.
@@ -1456,18 +1450,18 @@ This means that our classifier accomplishes the task described in Section \ref{s
 %
 %
 \begin{figure*}[ht]
-    \begin{tabular}{cc}
-        \begin{minipage}{0.32\hsize}
+    \begin{tabular}{ccc}
+        \begin{minipage}{0.33\hsize}
             \begin{center}
                 \includegraphics[width=\columnwidth]{figures/lcp_aqfi.eps}
             \end{center}
         \end{minipage}
-        \begin{minipage}{0.32\hsize}
+        \begin{minipage}{0.33\hsize}
             \begin{center}
                 \includegraphics[width=\columnwidth]{figures/lcp_apsw.eps}
             \end{center}
         \end{minipage}
-        \begin{minipage}{0.32\hsize}
+        \begin{minipage}{0.33\hsize}
             \begin{center}
                 \includegraphics[width=\columnwidth]{figures/lcp_aboi.eps}
             \end{center}
