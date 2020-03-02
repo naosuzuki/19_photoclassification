@@ -720,7 +720,7 @@ the model parameters (green boxes in Figure \ref{fig:dnn_model}) are optimized b
 %
 
 \subsubsection{Estimating Redshift}
-
+\label{sec:est_redshift}
 % 観測した明るさからその天体のredshiftを推定した
 % DNNの出力がスカラーになって最後のsoftmat layerがないことを除けば、図2と同じ構造のモデルを利用した。
 % モデルの最適化は正解のredshiftの値と出力値の二乗誤差を小さくするようにした。
@@ -733,8 +733,7 @@ For these cases, we can estimate the redshift $z$ of a supernova from the observ
 %We cannot use absolute magnitude to estimate the redshift value because redshift value is required to calculate absolute magnitude.
 %Therefore, we used magnitude instead of absolute magnitude as the input of the DNN.
 
-We use a model with the same structure as in Figure \ref{fig:dnn_model} except that the DNN output 
-is a scalar, and place no final softmax layer for redshift estimation.
+We use a model with the same structure as in Figure \ref{fig:dnn_model} except that the DNN output is a scalar, and place no final softmax layer for redshift estimation.
 The objective function to optimize is the squared error between the ground truth $z$ and the output value $\hat{y}$.
 We measure the accuracy of the model with the coefficient of determination $R^2$, that is,
 \begin{eqnarray*}
@@ -928,7 +927,7 @@ $M$ & $m$ & $f$ &  ROC &  Pre.-Rec. &\\
 \label{sec:h}
 %
 We applied the developed classifier to the light curve data of 1824 supernovae discovered in the HSC-SSP Transient Survey.
-As described in the HSC transient servey overview paper \citep{yasuda19a}, this survey is part of HSC SSP survey, where observations were performed in two areas with different observation frequencies, "Deep" area and "Ultra-Deep" area.
+As described in \citet{yasuda19a}, this survey is part of HSC SSP survey, where observations were performed in two areas with different observation frequencies, "Deep" area and "Ultra-Deep" area.
 Therefore, the number of photometric data of supernova in each area is different.
 There are also events in which part of the light curve data is missing.
 To correspond these supernovae, we prepared five input cases of light curve data and classifiers for each case.
@@ -979,8 +978,8 @@ z & 12 & 0, 6, 30, 40, 59, 68, 90, 101, 119, 126, 151, 157\\
 
 %redshift info
 The redshift information for HSC supernovae is combination of our follow-up observation results and catalogs from multiple surveys of those host galaxies.
-The spectral redshift (spec-z) information are adopted from the results of the follow-up spectrum observation by AAT/AAOmega performed in 2018 and that from DEIMOS \citep{DEIMOS2018}, FMOS-COSMOS \citep{FMOS-COSMOS2015}, C3R2 \citep{C3R2_2017}, PRIMUS \citep{PRIMUS2011} and COSMOS catalogs.
-For those without spec-z information, the photometric redshifts (photo-z) are adopted from the COSMOS catalog and those calculated from HSC SSP survey data \citep{HSCSSP_photo-z2018}.
+The spectral redshifts (spec-z) are adopted from the results of the follow-up spectrum observations by AAT/AAOmega performed in 2018 and that from DEIMOS \citep{DEIMOS2018}, FMOS-COSMOS \citep{FMOS-COSMOS2015}, C3R2 \citep{C3R2_2017}, PRIMUS \citep{PRIMUS2011} and COSMOS catalogs.
+For those without spec-z, the photometric redshifts (photo-z) are adopted from the COSMOS catalog and those calculated from the HSC-SSP survey data \citep{HSCSSP_photo-z2018}.
 
 %training set
 We applied both two-class and three-class classification tasks to HSC data, as with PLAsTiCC data.
@@ -1492,6 +1491,8 @@ This means that our classifier accomplishes the task described in Section \ref{s
   \end{center}
   \caption{%
   Transition of Ia probability with increasing elapsed time of input supernovae.
+  Each line corresponds to one of supernovae.
+  The difference in color indicates the difference in label, with red being Ia and blue being non Ia.
   }%
   \label{fig:visualized_Ia_prob}
 \end{figure}
@@ -1610,8 +1611,12 @@ is 16\%.
 \subsection{Redshift estimation}
 %using v1.1.0 results
 %
-In addition to the supernova type classification,
-we also made a redshift estimate using same training dataset for type classification.
+%In addition to the supernova type classification,
+%we also made a redshift estimate using same training dataset for type classification.
+As described in section 4.2.2, for supernovaes without redshift information, we can also estimate their redshift using a model that has largely the same structure as the type classifier.
+The training and input data are common to the type classification.
+In this section, we discuss the accuracy of the redshift estimation.
+
 The standard deviation of normalized residual $(z_{\rm pred}-z_{\rm spec})/(1+z_{\rm spec})$ \citep{Salvato_2009,Salvato_2019}, used in galaxy photo-z estimation, is applied to the performance criteria for redshift estimation.
 In verification with Case 0 simulated data, that for Ia and non Ia objects are 0.022 and 0.076, respectively.
 For the actual HSC supernovae, we used observationally obtained redshifts of host galaxies (see section \ref{sec:h}) including spec-z and photo-z for comparison with estimates.
@@ -1661,7 +1666,7 @@ Furthermore, our proposed method is easy to apply to estimation models such as r
 \begin{ack}
 The Hyper Suprime-Cam (HSC) collaboration includes the astronomical communities of Japan, Taiwan, and Princeton University. The HSC instrumentation and software were developed by the National Astronomical Observatory of Japan (NAOJ), the Kavli Institute for the Physics and Mathematics of the Universe (Kavli IPMU), the University of Tokyo, the High Energy Accelerator Research Organization (KEK), the Academia Sinica Institute for Astronomy and Astrophysics in Taiwan (ASIAA), and Princeton University. Funding was contributed by the FIRST program from the Japanese Cabinet Office, the Ministry of Education, Culture, Sports, Science and Technology (MEXT), the Japan Society for the Promotion of Science (JSPS), the Japan Science and Technology Agency (JST), the Toray Science Foundation, NAOJ, Kavli IPMU, KEK, ASIAA, and Princeton University.
 
-IT, NS and NY acknowledge financial support from JST CREST (JPMHCR1414). NY is supported by the Grant-in-Aid for Scientific Research program of MEXT (18H04345). MT is supported by an Inoue Science Research Award from the Inoue Foundation for Science and the Grant-in-Aid for Scientific Research programs of JSPS (15H02075, 16H02183) and MEXT (17H06363).  NS is supported by JSPS (18K03696).
+IT, NS and NY acknowledge financial support from JST CREST (JPMHCR1414). NY is supported by the Grant-in-Aid for Scientific Research program of MEXT (18H04345). NS is supported by JSPS (18K03696).
 
 This research is based in part on data collected at the Subaru Telescope and retrieved from the HSC data archive system, which is operated by the Subaru Telescope and Astronomy Data Center at NAOJ.
 \end{ack}
