@@ -772,7 +772,7 @@ The best performing classifier shows the same classification results as the conv
 \begin{tabular}{c|ccc|p{3em}p{1.8em}p{1.8em}p{1.8em}p{1.8em}p{1.8em}|p{3em}p{1.8em}p{1.8em}p{1.8em}p{1.8em}p{1.8em}}
 \noalign{\vskip 1mm}
 \hline
-Dataset & \multicolumn{3}{c}{Input\footnotemark[$*$]} & \multicolumn{6}{|c|}{ROC} & \multicolumn{6}{c}{Pre.-Rec.} \\
+Dataset & \multicolumn{3}{c}{Input\footnotemark[$*$]} & \multicolumn{6}{|c|}{ROC} & \multicolumn{6}{c}{Precision-Recall} \\
 \hline
  & $M$ & $m$ & $f$ & Case 0 & 1 & 2 & 3 & 4 & All & Case 0 & 1 & 2 & 3 & 4 & All \\
 \hline
@@ -816,7 +816,7 @@ Test& \checkmark &            & \checkmark &       0.945 &       0.922 &       0
     \end{tabular}
     \vspace{2mm}
     \caption{%
-    ROC curves and precision Recall curves in two-class classification of all labeled HSC SNe.
+    ROC curves and Precision Recall curves in two-class classification of all labeled HSC SNe.
     The input to the classifier is pseudo-absolute magnitude and normalized flux.
     Each colored line represents the performance for each of the five classifiers with different input cases, and the that for all of their outputs.
     }
@@ -1031,9 +1031,9 @@ HSC17dspl &     0 &    $0.624_{-0.000}^{+0.000}$ &         1 &    9 &  nonIa &  
 %
 When using our classification method, the number of photometric data points given to the classifier increases as the survey progresses.
 Therefore, we investigated the transition of performance against the number of epochs.
-We classified the Case 0 HSC dataset by increasing the number of input data points one by one, and examined the relationship between the number of epochs and the classification performance.
+We classified the dataset by increasing the number of input data points one by one, and examined the relationship between the number of epochs and the classification performance.
 Binary classifiers are used for classification, and the accuracy calculated from each confusion matrix is used for evaluation.
-Figure\ \ref{fig:n_observations} shows the transition of classification performance along with the number of epochs.
+Figure\ \ref{fig:n_observations} shows the transition of classification performance for the Case 0 HSC dataset along with the number of epochs.
 Although the Ia accuracy is as low as 0.6 to 0.7 in the early stage of the survey with less than five epochs, it exceeds 0.8 when the number of epochs increases to 22.
 The partial decrease in accuracy is thought to be due to the new SN found at the added photometric point.
 
@@ -1070,7 +1070,7 @@ This means that our classifier accomplishes the task described in subsection \re
      \includegraphics[width=\columnwidth]{figures/n_observations_v2_case0.eps}
   \end{center}
   \caption{%
-  Relationship between the number of epochs and classification performance in binary classification for HSC dataset. 
+  Relationship between the number of epochs and classification performance in binary classification for the Case 0 dataset. 
   The horizontal axis is the elapsed days of the HSC survey, and the vertical dot line shows the scale of input photometric point number. 
   The color of each mark in accuracy indicates the band of the added photometric point. 
   The blue horizontal dotted line indicates the accuracy when using all epochs.
