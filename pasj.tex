@@ -280,7 +280,7 @@ It is the Deep Learning that makes this attempt possible.
 We test how good deep learning can do without extracting features such as color, light curve width and the peak magnitude on this paper.
 %It has been proven among PLAsTiCC competition that a combination of features can perform very well \citep{boone19a}, but it needs the data augmentation, interpolation or extrapolation to extract features.
 
-We push one step further and use the observed data as raw as possible, meaning our input is a simple array of magnitudes.  Such attempt would not be possible ten years ago, but thanks for the advancement of computing and deep learning technique, now it becomes reality.  Among many other machine learning methods, deep neural network is our choice which enables us to classify astronomical objects from the raw observed data. 
+We push one step further and use the observed data as raw as possible, meaning our input is a simple array of magnitudes.  Such attempt would not be possible ten years ago, but thanks for the advancement of computing and deep learning technique, now it becomes a reality.  Among many other machine learning methods, deep neural network is our choice which enables us to classify astronomical objects from the raw observed data. 
 
 \subsection{Model design}
 \label{sec:model} %added by IT
@@ -304,7 +304,7 @@ At the end, each SN is given a probability of being a certain astrophysical clas
 %
 
 
-{\bf Input}: Our input is an array of magnitudes and normalized flux of the $i$th training sample of SN:
+{\bf Input}: Our input is an array of magnitudes and normalized fluxes of the $i$th SN in the training data set:
 \begin{equation}
       x_i = \left( M_{i1}, M_{i2}, \ldots M_{ij} \ldots , M_{iN}, f_{i1}, f_{i2}, \ldots, f_{iN} \right)^T
 \end{equation}
@@ -317,7 +317,7 @@ our input array has a size of $1\times2N$ per a SN where $N$ is the number of da
 %The DNN model receives the total of P brightnesses observed in multiple bands as an input and outputs $C$ values, where $C$ is the number of classes in classification task, and $C = 1$ in regression task.
 
 {\bf First Fully Connected layer:}
-We would like to make use of $D$ neurons which is also known as the number of 'hidden layer', and $D$ is greater than the number of input components ($2N$).  However, the dimension $D$ is not known in advance, and this is one of the hyperparameters we optimize later in this section.  Since the dimension of input ($2N$) and the number of optimized neurons $D$ could be different, we are in need of adjusting the dimensions and that is the role of this First Fully Connected layer $F(x)$.    
+We would like to make use of $D$ neurons which is also known as the number of 'hidden layer', and $D$ is greater than the number of input components ($2N$).  However, the dimension $D$ is not known in advance, and this parameter is one of the hyperparameters we optimize later in this section.  Since the dimension of input ($2N$) and the number of optimized neurons $D$ could be different, we are in need of adjusting the dimensions and that is the role of this First Fully Connected layer $F(x)$.    
 \begin{equation}
     F \left(x, \left\{W_{fc1},b_{fc1}\right\}\right) = W_{fc1} x + b_{fc1} \in \mathbb{R}^D.
 \end{equation}
@@ -326,7 +326,7 @@ $F(x)$ is given by a linear combination of matrix $W_{fc} \in \mathbb{R}^{D\time
 Later on, $W_{fc}$ and $b_{fc}$ are optimised by an open source Machine Learning package, {\it Tensorflow}.  Unless we mention otherwise, we use libraries from {\it Tensorflow}.
 
 {\bf Dropout layer:}
-In order to have a robust result, it is always best to train the all of the neurons as an ensemble and avoid one of the neurons drags the result.  Dropout is a process which randomly drops some of the neurons from the training and the rate of dropout can be optimized as one of the hyperparameters \citep{dropout}. 
+In order to have a robust result, it is always best to train all of the neurons as an ensemble and avoid one of the neurons drags the result.  Dropout is a process which randomly drops some of the neurons from the training and the rate of dropout can be optimized as one of the hyperparameters \citep{dropout}. 
 
 {\bf Highway layer:}
 We adopted Highway layer \citep{srivastava15a} and the number of layers is optimized through hyperparameter search.   In theory, we can design a very deep layer and the number of layers can be more than we need.   In fact, it is not trivial to find the optimized number of layers.   
@@ -335,7 +335,7 @@ The depth and/or layer size of the DNN model is directly related to the complexi
 However, if a model is too deep, the learning process becomes difficult and causes performance degradation.
 %There are many studies to solve the problem such as optimization, initialization, and network architecture.
 Highway layer is a technique that stabilizes learning process by devising the network structure.
-In \citet{Kimura17}, we have used Highway layer and tested on 2D image, and it proved a good performance.  The details of the use of Highway layer is described in \citet{Kimura17}.  We continue to adopt Highway layer scheme for this analysis.
+In \citet{Kimura17}, we have used Highway layer and tested on 2D image, and it proved a good performance.  The details of the use and the advantages of Highway layer is described in \citet{Kimura17}.  We continue to adopt Highway layer scheme for this analysis.
 %\begin{equation}
 %Highway\left(h\right) = H\left(h\right) \otimes T \left(h\right) + h \otimes C\left(h\right)
 %\end{equation}
@@ -345,7 +345,7 @@ The output, ${\bf Highway} \left(x\right)$, is formulated as
 \begin{equation}
     {\bf Highway} \left(x\right) = G \left(x\right) \otimes H \left(x\right) + C \left(x\right) \otimes x \in \mathbb{R}^D,
 \end{equation}
-where $H$ is a non-linear transformation layer. $G$ is the transformation gate function layer and controls the transformation of input.  $C$ is the carry gate function layer. $\otimes$ is element-wise product, also known as Hadamard product.
+where $H$ is a non-linear transformation layer. $G$ is the transformation gate function layer and controls the transformation of input.  $C$ is the carry gate function layer. The symbol, $\otimes$, is element-wise product, also known as Hadamard product.
 %The two gate functions $T$ and $C$ control how much of the outputs which are transforming the input and carrying it, respectively.
 %One gate functions, $T$, controls the transformation of input and the other gate function, $C$, controls  
 Highway layer includes other layers inside.  This structure is called layer in layer.  Each function is defined as follows: 
@@ -397,16 +397,15 @@ Softmax layer normalize the input value of this layer, which is denoted by $h \i
     \hat{y}_k = \frac{\exp \left( h_k \right)}{\sum_{k'=1}^K \exp \left( h_{k'} \right)}.
 \end{equation}
 The normalized value $\hat{y}$ satisfies $\hat{y}_k \geq 0$ and $\sum_k^K \hat{y}_k =1$.
-We can interpret $\hat{y}_k$ as the probability that the input $x$ belongs to  class $k$.
+We can interpret $\hat{y}_k$ as a probability that the input $x$ belongs to class $k$.
 However, we note that this is a pseudo probability and it differs from the one we use in statistics.
   
 \subsection{Hyperparameter search}\label{hyperparametersearch}
 We perform a hyperparameter search (red boxes in figure \ref{fig:dnn_model}) by combining grid search and Tree-structured Parzen Estimator (TPE) algorithm.
 Grid search is not suitable for high-dimensional space search, but has an advantage of searching for multiple points in parallel.
-In addition, since the algorithm is simple, there is another advantage to convey the knowledge of preliminary experiments for parameter initialization.
+In addition, since the algorithm is simple, we can convey the knowledge of preliminary experiments for parameter initialization.
 On the other hand, the TPE algorithm is suitable for searching a high-dimensional space, but has a disadvantage of not knowing where to start for the first time.
-Therefore, this time, we searched around the hyperparameters that were good in the preliminary experiment by grid search, and then searched by TPE algorithm based 
-on the grid search result.
+Therefore, this time, we search around the hyperparameter values that were good in the preliminary experiment by grid search, and then send the grid search results to TPE algorithm.  
 The ranges of hyperparameters that we searched are given in table \ref{tb:hp}.
 %By combining them, there are merits that the knowledge obtained in the preliminary experiment can be used and the time required for the search can be shortened.
 
@@ -502,9 +501,9 @@ We train the model by minimizing the cross-entropy error:
 \mathrm{CE} \left(y, \hat{y} \right) =　-\sum_{k = 1}^K y_k \log \hat{y}_k,
 \end{equation}
 where $y$ is a ground truth vector which is one-hot encoding of $K$ dimension, and $\hat{y}$ is the DNN output vector.
-We deploy {\it Adam optimizer} which uses a stochastic gradient method to optimize model parameters.
+We deploy {\it Adam optimizer} which uses a stochastic gradient method to optimize the model parameters.
 
-We introduce data augmentation to prevent overfitting at the time of training.
+We introduce a data augmentation to prevent overfitting at the time of training.
 By increasing the number of input data by augmentation, we prevent DNN from memorizing all of the training dataset.
 We apply two ways of data augmentation to the training dataset.
 One is adding Gaussian noise (based on the expected observed uncertainty) to the simulated flux.
@@ -632,11 +631,10 @@ As a result of individual check, while some misclassified SNe are so dark and in
 \section{Application to HSC-SSP transient survey}
 \label{sec:h}
 %
-We applied the developed classifier to the light curve data of 1824 SNe discovered in HSC-SSP Transient Survey.
-As described in \citet{yasuda19a}, the survey %is part of HSC-SSP survey, where observations were performed in two areas with different 
 %observation frequencies,
-was conducted in two kinds of layers with different depths and cadence, 
-'Deep' and 'Ultra-Deep'.
+We apply the developed classifier to the observed photometric data set of 1824 SNe.
+As described in \citet{yasuda19a}, the survey %is part of HSC-SSP survey, where observations were performed in two areas with different 
+is conducted in two kinds of layers with different depths and cadence, 'Deep' and 'Ultra-Deep'.
 Therefore, the number of photometric data of SN in each layer is different.
 There are also SNe in which part of the light curve data is missing.
 To correspond these SNe, we prepared five input cases of light curve data and classifiers for each case.
