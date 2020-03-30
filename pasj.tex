@@ -635,16 +635,18 @@ As a result of individual check, while some misclassified SNe are so dark and in
 We apply the developed classifier to the observed photometric data set of 1824 SNe.
 As described in \citet{yasuda19a}, the survey %is part of HSC-SSP survey, where observations were performed in two areas with different 
 is conducted in two kinds of layers with different depths and cadence, 'Deep' and 'Ultra-Deep'.
-Therefore, the number of photometric data of SN in each layer is different.
-There are also SNe in which part of the light curve data is missing.
-To correspond these SNe, we prepared five input cases of light curve data and classifiers for each case.
-The number of SNe for each case are summarized in table\ \ref{tab:class_flag}.
-For example, the number of SNe in Case 0 is 709.
-They are detected in the Ultra-Deep layer, and have 42 epochs of photometric data in four bands of $g$, $r2$, $i2$ and $z$ band.
-The number of epochs and the schedule for Case 0 SNe are summarized in table \ref{tab:HSCsurvey_schedule}.
-The combination of these classifiers enables the classification of 1812 HSC SNe corresponding to 99.3\% of all target SNe.
-The remaining 12 SNe are excluded in this classification because they have 'data missing' in all of the schedule patterns from Case 0 to Case 4, and there is no new pattern common to them.
-
+Therefore, the number of photometric data points of SN in each layer could be different.
+%There are also SNe in which part of the light curve data is missing.
+%To correspond these SNe, we prepared five input cases of light curve data and classifiers for each case.
+Our DNN model requires the exactly the same number of data points as an input, and here we divide
+our data set into five cases based on the number of photometric data points.
+The number of SNe for each case is summarized in table\ \ref{tab:class_flag}.
+For example, the number of SNe in Case 0 is 709, and they are in the Ultra-Deep field.  Each SN has a total of 
+42 epochs of photometric data in four bands ($g-$, $r2-$, $i2-$ and $z-$ band).
+The number of epochs and filter schedule for Case 0 SNe are summarized in table \ref{tab:HSCsurvey_schedule}.
+By introducing five cases, the machine can classify 1812 HSC SNe which corresponds to 99.3\% of 1824 SNe.
+The remaining 12 SNe are excluded due to the missing data. 
+%in all of the schedule patterns from Case 0 to Case 4, and there is no new pattern common to them.
 %
 %v190522
 \begin{table}[htbp]
@@ -684,8 +686,10 @@ $z$ & 12 & 0, 6, 30, 40, 59, 68, 90, 101, 119, 126, 151, 157\\
 %
 %
 %training set 
-We applied both two-class and three-class classification tasks to HSC data, as with PLAsTiCC data.
-The optimized hyperparameters for those tasks are listed in table \ref{tb:searched_hp_class}.
+We apply both two-class and three-class classification to the above five cases of HSC observed data.
+For each case, the machine needs to be trained independently with a dedicated training data set.
+Thus, hyperparameters are optimized for each case and reported in table \ref{tb:searched_hp_class}.
+%The optimized hyperparameters for each cases are listed in table \ref{tb:searched_hp_class}.
 The following subsections (subsection \ref{sec:h2} and \ref{sec:h3}) describe the performance evaluation for each classification.
 %
 %
