@@ -1031,11 +1031,25 @@ HSC17dspl &     0 &    $0.624_{-0.000}^{+0.000}$ &         1 &    9 &  nonIa &  
 %
 When using our classification method, the number of photometric data points given to the classifier increases as the survey progresses.
 Therefore, we investigated the transition of performance against the number of epochs.
-We classified the dataset by increasing the number of input data points one by one, and examined the relationship between the number of epochs and the classification performance.
+We classified the HSC dataset by increasing the number of input data points one by one, and examined the relationship between the number of epochs and the classification performance.
 Binary classifiers are used for classification, and the accuracy calculated from each confusion matrix is used for evaluation.
 Figure\ \ref{fig:n_observations} shows the transition of classification performance for the Case 0 HSC dataset along with the number of epochs.
 Although the Ia accuracy is as low as 0.6 to 0.7 in the early stage of the survey with less than five epochs, it exceeds 0.8 when the number of epochs increases to 22.
 The partial decrease in accuracy is thought to be due to the new SN found at the added photometric point.
+%
+\begin{figure}[htbp]
+  \begin{center}
+     \includegraphics[width=\columnwidth]{figures/n_observations_v2_case0.eps}
+  \end{center}
+  \caption{%
+  Relationship between the number of epochs and classification performance in binary classification for the Case 0 dataset. 
+  The horizontal axis is the elapsed days of the HSC survey, and the vertical dot line shows the scale of input photometric point number. 
+  The color of each mark in accuracy indicates the band of the added photometric point. 
+  The blue horizontal dotted line indicates the accuracy when using all epochs.
+  }%
+  \label{fig:n_observations}
+\end{figure}
+%
 
 We also investigated the classification performance during each SN phase by regrouping all events according to the length of period since the first detection.
 %examples of probability
@@ -1052,32 +1066,9 @@ The classification accuracy is 78\% for the first two weeks of data, and after o
 %Due to this fact, there is a variation in the average input dimension number of samples in each phase, which causes a fluctuation in accuracy.
 %However, due to events whose probabilities fluctuate with the progress of the SN phase illustrated in Figure \ref{fig:lcps}, there are some cases where the accuracy slightly decreases even if the period until classification becomes long.
 %In addition, considering the cumulative number of SNe classified as Ia with high probability from six months data, it is estimated that our classifier can classify at least four or more Ia SNe candidate to follow-up in one month observation of the Ultra-deep area.
-In addition, the number of follow-up candidates classified by the classifier can be estimated from the cumulative number in figure \ref{fig:n_observations_SNphase}.
+In addition, the number of follow-up candidates by the classifier can be estimated from the cumulative number in figure \ref{fig:n_observations_SNphase}.
 Using data within one month from the first detection, 79 SNe with z $>$ 1 are classified with Ia probability of 95\% or more.
 Since the number of these SNe is a cumulative number for six months observation, dividing this by six corresponds to the number of follow-up SNe classified during a one-month survey, which is 13 events.
-
-Lastly, we studied the transition of the Ia probability output by the classifier along SN phase.
-Each time the SN photometric data input to the classifier increases, Ia probability, the output of the classifier, is updated.
-For each of 100 SNe labeled Ia and non-Ia with SALT2 fitting, we extracted its Ia probability for each duration from the various classification results, and plotted its transition as figure\ \ref{fig:visualized_Ia_prob}.
-Although the Ia probability fluctuates greatly in the earliest phase, it begins to divide in about two weeks, and it can be clearly separated in one month.
-%Figure \ref{fig:HSTIaprob} shows the transitions of Ia probability along the days from the peak for 16 SNe included in Case 0 data, among 26 SNe selected as HST targets in the HSC survey, and the average of these transitions.
-Figure \ref{fig:HSTIaprob} shows the transitions of Ia probability along the days from the peak for 26 SNe selected as HST targets in the HSC survey, and the average of these transitions.
-The Ia probability for the average of the candidates is greater than 0.8 three weeks before the peak.
-This means that our classifier accomplishes the task described in subsection \ref{sec:tasks} to find good candidates only with information before the SN peak.
-%
-\begin{figure}[htbp]
-  \begin{center}
-     \includegraphics[width=\columnwidth]{figures/n_observations_v2_case0.eps}
-  \end{center}
-  \caption{%
-  Relationship between the number of epochs and classification performance in binary classification for the Case 0 dataset. 
-  The horizontal axis is the elapsed days of the HSC survey, and the vertical dot line shows the scale of input photometric point number. 
-  The color of each mark in accuracy indicates the band of the added photometric point. 
-  The blue horizontal dotted line indicates the accuracy when using all epochs.
-  }%
-  \label{fig:n_observations}
-\end{figure}
-%
 %
 \begin{figure*}[htbp]
     \begin{tabular}{ccc}
@@ -1115,6 +1106,15 @@ This means that our classifier accomplishes the task described in subsection \re
   \label{fig:n_observations_SNphase}
 \end{figure}
 %
+
+Lastly, we studied the transition of the Ia probability output by the classifier along SN phase.
+Each time the number of input epochs increases, Ia probability, the output of the classifier, is updated.
+For each of 100 SNe labeled Ia and non Ia with SALT2 fitting, we extracted its Ia probability for each duration from the various classification results, and plotted its transition as figure\ \ref{fig:visualized_Ia_prob}.
+Although the Ia probability fluctuates greatly in the earliest phase, it begins to divide in about two weeks, and it can be clearly separated in one month.
+%Figure \ref{fig:HSTIaprob} shows the transitions of Ia probability along the days from the peak for 16 SNe included in Case 0 data, among 26 SNe selected as HST targets in the HSC survey, and the average of these transitions.
+Figure \ref{fig:HSTIaprob} shows the transitions of Ia probability along the days from the peak for 26 SNe selected as HST targets in the HSC survey, and the average of these transitions.
+The Ia probability for the average of the candidates is greater than 0.8 three weeks before the peak.
+This means that our classifier accomplishes the task described in subsection \ref{sec:tasks} to find good candidates only with information before the SN peak.
 %
 \begin{figure}[htbp]
   \begin{center}
