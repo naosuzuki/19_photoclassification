@@ -1245,11 +1245,12 @@ We believe that the development of a method to efficiently incorporate such erro
 \subsection{Missing data}
 %
 Our method is specialized in the HSC survey, where each observed transient tends to have the same cadence by observing a certain field repeatedly.
-It can use all photometric information and classify with less pre-processing, compared to the method of reducing dimensions and extracting features.
-However, this method is not suitable for processing data with different observation schedules for each object, or samples with missing data.
-In other classification methods, missing data is interpolated by linear or Gaussian processes \citep{Lochner_2016,Muthukrishna_2019}, or replaced with reference to the flux of adjacent observation points \citep{charnock17a}.
-In the case of the HSC survey, most of all samples can be roughly classified into two types of observation schedules corresponding to Ultra-Deep and Deep layer.
-Therefore, as shown in table \ref{tab:class_flag}, we can classify 99.3\% of SNe using only five classifiers with different input schedule cases, including those for data missing samples.
+However, this method is not suitable for processing data with different observation schedules for each object, or dataset with missing data.
+In other classification methods, missing data is interpolated by linear or Gaussian processes \citep{Lochner_2016,Muthukrishna_2019}, or replaced with reference to the flux of adjacent photometric points \citep{charnock17a}.
+We deal with missing data by preparing multiple classifiers.
+The classifier can use the photometric information directly and classify with less pre-processing, compared to the method of interpolation and replacing.
+In the case of the HSC survey, most of the observation schedules of all supernovae can be roughly divided into two types, corresponding to Ultra-Deep and Deep layer.
+Therefore, as shown in table \ref{tab:class_flag}, we can classify 99.3\% of SNe using only five classifiers with different input schedule cases, including those for SNe with missing data.
 %To classify all objects with our method, we need to prepare multiple classifiers.
 %In order to support ultra-wide-range surveys such as LSST, it is necessary to input features that are less affected by the magnitude of the cadence for each transient, and to add processing to interpolate missing values.
 %
