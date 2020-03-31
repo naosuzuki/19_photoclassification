@@ -53,9 +53,16 @@ The advancement of technology has brought a rapid increase of supernova discover
 Subaru Hyper Suprime-Cam (HSC) Transient survey, conducted from Fall 2016 through Spring 2017, yielded 1824 supernova
 candidates. 
 We are in need of fast type classification for spectroscopic follow-up and developed a machine learning algorithm
-using Deep Neural Network with Highway layers. 
-The machine is trained by actual observed cadence with filter combinations and it allows us diretly input observed
-data into machine without any interpretation.
+using Deep Neural Network (DNN) with Highway layers. 
+This machine is trained by actual observed cadence and filter combinations so that we can diretly input observed
+data array into machine without any interpretation.
+We test our model with a data set from LSST classification challenge (Deep Drilling Field only).
+Our classifier scores AUC of 0.996 for binary classification (SN~Ia or non-Ia) and 95.3\% in accuracy for
+three-class classification (SN~Ia, SN~Ibc and SN~II). 
+When we apply our binary classification to HSC Transient data, AUC score becomes 0.925. 
+With two weeks of HSC data since the first detection, this classifier achieves 78.1\% in accuracy for
+binary classification, the accuracy increases to XX\% with full data set.
+The potential use of machine learning is being discusssed.
 \end{abstract}
  %In total of 1824 SN candidates from the transient survey, conducted from 2016 to 2017, with the Subaru Hyper Suprime-Cam (HSC). In order to select follow-up candidates efficiently among SNe discovered in the survey, we study type classification of SNe using Deep Neural Network with Highway layers. Our classifier receives photometric data directly, without interpolating them or extracting features. The evaluation of our classifier with simulated classification challenge dataset for LSST yields the performance as area under the curve (AUC) of 0.996 in binary classification, and accuracy of 95.3\% in three-class classification respectively. When we apply this classifier to the observation data of HSC-SSP Transient Survey, the binary classification AUC score is 0.925 for SNe labeled by the light curve fitting using SALT2. We also investigated the dependence of the classification performance on the number of photometric points in HSC observation, and found out the followings: 1) The performance of type classification improves as input increases, and accuracy exceeds 0.8 at 22 photometric points. 2) When considered based on the SN phase, our classifier can classify with 78.1\% accuracy by inputting two weeks of data from the first detection. These results and findings show that our classifier has sufficient classification performance to select the follow-up targets even in the actual survey.
 
