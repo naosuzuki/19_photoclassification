@@ -49,22 +49,10 @@ Naoki \textsc{Yoshida}\altaffilmark{1,2,6,7}
 %
 %The progress of observation technology in recent years has brought the rapid increase in the number of discovered supernovae (SNe).
 \begin{abstract}
-The advancement of technology has brought a rapid increase of supernova discoveries.
-Subaru Hyper Suprime-Cam (HSC) Transient survey, conducted from Fall 2016 through Spring 2017, yielded 1824 supernova
-candidates. 
-We are in need of fast type classification for spectroscopic follow-up and developed a machine learning algorithm
-using Deep Neural Network (DNN) with Highway layers. 
-This machine is trained by actual observed cadence and filter combinations so that we can diretly input observed
-data array into machine without any interpretation.
-We test our model with a data set from LSST classification challenge (Deep Drilling Field only).
-Our classifier scores AUC of 0.996 for binary classification (SN~Ia or non-Ia) and 95.3\% in accuracy for
-three-class classification (SN~Ia, SN~Ibc and SN~II). 
-When we apply our binary classification to HSC Transient data, AUC score becomes 0.925. 
-With two weeks of HSC data since the first detection, this classifier achieves 78.1\% in accuracy for
-binary classification, the accuracy increases to XX\% with full data set.
-The potential use of machine learning is being discusssed.
+The advancement of technology has brought a rapid increase of supernova discoveries. Subaru Hyper Suprime-Cam (HSC) Transient survey, conducted from Fall 2016 through Spring 2017, yielded 1824 supernova candidates. We are in need of fast type classification for spectroscopic follow-up and developed a machine learning algorithm using Deep Neural Network (DNN) with Highway layers. 
+This machine is trained by actual observed cadence and filter combinations so that we can directly input observed data array into machine without any interpretation. We test our model with a data set from LSST classification challenge (Deep Drilling Field only).
+Our classifier scores AUC of 0.996 for binary classification (SN~Ia or non-Ia) and 95.3\% in accuracy for three-class classification (SN~Ia, SN~Ibc and SN~II). When we apply our binary classification to HSC Transient data, AUC score becomes 0.925. With two weeks of HSC data since the first detection, this classifier achieves 78.1\% in accuracy for binary classification, and it increases to 84.2\% with full data set. The potential use of machine learning is being discussed.
 \end{abstract}
- %In total of 1824 SN candidates from the transient survey, conducted from 2016 to 2017, with the Subaru Hyper Suprime-Cam (HSC). In order to select follow-up candidates efficiently among SNe discovered in the survey, we study type classification of SNe using Deep Neural Network with Highway layers. Our classifier receives photometric data directly, without interpolating them or extracting features. The evaluation of our classifier with simulated classification challenge dataset for LSST yields the performance as area under the curve (AUC) of 0.996 in binary classification, and accuracy of 95.3\% in three-class classification respectively. When we apply this classifier to the observation data of HSC-SSP Transient Survey, the binary classification AUC score is 0.925 for SNe labeled by the light curve fitting using SALT2. We also investigated the dependence of the classification performance on the number of photometric points in HSC observation, and found out the followings: 1) The performance of type classification improves as input increases, and accuracy exceeds 0.8 at 22 photometric points. 2) When considered based on the SN phase, our classifier can classify with 78.1\% accuracy by inputting two weeks of data from the first detection. These results and findings show that our classifier has sufficient classification performance to select the follow-up targets even in the actual survey.
 
 \section{Introduction}
 Time domain science becomes one of the major fields of astronomical study today.  The discovery of accelerating universe \citep{perlmutter99a,riess98a} evoked a series of large supernova (SN) surveys in the last decades 
@@ -78,7 +66,7 @@ Neural Network has been used for photometric redshift studies from the early sta
 Deep Neural Network (DNN) is now being used for imaging data for finding strong lens system \citep{petrillo17a} or for galaxy morphology classifications \citep{hausen19a}.  Now, machine learning is being introduced for transient survey for detection \citep{goldstein15a} and classification \citep{charnock17a}.
 
 In this paper, we introduce our attempt to apply machine learning (DNN) to the actual transient survey data.
-Hyper Suprime-Cam (HSC) \citep{miyazaki18a,Komiyama2018,kawanomoto18a,Furusawa2018} on Subaru Telescope enables us to probe wide filed (1.77 deg$^2$ Field of View) and deep space (26th mag in $i-$band / epoch).  Our primary scientific goals are SN~Ia cosmology, Type II supernova (SN~II) cosmology, super-luminous supernova (SLSN) studies as well as probing unknown population of transients.  
+Hyper Suprime-Cam (HSC) \citep{miyazaki18a,Komiyama2018,kawanomoto18a,Furusawa2018} on Subaru Telescope enables us to probe wide field (1.77 deg$^2$ Field of View) and deep space (26th mag in $i-$band / epoch).  Our primary scientific goals are SN~Ia cosmology, Type II supernova (SN~II) cosmology, super-luminous supernova (SLSN) studies as well as probing unknown population of transients.  
 As is reported in \citet{yasuda19a}, more than 1800 SNe are discovered in a 6-month campaign. 
 We deployed a machine learning (AUC boosting) for transient detection \citep{morii16a}, where 'real' vs. 'bogus' is determined by a machine.
 In \citet{Kimura17}, we adopted DNN for SN type classification from 2 dimensional image, and highway block is introduced for the optimization of layers.
@@ -1254,10 +1242,10 @@ We believe that the development of a method to efficiently incorporate such erro
 Our method is specialized in the HSC survey, where each observed transient tends to have the same cadence by observing a certain field repeatedly.
 However, this method is not suitable for processing data with different observation schedules for each object, or dataset with missing data.
 In other classification methods, missing data is interpolated by linear or Gaussian processes \citep{Lochner_2016,Muthukrishna_2019}, or replaced with reference to the flux of adjacent photometric points \citep{charnock17a}.
-We deal with missing data by preparing multiple classifiers.
+We handle missing data by preparing multiple classifiers.
 The classifier can use the photometric information directly and classify with less pre-processing, compared to the method of interpolation and replacing.
 In the case of the HSC survey, most of the observation schedules of all supernovae can be roughly divided into two types, corresponding to Ultra-Deep and Deep layer.
-Therefore, as shown in table \ref{tab:class_flag}, we can classify 99.3\% of SNe using only five classifiers with different input schedule cases, including those for SNe with missing data.
+Therefore, as shown in table \ref{tab:class_flag}, we can classify 99.3\% of SNe using only five classifiers with different input schedule cases, including those for SNe data containing missing data.
 %To classify all objects with our method, we need to prepare multiple classifiers.
 %In order to support ultra-wide-range surveys such as LSST, it is necessary to input features that are less affected by the magnitude of the cadence for each transient, and to add processing to interpolate missing values.
 %
