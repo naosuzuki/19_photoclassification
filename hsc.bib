@@ -2316,3 +2316,154 @@ archivePrefix = {arXiv},
 	journal = {\apj},
 	abstract = {With a booming number of Type Ia supernovae (SNe Ia) discovered within a few days of their explosions, a fraction of SNe Ia that show luminosity excess in the early phase (early-excess SNe Ia) have been confirmed. In this article, we report early-phase observations of seven photometrically normal SNe Ia (six early detections and one deep non detection limit) at the COSMOS field through a half-year transient survey as a part of the Hyper Suprime-Cam Subaru Strategic Program (HSC SSP). In particular, a blue light-curve excess was discovered for HSC17bmhk, a normal SN Ia with rise time longer than 18.8 days, during the first four days after the discovery. The blue early excess in optical wavelength can be explained not only by interactions with a nondegenerate companion or surrounding dense circumstellar matter but also radiation powered by radioactive decays of 56Ni at the surface of the SN ejecta. Given the growing evidence of the early-excess discoveries in normal SNe Ia that have longer rise times than the average, and a similarity in the nature of the blue excess to a luminous SN Ia subclass, we infer that early excess discovered in HSC17bmhk and other normal SNe Ia are most likely attributed to radioactive 56Ni decay at the surface of the SN ejecta. In order to successfully identify normal SNe Ia with early excess similar to that of HSC17bmhk, early UV photometries or high-cadence blue-band surveys are necessary.}
 }
+
+% tensorflow
+@misc{tensorflow2015-whitepaper,
+title={ {TensorFlow}: Large-Scale Machine Learning on Heterogeneous Systems},
+memo = {url={https://www.tensorflow.org/},},
+note={Software available from tensorflow.org},
+author={
+    Mart\'{\i}n~Abadi and
+    Ashish~Agarwal and
+    Paul~Barham and
+    Eugene~Brevdo and
+    Zhifeng~Chen and
+    Craig~Citro and
+    Greg~S.~Corrado and
+    Andy~Davis and
+    Jeffrey~Dean and
+    Matthieu~Devin and
+    Sanjay~Ghemawat and
+    Ian~Goodfellow and
+    Andrew~Harp and
+    Geoffrey~Irving and
+    Michael~Isard and
+    Yangqing Jia and
+    Rafal~Jozefowicz and
+    Lukasz~Kaiser and
+    Manjunath~Kudlur and
+    Josh~Levenberg and
+    Dandelion~Man\'{e} and
+    Rajat~Monga and
+    Sherry~Moore and
+    Derek~Murray and
+    Chris~Olah and
+    Mike~Schuster and
+    Jonathon~Shlens and
+    Benoit~Steiner and
+    Ilya~Sutskever and
+    Kunal~Talwar and
+    Paul~Tucker and
+    Vincent~Vanhoucke and
+    Vijay~Vasudevan and
+    Fernanda~Vi\'{e}gas and
+    Oriol~Vinyals and
+    Pete~Warden and
+    Martin~Wattenberg and
+    Martin~Wicke and
+    Yuan~Yu and
+    Xiaoqiang~Zheng},
+  year={2015},
+}
+@ARTICLE{Abadi2016,
+       author = {{Abadi}, Mart{\'\i}n and {Agarwal}, Ashish and {Barham}, Paul and
+         {Brevdo}, Eugene and {Chen}, Zhifeng and {Citro}, Craig and
+         {Corrado}, Greg S. and {Davis}, Andy and {Dean}, Jeffrey and
+         {Devin}, Matthieu and {Ghemawat}, Sanjay and {Goodfellow}, Ian and
+         {Harp}, Andrew and {Irving}, Geoffrey and {Isard}, Michael and
+         {Jia}, Yangqing and {Jozefowicz}, Rafal and {Kaiser}, Lukasz and
+         {Kudlur}, Manjunath and {Levenberg}, Josh and {Mane}, Dan and
+         {Monga}, Rajat and {Moore}, Sherry and {Murray}, Derek and
+         {Olah}, Chris and {Schuster}, Mike and {Shlens}, Jonathon and
+         {Steiner}, Benoit and {Sutskever}, Ilya and {Talwar}, Kunal and
+         {Tucker}, Paul and {Vanhoucke}, Vincent and {Vasudevan}, Vijay and
+         {Viegas}, Fernanda and {Vinyals}, Oriol and {Warden}, Pete and
+         {Wattenberg}, Martin and {Wicke}, Martin and {Yu}, Yuan and
+         {Zheng}, Xiaoqiang},
+        title = "{TensorFlow: Large-Scale Machine Learning on Heterogeneous Distributed Systems}",
+      journal = {arXiv:1603.04467},
+     keywords = {Computer Science - Distributed, Parallel, and Cluster Computing, Computer Science - Machine Learning},
+         year = 2016,
+        month = mar,
+          eid = {},
+        pages = {},
+ primaryClass = {cs.DC},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2016arXiv160304467A},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+% TPE
+@InProceedings{pmlr-v28-bergstra13,
+  title = 	 {Making a Science of Model Search: Hyperparameter Optimization in Hundreds of Dimensions for Vision Architectures},
+  author = 	 {James Bergstra and Daniel Yamins and David Cox},
+  booktitle = 	 {Proceedings of the 30th International Conference on Machine Learning},
+  pages = 	 {115--123},
+  year = 	 {2013},
+  editor = 	 {Sanjoy Dasgupta and David McAllester},
+  volume = 	 {28},
+  memo = {number =       {1},},
+  series = 	 {Proceedings of Machine Learning Research},
+  address = 	 {Atlanta, Georgia, USA},
+  month = 	 {17--19 Jun},
+  publisher = 	 {PMLR},
+  pdf = 	 {http://proceedings.mlr.press/v28/bergstra13.pdf},
+  memo = {url = 	 {http://proceedings.mlr.press/v28/bergstra13.html},},
+  abstract = 	 {Many computer vision algorithms depend on configuration settings that are typically hand-tuned in the course of evaluating the algorithm for a particular data set. While such parameter tuning is often presented as being incidental to the algorithm, correctly setting these parameter choices is frequently critical to realizing a method’s full potential. Compounding matters, these parameters often must be re-tuned when the algorithm is applied to a new problem domain, and the tuning process itself often depends on personal experience and intuition in ways that are hard to quantify or describe. Since the performance of a given technique depends on both the fundamental quality of the algorithm and the details of its tuning, it is sometimes difficult to know whether a given technique is genuinely better, or simply better tuned.     In this work, we propose a meta-modeling approach to support automated hyperparameter optimization, with the goal of providing practical tools that replace hand-tuning with a reproducible and unbiased optimization process. Our approach is to expose the underlying expression graph of how a performance metric (e.g. classification accuracy on validation examples) is computed from hyperparameters that govern not only how individual processing steps are applied, but even which processing steps are included.  A hyperparameter optimization algorithm transforms this graph into a program for optimizing that performance metric.  Our approach yields state of the art results on three disparate computer vision problems: a face-matching verification task (LFW), a face identification task (PubFig83) and an object recognition task (CIFAR-10), using a single broad class of feed-forward vision architectures.  }
+}
+
+%Adam
+@ARTICLE{Kingma2014,
+       author = {{Kingma}, Diederik P. and {Ba}, Jimmy},
+        title = "{Adam: A Method for Stochastic Optimization}",
+      journal = {arXiv:1412.6980},
+     keywords = {Computer Science - Machine Learning},
+         year = 2014,
+        month = dec,
+          eid = {},
+        pages = {},
+ primaryClass = {cs.LG},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2014arXiv1412.6980K},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+%AAOmega
+@INPROCEEDINGS{Saunders2004,
+       author = {{Saunders}, Will and {Bridges}, Terry and {Gillingham}, Peter and
+         {Haynes}, Roger and {Smith}, Greg A. and {Whittard}, John D. and
+         {Churilov}, Vladimir and {Lankshear}, Allan and {Croom}, Scott and
+         {Jones}, Damien and {Boshuizen}, Christopher},
+        title = "{AAOmega: a scientific and optical overview}",
+    booktitle = {Ground-based Instrumentation for Astronomy},
+         year = 2004,
+       editor = {{Moorwood}, Alan F.~M. and {Iye}, Masanori},
+       series = {Society of Photo-Optical Instrumentation Engineers (SPIE) Conference Series},
+       volume = {5492},
+        month = sep,
+        pages = {389-400},
+          doi = {10.1117/12.550871},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2004SPIE.5492..389S},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+%Tampo2020
+@ARTICLE{Tampo2020,
+       author = {{Tampo}, Yusuke and {Tanaka}, Masaomi and {Maeda}, Keiichi and
+         {Yasuda}, Naoki and {Tominaga}, Nozomu and {Jiang}, Ji-an and
+         {Moriya}, Takashi J. and {Morokuma}, Tomoki and {Suzuki}, Nao and
+         {Takahashi}, Ichiro and {Kokubo}, Mitsuru and {Kawana}, Kojiro},
+        title = "{Rapidly Evolving Transients from the Hyper Suprime-Cam SSP Transient Survey}",
+      journal = {\apj},
+     keywords = {Astrophysics - High Energy Astrophysical Phenomena, Astrophysics - Astrophysics of Galaxies, Astrophysics - Solar and Stellar Astrophysics},
+         year = 2020,
+        month = may,
+       volume = {894},
+       number = {1},
+          eid = {27},
+        pages = {27},
+          doi = {10.3847/1538-4357/ab7ccc},
+archivePrefix = {arXiv},
+       eprint = {2003.02669},
+ primaryClass = {astro-ph.HE},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2020ApJ...894...27T},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}

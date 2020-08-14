@@ -2,9 +2,9 @@
 %%%         or verbatim environments in order to display command names
 %%%         or examples.  But the use of \verb/verbatim is *not* recommended. 
 %%% ver.6 2015/01/05 
-\documentclass[proof]{pasj01}
+%\documentclass[proof]{pasj01}
 \let\square\relax
-%\documentclass[useamsfonts]{pasj01}
+\documentclass[useamsfonts]{pasj01}
 \usepackage{amsfonts}
 \usepackage{graphicx}
 %\usepackage{comment}
@@ -20,9 +20,9 @@
 
 \begin{document}
 
-\title{Photometric classification of the HSC transients through machine learning}
+\title{Photometric classification of HSC transients using machine learning}
 \author{
-Ichiro \textsc{Takahashi}\altaffilmark{1,2,*},
+Ichiro \textsc{Takahashi}\altaffilmark{1,2,4,*},
 Nao \textsc{Suzuki}\altaffilmark{1},
 Naoki \textsc{Yasuda}\altaffilmark{1},
 Akisato \textsc{Kimura}\altaffilmark{3},
@@ -41,71 +41,80 @@ Naoki \textsc{Yoshida}\altaffilmark{1,2,6,7}
 \altaffiltext{6}{Department of Physics, Graduate School of Science, The University of Tokyo, 7-3-1 Hongo, Bunkyo-ku, Tokyo 113-0033, Japan}
 \altaffiltext{7}{Institute for Physics of Intelligence, The University of Tokyo, 7-3-1 Hongo, Bunkyo-ku, Tokyo 113-0033, Japan}
 
-\email{ichiro.takahashi@ipmu.jp}
+\email{ichiro.takahashi@astr.tohoku.ac.jp}
 
 \KeyWords{supernovae: general --- methods: statistical --- surveys}
 
 \maketitle
 %
-%The progress of observation technology in recent years has brought the rapid increase in the number of discovered supernovae (SNe).
 \begin{abstract}
-The advancement of technology has brought a rapid increase of supernova discoveries. Subaru Hyper Suprime-Cam (HSC) Transient survey, conducted from Fall 2016 through Spring 2017, yielded 1824 supernova candidates. We are in need of fast type classification for spectroscopic follow-up and developed a machine learning algorithm using Deep Neural Network (DNN) with Highway layers. 
-This machine is trained by actual observed cadence and filter combinations so that we can directly input observed data array into machine without any interpretation. We test our model with a data set from LSST classification challenge (Deep Drilling Field only).
-Our classifier scores AUC of 0.996 for binary classification (SN~Ia or non-Ia) and 95.3\% in accuracy for three-class classification (SN~Ia, SN~Ibc and SN~II). When we apply our binary classification to HSC Transient data, AUC score becomes 0.925. With two weeks of HSC data since the first detection, this classifier achieves 78.1\% in accuracy for binary classification, and it increases to 84.2\% with full data set. The potential use of machine learning is being discussed.
+The advancement of technology has resulted in a rapid increase in supernova (SN) discoveries. The Subaru/Hyper Suprime-Cam (HSC) transient survey, conducted from fall 2016 through spring 2017, yielded 1824 SN candidates. This gave rise to the need for fast type classification for spectroscopic follow-up and prompted us to develop a machine learning algorithm using a deep neural network (DNN) with highway layers. 
+This machine is trained by actual observed cadence and filter combinations such that we can directly input the observed data array into the machine without any interpretation. We tested our model with a dataset from the LSST classification challenge (Deep Drilling Field).
+Our classifier scores an area under the curve (AUC) of 0.996 for binary classification (SN~Ia or non-SN~Ia) and 95.3\% accuracy for three-class classification (SN~Ia, SN~Ibc, or SN~II). Application of our binary classification to HSC transient data yields an AUC score of 0.925. With two weeks of HSC data since the first detection, this classifier achieves 78.1\% accuracy for binary classification, and the accuracy increases to 84.2\% with the full dataset. This paper discusses the potential use of machine learning for SN type classification purposes.
 \end{abstract}
 
 \section{Introduction}
-Time domain science becomes one of the major fields of astronomical study today.  The discovery of accelerating universe \citep{perlmutter99a,riess98a} evoked a series of large supernova (SN) surveys in the last decades 
-\citep{betoule14a,scolnic18a,brout19a}.  
-These surveys revealed that there exist a whole new family of transients and the search for unknown populations is of great interest today \citep{howell06a,phillips07a,quimby07b}. 
-For the precision cosmology, it is very important to keep the purity of Type Ia supernova (SN~Ia) while having uniform sampling from bright to faint SNe~Ia.  Spectroscopic follow-up has been essential to distinguish faint SN~Ia from Type Ib supernova (SN~Ib) and Type Ic supernova (SN~Ic) which have similar light curve behavior \citep{scolnic14a}.   A large amount of precious telescope time is dedicated to the follow-up programs, and we would like to make an efficient use of those telescopes.
+Time domain science has become a major field of astronomical study. The discovery of the accelerating universe \citep{perlmutter99a,riess98a} evoked a series of large supernova (SN) surveys in the last few decades 
+\citep{betoule14a,scolnic18a,brout19a}.    
+These surveys revealed that an entirely new family of transients exists and the search for unknown populations is currently of great interest \citep{howell06a,phillips07a,quimby07b}.
+For precision cosmology, it is highly important to maintain the purity of Type Ia supernovae (SNe~Ia) while performing uniform sampling of these SNe ranging from bright to faint. 
+Spectroscopic follow-up has been essential to distinguish a faint SN~Ia from a Type Ib supernova (SN~Ib) and a Type Ic supernova (SN~Ic) which have similar light curve behavior \citep{scolnic14a}. 
+Considering that a large amount of precious telescope time is dedicated to these follow-up programs, it is desirable to make efficient use of these telescopes.
 
-The scale of survey is getting larger, and it becomes impossible to trigger spectroscopic follow-up for all of the candidates in real time, and we are in need of developing new classification scheme.  It is a natural path to perform photometric classification \citep{sako11a,jonesl8a}.  With the rise of Machine Learning Technologies, it is getting common that an astronomical big data is being analyzed through machine learning.   
+The scale of surveys is becoming larger, and it has become impossible to trigger spectroscopic follow-up for all of the candidates in real time. It has therefore become necessary to develop a new classification scheme, and a natural path along which to proceed would be to perform photometric classification \citep{sako11a,jonesl8a}. The rise of machine learning technologies has resulted in astronomical big data commonly being analyzed by using machine learning techniques.
 
-Neural Network has been used for photometric redshift studies from the early stage.  Today, many Machine Learning methods are applied to the photometric redshift studies \citep{collister04a,carliles10a,pasquet19a}.
-Deep Neural Network (DNN) is now being used for imaging data for finding strong lens system \citep{petrillo17a} or for galaxy morphology classifications \citep{hausen19a}.  Now, machine learning is being introduced for transient survey for detection \citep{goldstein15a} and classification \citep{charnock17a}.
+Neural networks have been used for photometric redshift studies from the early stages. 
+Today, many Machine Learning methods are applied to the photometric redshift studies \citep{collister04a,carliles10a,pasquet19a}.
+Deep neural networks (DNNs) are being used to process imaging data to identify strong lens systems \citep{petrillo17a} or for galaxy morphology classifications \citep{hausen19a}. 
+Currently, machine learning is being introduced to process transient survey data for detection \citep{goldstein15a} and classification purposes \citep{charnock17a}.
 
 In this paper, we introduce our attempt to apply machine learning (DNN) to the actual transient survey data.
-Hyper Suprime-Cam (HSC) \citep{miyazaki18a,Komiyama2018,kawanomoto18a,Furusawa2018} on Subaru Telescope enables us to probe wide field (1.77 deg$^2$ Field of View) and deep space (26th mag in $i-$band / epoch).  Our primary scientific goals are SN~Ia cosmology, Type II supernova (SN~II) cosmology, super-luminous supernova (SLSN) studies as well as probing unknown population of transients.  
-As is reported in \citet{yasuda19a}, more than 1800 SNe are discovered in a 6-month campaign. 
-We deployed a machine learning (AUC boosting) for transient detection \citep{morii16a}, where 'real' vs. 'bogus' is determined by a machine.
-In \citet{Kimura17}, we adopted DNN for SN type classification from 2 dimensional image, and highway block is introduced for the optimization of layers.
-This paper is an extension of \citet{Kimura17} and applies DNN to the photometric classification of transients.   
-Our unique attempt is to make use of the observed data as 'raw' as possible so that we can directly plug them into machine without any fitting to the data or extracting characteristics.
+The Hyper Suprime-Cam (HSC) \citep{miyazaki18a,Komiyama2018,kawanomoto18a,Furusawa2018}, a gigantic mosaic CCD still camera mounted on the 8.2 m Subaru Telescope, makes it possible to probe a wide field (1.77 deg$^2$ field of view) and deep space (26th mag in the $i-$band / epoch).  Our primary scientific goals are SN~Ia cosmology, Type II supernova (SN~II) cosmology, and super-luminous supernova (SLSN) studies as well as to probe unknown populations of transients.  
+As reported recently \citet{yasuda19a}, more than 1800 SNe were discovered during a 6-month campaign. 
+We deployed machine learning (AUC boosting) for transient detection \citep{morii16a}, where the machine determines whether a transient is ``real'' or ``bogus.''
+In \citet{Kimura17}, we adopted a DNN for SN type classification from a two-dimensional image, and highway block was introduced for the optimization of layers.
+This research is an extension of our previous work \citet{Kimura17} and applies a DNN to the photometric classification of transients.   
+We uniquely attempt to use the observed data in a state that is as ``raw'' as possible to enable us to directly use the data as input for the machine without fitting the data or extracting characteristics.
 
-The structure of this paper is as follows. We introduce our methods in section 2, and data in section 3. The design of our DNN model and its application to pseudo-real LSST simulation data is described in section 4. Section 5 shows the application of our model to the actual Subaru/HSC data. We discuss the results in section 6 and conclusion is given in section 7.
+The structure of this paper is as follows. We introduce our methods in section 2, and the data in section 3. The design of our DNN model and its application to pseudo-real LSST simulation data is described in section 4. Section 5 presents the application of our model to the actual Subaru/HSC data. We discuss the results in section 6 and conclude the paper in section 7.
 %
 %
 
 \section{Methods}
 \subsection{Tasks in HSC survey}
 \label{sec:tasks}
-Subaru HSC Transient survey is a part of Subaru Strategic Project (SSP) which is a five-year program with 300 dark nights \citep{aihara18a,miyazaki18a}.
-HSC-SSP Transient Survey is composed of two seasons, and the first season is executed for a consecutive 6 months from November 2016 through April 2017.
-HSC is mounted on the prime focus for 2 weeks in dark time.   
-Weather permitted, we aim to observe 2 data points per filter per lunation.
-A detailed survey strategies and the observing logs are reported in \citet{yasuda19a}, and we use the observed photometric data described in \citet{yasuda19a}.
+The Subaru HSC Transient Survey forms part of the Subaru Strategic Project (SSP), which is a five-year program with a total of 300 dark nights \citep{aihara18a,miyazaki18a}.
+The HSC-SSP Transient Survey is composed of two seasons, the first of which was executed for six consecutive months from November 2016 through April 2017.
+The HSC is mounted on the prime focus for two weeks in dark time.   
+Weather permitted, we aimed to observe two data points per filter per lunation.
+Details of the survey strategies and the observing logs were reported in \citet{yasuda19a}, and we used the observed photometric data described in \citet{yasuda19a}.
 
-One of our primary goals of HSC-SSP Transient Survey is SN~Ia Cosmology which aims to perform the most precise measurement of dark energy at high-redshift and test if dark energy is changing in time or not \citep{linder03b}.
-We are awarded 96 orbits of the Hubble Space Telescope time (WFC3 Camera) to execute a precise photometry on IR at the time of maximum.
-Our HST program uses non-disrupted ToO which means we send the observing request by Wednesday, 2 weeks prior to the observation.
-In other words, we are in need of finding good candidates 2-3 weeks prior to the maximum.  High-redshift (z$>$1) time dilation factor helps, but it is always a challenge to identify SN~Ia on the rise.
+One of our primary goals with the HSC-SSP Transient Survey is SN~Ia cosmology which aims to perform the most precise measurement of dark energy at high-redshift and test whether the dark energy varies with time \citep{linder03b}.
+We have been awarded 96 orbits of Hubble Space Telescope time (WFC3 Camera) to execute precise IR photometry at the time of maximum.
+Our HST program uses non-disrupted ToO, which means we are required to send the request for observation, two weeks prior to the observation.
+In other words, we need to identify good candidates 2--3 weeks prior to the maximum. Although a high-redshift ($z>1$) time dilation factor helps, it is always a challenge to identify SN~Ia on the rise.
 
-Our international collaboration team executes spectroscopic follow-up using large telescopes in the world.  
-Our target, high-redshift SN~Ia, is faint ($\sim$ 24th mag in $i-$band) for spectroscopic identification even with the powerful large telescopes: GMOS Gemini \citep{hook04a}, GTC, Keck LRIS \citep{oke95a}, VLT FORS, Subaru FOCAS \citep{kashikawa02a} and AAT AAOMega Spectrograph.  
-Thus, it is critical to hit the target at the time of maximum either by ToO (GTC), queue mode (VLT) or classical scheduled observation (Keck, Subaru, ATT).
+Our international collaboration team executes spectroscopic follow-up using the large telescopes in the world. 
+Our target, high-redshift SN~Ia, is faint ($\sim$ 24th mag in the $i-$band) for spectroscopic identification even with the most powerful large telescopes: GMOS Gemini \citep{hook04a}, GTC OSIRIS,\footnote{GTC OSIRIS $\langle$http://www.gtc.iac.es/instruments/osiris/$\rangle$.} Keck LRIS \citep{oke95a}, VLT FORS \citep{appenzeller98a}, Subaru FOCAS \citep{kashikawa02a} and AAT AAOmega Spectrograph \citep{Saunders2004}.  
+Thus, it is critical to hit the target at the time of maximum brightness either by using ToO (GTC), queue mode (VLT) or classical scheduled observation (Keck, Subaru, ATT).
 
-For SN~Ia, it takes about 18 days from its explosion to the maximum in rest frame \citep{conley06a,papadogiannakis19a}.   Given the fact, we are looking at high-redshift SN~Ia (z$>$1), we have about a month in observed frame for a SN~Ia from explosion to the maximum.   However, our task is to identify them 2 weeks prior to the maximum, meaning we have only 2 data points per a filter.   In addition to that, sky condition keeps changing, and we may not have the data as we originally had planned.   In reality, our identification has to be done through missing data points on the rise.
+A SN~Ia requires approximately 18 days from its explosion to reach its maximum in rest frame \citep{conley06a,papadogiannakis19a}. 
+%Given the fact, we are looking at high-redshift SN~Ia (z$>$1), we have about a month in observed frame for a SN~Ia from explosion to the maximum. 
+Given this fact, the SNe with which we are concerned is high-redshift SN~Ia ($z>1$), in which case we have approximately one month in the observed frame for a SN~Ia from the time of explosion until it reaches its maximum.
+However, our task is to identify these SNe two weeks prior to the maximum, which means we have only two data points per filter. In addition to that, the sky conditions continue to change, and we may not have the data as originally planned. In reality, our identification has to proceed despite data points being missing on the rise.
 
-In parallel to SN~Ia Cosmology program, our sister projects also needs identification and classification of HSC transient.   
-SN~II cosmology program needs a timely spectroscopic follow-up to measure the expansion velocity of photosphere from H$\beta$ line \citep{dejaeger17a}.
-SLSN is of great interest today, it is relatively a rare event\citep{quimby11a} and its mechanism has quite a diversity \citep{galyam12a,Moriya18SLSN}, and it can probe high redshift universe \citep{cooke12a}.    
-For SLSN project, timely spectroscopic follow-up is also critical \citep{moriya19a,curtin19a}.
+In parallel to the SN~Ia cosmology program, our sister projects also need identification and classification of HSC transients.   
+Specifically, the SN~II cosmology program requires timely spectroscopic follow-up to measure the expansion velocity of photosphere from the H$\beta$ line \citep{dejaeger17a}.
+%SLSN is of great interest today, it is relatively a rare event\citep{quimby11a} and its mechanism has quite a diversity \citep{galyam12a,Moriya18SLSN}, and it can probe high redshift universe \citep{cooke12a}. 
+A SLSN is of great interest today, because it is a relatively rare event \citep{quimby11a} and its mechanism has quite a diversity \citep{galyam12a,Moriya18SLSN}, and it can be used to probe the high-redshift Universe \citep{cooke12a}. 
+%For the SLSN project, timely spectroscopic follow-up is also critical \citep{moriya19a,curtin19a}.
+New types of rapid transients are also discovered by HSC, but their identities are yet to be known \citep{Tampo2020}. 
+For these projects, timely spectroscopic follow-up is also critical \citep{moriya19a,curtin19a}.
 
-Early phase SN~Ia gives us clues on explosion mechanism \citep{maeda18a} and progenitors \citep{cao15a}, and it is a hot topic to study.
-HSC has an advantage of surveying a large volume and has revealed long standing theory prediction of Helium-shell detonation \citep{Jiang2017}.
+An early phase SN~Ia provides us with clues on the explosion mechanism \citep{maeda18a} and progenitors \citep{cao15a}.
+The advantage of HSC is its ability to survey a large volume, and in practice, it has confirmed the long-standing theoretical prediction of helium-shell detonation \citep{Jiang2017}.
 Finding early phase SN~Ia is not trivial but HSC is yielding a new set of early phase SN~Ia \citep{Jiang_2020}.
-Observations of the early phase Core-Collapse SN provides us with a crucial information on the size of the progenitors \citep{thompson03a,tominaga11a} and Circumstellar Medium \citep{forster18a}.  
+Observations of early phase core-collapse SNe provide us with crucial information on the size of the progenitors \citep{thompson03a,tominaga11a} and Circumstellar Medium \citep{forster18a}.
 
 %Shock Breakout lasts only for a few $\sim$ several hours at the time of explosion and it becomes as luminous as at the time of the maximum \citep{gezari08a}. 
 %Shock Breakout contains the information on projenitor radius \citep{nakar10a}, and HSC is expected to find these candidates as well \citep{tominaga11a}.
@@ -125,88 +134,84 @@ Observations of the early phase Core-Collapse SN provides us with a crucial info
 %
 
 \subsection{Classification method for HSC-SSP transient survey}
-We designed two models of machine learning with emphasis on identifying SN~Ia which requires time sensitive trigger for HST IR follow-up.
-One model is in a binary mode and classifies if a transient is SN~Ia or not.
-It has been known that the majority of high-redshift transients are SN~Ia, and we seek for other unknown transients from the ones labeled as non-SN~Ia.   
-The other model classifies a transient into 3 classes: SN~Ia, SN~Ibc and SN~II.  
-We choose three classes for simplicity and in fact, the majority of SNe goes to one of these three categories.
+We designed two machine learning models with the emphasis on identifying SN~Ia, which requires a time-sensitive trigger for HST IR follow-up. 
+The first model operates in binary mode and classifies whether a transient is of the SN~Ia. 
+In this regard, the majority of high-redshift transients are known to be of the SN~Ia type, and our work entails searching for other unknown transients from among those labeled non-SN~Ia. 
+The second model classifies a transient into one of three classes: SN~Ia, SN~Ibc, or SN~II.  
+These three classes were chosen for simplicity and in fact, the majority of SNe belong to one of these three categories. 
 SN~Ia is a thermonuclear explosion, and its brightness can be calibrated empirically.
-SN~Ib, SN~Ic and SN~II are all Core-Collapse SNe and classified by the spectral features \citep{filippenko97a}.
-The light curves of SN~Ib and SN~Ic are similar to that of SN~Ia and it always contaminates SN~Ia cosmology program, and together we call them SN~Ibc.  They are fainter than SN~Ia and redder in general.
-One of our challenges in this paper is if we can segregate SN~Ibc from SN~Ia.
+SN~Ib, SN~Ic, and SN~II are all core-collapse SNe and are classified by their spectral features \citep{filippenko97a}.
+The light curves of SN~Ib and SN~Ic, which are collectively referred to as SN~Ibc, are similar to those of SN~Ia and always contaminate the SN~Ia cosmology program. They are fainter than SN~Ia and redder in general. 
+A major challenge of this work is to determine whether we can distinguish SN~Ibc from SN~Ia.
 %
 %
 
 \section{Data}
-In this section, we present dataset we use for our study.
-We first show our SN datset from HSC-SSP transient survey (subsection \ref{sec:hscdata}).
-Then we describe simulated photometric data to train the machine (subsection \ref{sec:training}).
-Lastly, we explained the pre-processing of the above data input to the machine (subsection \ref{sec:preproc}).
+In this section, we present the dataset we used for our study.
+We first introduce our SN dataset from the HSC-SSP Transient Survey (subsection \ref{sec:hscdata}).
+Then we describe the simulated photometric data to train the machine (subsection \ref{sec:training}).
+Lastly, we explain the pre-processing of the above data for input into the machine (subsection \ref{sec:preproc}).
 
 \subsection{Observed data from Subaru/HSC-SSP transient survey}
 \label{sec:hscdata}
-The goal of this project is to classify Subaru/HSC observed light curves. 
-The discovery of 1824 SNe from a six-month HSC-SSP Transient Survey in the period of
-November 2016 through April 2017 are reported and described in \citet{yasuda19a}.
-The survey is composed of Ultra-Deep (UD) and Deep layer in COSMOS \citep{scoville07a}.
-The median 5$\sigma$ limiting magnitudes per epoch are 26.4, 26.3, 26.0, 25.6, and 24.6 mag (AB)
-for $g$-, $r2$-, $i2$-, $z$- and $y$-band respectively for UD. 
-For Deep layer, the depth is 0.6 mag shallower.
+The goal of this project is to classify the light curves observed by Subaru/HSC.  
+The discovery of 1824 SNe recorded during the six-month HSC-SSP Transient Survey during the period of November 2016 through April 2017 was reported and described in \citet{yasuda19a}.
+The survey is composed of the Ultra-Deep and Deep layers in the COSMOS \citep{scoville07a}.
+The median 5$\sigma$ limiting magnitudes per epoch are 26.4, 26.3, 26.0, 25.6, and 24.6 mag (AB) for the $g$-, $r2$-, $i2$-, $z$- and $y$-bands, respectively, for the Ultra-Deep layer. 
+For the Deep layer, the depth is 0.6 mag shallower.
 
-The SN dataset consists of time series photometric data (flux, magnitude and their errors) in each band for each SN.
-Because part of the $y$ band photometric data has residuals due to improper background subtraction influenced by scattered light \citep{aihara18dr},
-we exclude the $y$ band data in our study, considering the impact on classification performance.
+The SN dataset consists of time series photometric data (flux, magnitude, and their errors) in each band for each SN.
+Because part of the $y$-band photometric data contains residuals due to improper background subtraction influenced by scattered light \citep{aihara18dr}, we excluded the $y$-band data from our study, considering the impact thereof on the classification performance.
 
 %redshift info
-The redshift information for HSC SNe is combination of our follow-up observation results and catalogs from multiple surveys of those host galaxies.
-The spectral redshifts (spec-z) are adopted from the results of the follow-up spectrum observations by AAT/AAOmega performed in 2018 and that from DEIMOS \citep{DEIMOS2018}, FMOS-COSMOS \citep{FMOS-COSMOS2015}, C3R2 \citep{C3R2_2017}, PRIMUS \citep{PRIMUS2011} and COSMOS catalogs.
-For those without spec-z, the photometric redshifts (photo-z) are adopted from the COSMOS catalog and those calculated from the HSC-SSP survey data \citep{HSCSSP_photo-z2018}.
-
+The redshift information for HSC SNe is a combination of our follow-up observation results and catalogs from multiple surveys of those host galaxies.
+The spectral redshifts (spec-z) are adopted from the results of the follow-up spectrum observations by AAT/AAOmega performed in 2018 and those from the DEIMOS \citep{DEIMOS2018}, FMOS-COSMOS \citep{FMOS-COSMOS2015}, C3R2 \citep{C3R2_2017}, PRIMUS \citep{PRIMUS2011} and COSMOS catalogs.
+For those without spec-z, the photometric redshifts (photo-z) were adopted from the COSMOS 2015 catalog \citep{laigle16a} and those calculated from the HSC-SSP survey data \citep{HSCSSP_photo-z2018}.
 
 
 \subsection{Simulated data for training}
 \label{sec:training}
 We are in need of simulating observed photometric data to train the machine.  
-For normal SN~Ia, we use SALT2 \citep{guy10b} model ({\it ver} 2.4) which requires 2 input parameters: c for color and x1 for stretch.
-We adopt the asymmetric Gaussian distribution of c, and x1 from \citet{mosher14a}, and generate
-light curves and simulate photometric data points based on the observation schedule. 
-Besides SN~Ia, we use spectral time series from \citet{kessler19b} which contains both observed Core-Collapse SN data and light curves from simulation.
-We mix equal number of SN~Ia and Non-SN~Ia to approximate the observed fractions. 
-These fraction does not need to be exact for our purpose of classification, but it is important
-that the minority is not buried in the majority.
+For normal SN~Ia, we used the SALT2 \citep{guy10b} model ({\it ver} 2.4) that requires two input parameters: c for color and x1 for stretch.
+We adopted an asymmetric Gaussian distribution for c, and x1 from \citet{mosher14a}, and generated light curves and simulated photometric data points based on the observation schedule. 
+Apart from SN~Ia, we used published spectral time series from \citet{kessler19b} which contains both observed Core-Collapse SN data and light curves from the simulation.
+We combined an equal number of SN~Ia and non-SN~Ia observations to approximate the observed fractions. 
+%These fraction does not need to be exact for our purpose of classification, but it is important that the minority is not buried in the majority.
+Although these fractions do not need to be exact for the purpose of our classification, it is important to avoid using an unbalanced dataset.
 For three class classification, we set the ratio of SN~Ia:SN~Ibc:SN~II=10:3:7.
-The redshfit distribution of galaxies is taken from COSMOS survey \citep{laigle16a}, and we distributed simulated SN accordingly from $z$=0.1 through $z=$2.0.
-Throughout this paper, we use $\Lambda$CDM cosmology with $\Omega_{m}$=0.3 and h=0.7.
-We use filter response including system throughput from \citet{kawanomoto18a}. 
-Examples of simulated photometric data is shown in figure \ref{fig:simLCsamples}.
+The redshift distribution of galaxies was taken from the COSMOS survey \citep{laigle16a}, and we distributed the simulated SNe accordingly from $z=$0.1 through $z=$2.0.
+Throughout the study reported in this paper, we used $\Lambda$CDM cosmology with $\Omega_{m}$=0.3 and h=0.7.
+We used the filter response including system throughput from \citet{kawanomoto18a}. 
+Examples of simulated photometric data are shown in figure \ref{fig:simLCsamples}.
 
-One complication in simulating realistic data is that the machine does not accept expected errors, or we have not identified a good method to include errors.   
-For this study, we take a path of brute force, namely, we place expected photometric error on top of the simulated data so that the simulated data point behaves like one of the many realizations.
-For HSC simulation, the size of error varies night to night due to sky condition. 
-We measure and derive flux vs. error relationship from the actual observed data at simulating epoch and apply that relationship to the simulated photometric data.
+A complication that arises when attempting to simulate realistic data is that the machine does not accept expected errors. Alternatively, we may not have identified a good method for including errors.   
+In this study, we therefore simply used brute force, namely, we placed the expected photometric error on top of the simulated data such that a simulated data point behaves similarly to one of the many realizations.
+%For HSC simulation, the size of error varies night to night due to sky condition. 
+The magnitude of the error in the HSC simulation would have to consider varies from night to night because of sky conditions. 
+We measured and derived the flux vs. error relationship from the actual observed data at simulating epoch and applied that relationship to the simulated photometric data.
 %For LSST simulation, we find the flux-error relation from the Deep Drilling Field (DDF) of the one used in Kaggle Competition \citep{malz19a} and applied that to the simulated photometric data.
 
-We have tested how many light curves are needed for training.  We use 'accuracy' (subsection \ref{hyperparametersearch}) as a guide on how many light curves to use.  
-Based on the our convergence test, we conclude we need to generate more than 100,000 light curves for training as shown figure \ref{fig:size_convergence_test}.
-We dropped ones which has less than 3$\sigma$ detection at the maximum since our detection criterion is 5$\sigma$. %Prior to the modeling, we did the convergence test
-For training, 514,954 light curves are generated for HSC observed data. 
-Their class ratio is SN~Ia:Ibc:II=0.59:0.07:0.34, and the peak timings of them are randomly shifted by 450 days.
+Guided by the ``accuracy'' (subsection \ref{hyperparametersearch}), we determined the number of light curves that would be required for training.   
+Based on our convergence test, we concluded that we would need to generate more than 100,000 light curves for training as shown figure \ref{fig:size_convergence_test}.
+We omitted the curves with less than 3$\sigma$ detection at the maximum because our detection criterion was 5$\sigma$. %Prior to the modeling, we did the convergence test
+For training, we generated 514,954 light curves for HSC observed data. 
+Their final class ratio after these criteria is SN~Ia:Ibc:II=0.59:0.07:0.34, and their peak timings are randomly shifted by 450 days.
 %
 %
-\begin{figure}[htbp]
+\begin{figure*}[htbp]
   \begin{center}
      %\includegraphics[width=\columnwidth]{figures/SimLCsamples.eps}
      \includegraphics[width=130mm]{figures/SimLCsamples.eps}
   \end{center}
   \vspace{-6mm}
   \caption{%
-  Overlay plots of simulated light curves with z between 0.1 and 1.2.
-  Each panel shows the case of Ia, Ibc, II from the left, and $g$-, $r2$-, $i2$-, $z$-, $y$-band from the bottom.
-  No noise component is added to these light curves.
+  Overlay plots of simulated light curves with {\it z} between 0.1 and 1.2.
+  Each panel shows the plots of SN Ia, Ibc, II data from the left, and the $g$-, $r2$-, $i2$-, $z$-, $y$-bands from the bottom.
+  The variation of the curves in each panel depends on the different parameters and templates used in the simulation.
+  A noise component was not added to these light curves.
   }%
-  
   \label{fig:simLCsamples}
-\end{figure}
+\end{figure*}
 %
 %
 \begin{figure}[htbp]
@@ -214,8 +219,9 @@ Their class ratio is SN~Ia:Ibc:II=0.59:0.07:0.34, and the peak timings of them a
      \includegraphics[width=\columnwidth]{figures/size_accuracy.eps}
   \end{center}
   \caption{%
-A convergence test: We tested how many light curves needs to be generated to train a machine. 
-The solid line shows the mean accuracy of five classifiers. The shade area shows the standard deviation of the classifiers. The classifiers are trained with 5 fold cross validation using the training dataset.  We conclude we need more than 100,000 light curves for training.
+Convergence test to determine the number of light curves that would need to be generated to train the machine. 
+The solid line shows the mean accuracy of five classifiers. The shaded area shows the standard deviation of the classifiers, which were trained with 5-fold cross validation using the training dataset. 
+The results indicate that more than 100,000 light curves would be required for training.
   }%
   \label{fig:size_convergence_test}
 \end{figure}
@@ -233,129 +239,131 @@ The solid line shows the mean accuracy of five classifiers. The shade area shows
 \subsection{Preprocessing of input data}
 \label{sec:preproc}
 %We found that in experiments using simulation data, it is better to be input x follow as,
-Based on our pre-experiment with simulated dataset, we found that the machines performs best if we 
-chose a combination of normalized flux ($f$) and pseudo-absolute magnitude ($M$):
+Based on our pre-experiment with the simulated dataset, we found the machine to perform best by using a combination of the normalized flux ($f$) and pseudo-absolute magnitude ($M$):
 \begin{equation}
     x = \left( M_1^\mathrm{abs}, \ldots, M_P^\mathrm{abs}, f_{1}^{\mathrm{scale}}, \ldots, f_{P}^{\mathrm{scale}} \right)^T,
 \end{equation}
-where $f_{i}^{\mathrm{scale}}$ is $i$-th raw observed flux normalized by its maximum flux:
+where $f_{i}^{\mathrm{scale}}$ is the $i$-th raw observed flux normalized by its maximum flux:
 \begin{equation}
     f_{i}^{\mathrm{scale}} = \frac{f_i}{\max \left(f_1, \ldots, f_P \right)},    \label{eq:scaled_flux}
 \end{equation}
-and $M_i^\mathrm{abs}$ is $i$-th pseudo-absolute observed magnitude.
-For a simplicity, we ignore K-correction and use distance modulus (DM(z)) based on $\Lambda$CDM with photometric redshift
-from its host galaxy.
+and $M_i^\mathrm{abs}$ is the $i$-th pseudo-absolute observed magnitude.
+For simplicity, we ignored K-correction and used the distance modulus (DM(z)) based on $\Lambda$CDM with the photometric redshift from its host galaxy.
 \begin{eqnarray}
     M_i^\mathrm{abs} = m_i - \mathrm{DM}\left(z\right),
 \end{eqnarray}
-We can justify this operation because we treat the training set and the observed dataset in the same way.
-It there existed K-correction offset, both dataset would experience in the same way.
+We can justify this operation because the training set and the observed dataset are processed using the same approach.
+In the case of the existence of K-correction offset, both datasets would experience this in the same way.
 %where $m_i$ is i-th magnitude and $\mathrm{DM}\left(z\right)$ is distance modulus of the redshift value $z$.
-In addition, since the observed flux could go to a negative value due to statistical fluctuation, 
+In addition, because the observed flux could take on a negative value owing to statistical fluctuation, 
 we adopt hyperbolic sine to imitate the magnitude system we use \citep{lupton99a}.  
 %the calculation of the magnitude was dealt with using Luptitude (Lupton magnitude). %simplified Lupton magnitude 
 \begin{eqnarray}
     m_i = 27.0 - \frac{2.5}{\log 10} \sinh^{-1} \frac{f_i}{2}. \label{eq:mag} 
 \end{eqnarray}
-In fact, the combination of the flux and magnitudes are redundant.   If we know one, we can calculate the other
-in an explicit way.   
-However, based on our experiment, the score of machine gets better if we use both.  
-We suspect the distribution in flux (linear) and magnitude space (log) are different, 
-and it gives an extra clue to the machine.
-Thus, we use pseudo-absolute magnitude ($M$) and normalized flux ($f$) as an input.
+In fact, combination of the flux and magnitudes is redundant, because knowledge of the one would enable us to calculate the other explicitly.   
+However, based on our experiment, the score of the machine improves by using both.  
+We suspected that the distribution in flux (linear) differs from that of the magnitude space (log), which provides the machine with additional information.
+Thus, we used the pseudo-absolute magnitude ($M$) and normalized flux ($f$) as an input.
 
 \section{Deep neural network classifier}
 \label{sec:DNN}
-On the rise of the era of Big Data, the use of machine learning technique plays a critical role on the analysis of astronomical data.  Techniques such as Random Forest, Support Vector Machine, and Convolution Neural Network have been used for photometric data analysis \citep{pasquet19a}, galaxy classifications \citep{hausen19a} and spectral 
-classifications \citep{garciadias18a,muthukrishna19c,sharma20a}.
+With the rise of Big Data, the use of machine learning techniques has played a critical role in the analysis of astronomical data. Techniques such as random forest, support vector machine, and convolution neural network have been used for photometric data analysis \citep{pasquet19a}, galaxy classifications \citep{hausen19a}, and spectral classifications \citep{garciadias18a,muthukrishna19c,sharma20a}.
 
-We are in need of classifying SN from photometric data.
-We attempt to make use of the observed data as it is without parameterization.
-It is the Deep Learning that makes this attempt possible.
-We test how good deep learning can do without extracting features such as color, light curve width and the peak magnitude on this paper.
+In our work, we seek to classify SNe from photometric data.
+Our approach entails making use of the observed data without pre-processing or parameterization.
+In this regard, we rely on deep learning to make our work possible.
+We decided to test the extent to which deep learning could provide useful results without extracting features such as color, the width of the light curve, and the peak magnitude.
 %It has been proven among PLAsTiCC competition that a combination of features can perform very well \citep{boone19a}, but it needs the data augmentation, interpolation or extrapolation to extract features.
 
-We push one step further and use the observed data as raw as possible, meaning our input is a simple array of magnitudes.  Such attempt would not be possible ten years ago, but thanks for the advancement of computing and deep learning technique, now it becomes a reality.  Among many other machine learning methods, deep neural network is our choice which enables us to classify astronomical objects from the raw observed data. 
+The fact that we went one step further by leaving the observed data as raw as possible, means that our input consists of a simple array of magnitudes. 
+An attempt such as this would not have been possible ten years ago; however, owing to advancements in computing and the deep learning technique, this has become reality. 
+Among the many machine learning methods, we decided to use a DNN to enable us to classify astronomical objects from the raw observed data.
 
 \subsection{Model design}
 \label{sec:model} %added by IT
-In this section, we describe our design of DNN model
-\footnote{The code for our model is available at $\langle$https://github.com/ichiro-takahashi/snclass$\rangle$.}
-which takes an array of observed magnitudes as an input and outputs SN classification with probabilities.  We adopted Highway layer \citep{srivastava15a} as a core part of our network which is also called 'layer in layer'.  Compared to the plain DNN, Highway layer can perform better when the network is deep in terms of parameter optimization \citep{srivastava15b}.   
-Just like other DNN models, this model goes through training, validation process to optimize parameters, and we describe the steps below.  The terminology we use is common in the world of DNN, but this is a new introduction to astronomical community, we spell out each step one by one.  The architecture of our model is summarized in figure \ref{fig:dnn_model}.
-At the end, each SN is given a probability of being a certain astrophysical class, in our case, SN types. 
+In this section, we describe the design of our DNN model,\footnote{The code for our model is available at $\langle$https://github.com/ichiro-takahashi/snclass$\rangle$.} 
+which accepts an array of observed magnitudes as its input and outputs the SN classification with probabilities. We adopted a highway layer (also known as a ``layer in layer'', \cite{srivastava15a}) as a core part of our network. Compared to plain DNN, the performance of a highway layer improves when the network is deep in terms of parameter optimization \citep{srivastava15b}.   
+
+Similar to other DNN models, this model proceeds through a training and validation process to optimize the parameters, and we describe the steps below. Our terminology is commonly used in the world of DNN, but as this is a new introduction to the astronomical community, we explain each step in detail. The architecture of our model is summarized in figure \ref{fig:dnn_model}.
+Ultimately, each SN is assigned a probability of belonging to a certain astrophysical class, in our case, the type of SN. 
 %
-\begin{figure}[htbp]
+\begin{figure*}[htbp]
   \begin{center}
      %\includegraphics[width=\columnwidth]{figures/model_all.eps}
      \includegraphics[width=130mm]{figures/model_all.eps}
   \end{center}
   \caption{\label{dnnmodel}
-  The architecture of the deep neural network classifier. 
-  The green boxes are parameters which are optimized by gradient descent method during training. The red boxes are hyper-parameters which are optimized by the hyper-parameter search. 
-  Batch Normalization layer has four variables ($\mu, \sigma^2, \gamma, \beta$). $\mu$ and $\sigma^2$ are to learn the statistics (mean and variance) of the value through the layer respectively.  $\gamma$ and $\beta$ are scale parameter and shift parameter to adjust the output. $\mu$ and $\sigma^2$ are not updated by gradient descent method but are updated by moving average. We omit them from the figure for simplicity.
+  Architecture of the deep neural network classifier. 
+  The green boxes are parameters optimized by the gradient descent method during training. 
+  The red boxes are hyperparameters that are optimized during the hyperparameter search. 
+  The batch normalization layer has four variables ($\mu, \sigma^2, \gamma, \beta$), where $\mu$ and $\sigma^2$ are intended to learn the statistics (mean and variance) of the value through the layer, respectively, and $\gamma$ and $\beta$ are scale and shift parameters, respectively, to adjust the output. 
+  Note that $\mu$ and $\sigma^2$ are not updated by gradient descent; instead, they are updated by the moving average. 
+  They were omitted from the figure for simplicity.
   }%
   \label{fig:dnn_model}
-\end{figure}
+\end{figure*}
 %
 
 
-{\bf Input}: Our input is an array of magnitudes and normalized fluxes of the $i$th SN in the training data set:
+{\bf Input}: Our input is an array of magnitudes and normalized fluxes of the $i$th SN in the training dataset:
 \begin{equation}
       x_i = \left( M_{i1}, M_{i2}, \ldots M_{ij} \ldots , M_{iN}, f_{i1}, f_{i2}, \ldots, f_{iN} \right)^T
 \end{equation}
-We do not use time or filter explicitly but it is recorded as an order inside the array.  The philosophy here is that the training set which is composed of the simulated data in the same array length holds the information on filter and dates.  For example, the $j$th magnitude in the array is the data taken on a certain date and by a certain filter.  The combination of the date and filter is identical to the ones in the training set.  Therefore, the $j$th component implicitly contains unique information about dates and filters.  
+We do not explicitly specify the time at which or the particular filter with which the data were recorded, but this information is recorded as an order inside the array. 
+The philosophy here is that the training set, which is composed of simulated data of the same array length, holds information on the filter and dates. 
+For example, the $j$th magnitude in the array is data recorded on a certain date and by a certain filter. 
+The combination of the date and filter is identical to those in the training set. Therefore, the $j$th component implicitly contains unique information about the dates and filters.   
 %{\bf Memo Distance Modulus \& Normalized Flux needs to be written for preprocessing}
 %Based on our experiments (table \ref{tab:p_test}), the combination of absolute magnitude and normalized flux performs best, and therefore, our
-If input is a combination of magnitude and normalized flux,
-our input array has a size of $1\times2N$ per a SN where $N$ is the number of data points.
+Considering that the input consists of a combination of the magnitude and normalized flux, the size of our input array is $1\times2N$ per SN where $N$ is the number of data points.
 
 %The DNN model receives the total of P brightnesses observed in multiple bands as an input and outputs $C$ values, where $C$ is the number of classes in classification task, and $C = 1$ in regression task.
 
 {\bf First Fully Connected layer:}
-We would like to make use of $D$ neurons which is also known as the number of 'hidden layer', and $D$ is greater than the number of input components ($2N$).  However, the dimension $D$ is not known in advance, and this parameter is one of the hyperparameters we optimize later in this section.  Since the dimension of input ($2N$) and the number of optimized neurons $D$ could be different, we are in need of adjusting the dimensions and that is the role of this First Fully Connected layer $F(x)$.    
+We decided to make use of $D$ neurons, also known as the number of ``hidden layers,'' and $D$ is greater than the number of input components ($2N$). However, the dimension of $D$ is not known in advance, and this is one of the hyperparameters we optimize later in this section. Because the dimensionality of the input ($2N$) could differ from the number of optimized neurons $D$, we would need to adjust the number of dimensions and that is the role of this first fully connected layer $F(x)$.
 \begin{equation}
     F \left(x, \left\{W_{fc1},b_{fc1}\right\}\right) = W_{fc1} x + b_{fc1} \in \mathbb{R}^D.
 \end{equation}
-$F(x)$ is given by a linear combination of matrix $W_{fc} \in \mathbb{R}^{D\times 2N}$ and a vector $b_{fc} \in \mathbb{R}^D$. The initial value of $W_{fc}$ is generated by Gaussian distribution and $b_{fc}$ is initialized by $\mathbf{0}$, which is a $D$ dimentional vector and the all elements are zero.  We use a python wrapper library called {\it dm-sonnet} and its function called {\it linear} supplies the $F(x)$ when we plug in '$2N$' and '$D$'.  
-%The initial value of the matrix $W_{fc}$ is generated by Gaussian distribution and b is initialized by zero. 
-Later on, $W_{fc}$ and $b_{fc}$ are optimised by an open source Machine Learning package, {\it Tensorflow}.  Unless we mention otherwise, we use libraries from {\it Tensorflow}.
+$F(x)$ is given by a linear combination of matrix $W_{fc} \in \mathbb{R}^{D\times 2N}$ and a vector $b_{fc} \in \mathbb{R}^D$. The initial value of $W_{fc}$ is generated by Gaussian distribution and $b_{fc}$ is initialized by $\mathbf{0}$, which is a $D$-dimensional vector of which all the elements are zero. We used the Python wrapper library {\it dm-sonnet} \footnote{{\it dm-sonnet} $\langle$https://github.com/deepmind/sonnet$\rangle$.} (version 1.23) and its function {\it linear} to supply the $F(x)$ when plugging in ``$2N$'' and ``$D$.''  
+Subsequently, $W_{fc}$ and $b_{fc}$ are optimized by the open source machine-learning package {\it Tensorflow} (version 1.14) \citep{Abadi2016}.  
+Unless stated otherwise, we used the libraries from {\it Tensorflow}.
 
 {\bf Dropout layer:}
-In order to have a robust result, it is always best to train all of the neurons as an ensemble and avoid one of the neurons drags the result.  Dropout is a process which randomly drops some of the neurons from the training and the rate of dropout can be optimized as one of the hyperparameters \citep{dropout}. 
+To obtain a robust result, it is always best to train all of the neurons as an ensemble and avoid a situation in which one of the neurons adversely affects the result. Dropout is a process in which certain neurons are randomly dropped from training and the dropout rate can be optimized as one of the hyperparameters \citep{dropout}.
 
 {\bf Highway layer:}
-We adopted Highway layer \citep{srivastava15a} and the number of layers is optimized through hyperparameter search.   In theory, we can design a very deep layer and the number of layers can be more than we need.   In fact, it is not trivial to find the optimized number of layers.   
+We adopted a Highway layer \citep{srivastava15a} and optimized the number of layers therein during the hyperparameter search. In theory, it would be possible to design a very deep layer with more layers than would be necessary. However, in reality, it is not trivial to optimize the number of layers.   
 %In this study, we adopted Highway Layer \citep{highway} as the basic part of the network structure.
-The depth and/or layer size of the DNN model is directly related to the complexity of the features that we input, and greatly affect the performance of the task.  
-However, if a model is too deep, the learning process becomes difficult and causes performance degradation.
+The depth and/or size of the layers of the DNN model are directly related to the complexity of the features used as input, and greatly affect the computational performance of the task.  
+Thus, an overly deep model would complicate the learning process and cause performance degradation.
 %There are many studies to solve the problem such as optimization, initialization, and network architecture.
-Highway layer is a technique that stabilizes learning process by devising the network structure.
-In \citet{Kimura17}, we have used Highway layer and tested on 2D image, and it proved a good performance.  The details of the use and the advantages of Highway layer is described in \citet{Kimura17}.  We continue to adopt Highway layer scheme for this analysis.
+A highway layer is a technique that stabilizes the learning process by devising the network structure.
+We previously used a highway layer, which we tested on 2D images, and it delivered good performance \citep{Kimura17}. Details of the use and advantages of the highway layer are provided in \citet{Kimura17}. This encouraged us to adopt a highway layer scheme for this analysis.
 %\begin{equation}
 %Highway\left(h\right) = H\left(h\right) \otimes T \left(h\right) + h \otimes C\left(h\right)
 %\end{equation}
 %Highway layer, shown in Fig.\ref{fig:dnn_model}, has multiple paths from the input to the output.
-The output of Highway layer is calculated from the values of the multiple paths.
+The output of the highway layer is calculated from the values of multiple paths.
 The output, ${\bf Highway} \left(x\right)$, is formulated as
 \begin{equation}
     {\bf Highway} \left(x\right) = G \left(x\right) \otimes H \left(x\right) + C \left(x\right) \otimes x \in \mathbb{R}^D,
 \end{equation}
-where $H$ is a non-linear transformation layer. $G$ is the transformation gate function layer and controls the transformation of input.  $C$ is the carry gate function layer. The symbol, $\otimes$, is element-wise product, also known as Hadamard product.
+where $H$ is a nonlinear transformation layer, $G$ is the transformation gate function layer and controls the transformation of input, $C$ is the carry gate function layer, and $\otimes$ provides the element-wise product, also known as the Hadamard product.
 %The two gate functions $T$ and $C$ control how much of the outputs which are transforming the input and carrying it, respectively.
 %One gate functions, $T$, controls the transformation of input and the other gate function, $C$, controls  
-Highway layer includes other layers inside.  This structure is called layer in layer.  Each function is defined as follows: 
+A highway layer includes several other layers, a structure known as ``layer in layer.'' Each function is defined as follows: 
 \begin{eqnarray}
     H \left(x\right) &=& \mathrm{a} \left( F \left(x, \left\{W_{H_{fc}}, b_{H_{fc}}\right\}\right) \right) \in \mathbb{R}^D, \\
     G \left(x\right) &=& \mathrm{a} \left( F \left(x, \left\{W_{G_{fc}}, b_{G_{fc}}\right\}\right) \right) \in \mathbb{R}^D, \\
     C \left(x\right) &=& \mathbf{1} - G \left(x\right) \in \mathbb{R}^D,
 \end{eqnarray}
-where $a$ is an activation function, namely sigmoid.
+where $a$ is an activation function, namely, sigmoid.
 \begin{eqnarray*}
     \mathrm{a} \left(p\right) &=& \left( \sigma\left(p_1\right),\sigma\left(p_2\right), \ldots, \sigma\left(p_D\right) \right)^T, \; p \in \mathbb{R}^D, \\
     \sigma \left(p_i\right) &=& \frac{1}{1 + e^{-p_i}},
 \end{eqnarray*}
-Note $D$ is the number of neurons.  Each element of $G(x)$ always takes a value between 0 and 1.  At the end values, Highway layer behaves as follows:
+where $D$ is the number of neurons. Each element of $G(x)$ always takes a value between 0 and 1. Eventually, the Highway layer behaves as follows:
 \begin{equation}
     {\bf Highway(x)}=\left\{
     \begin{array}{@{}ll@{}}
@@ -372,45 +380,50 @@ Note $D$ is the number of neurons.  Each element of $G(x)$ always takes a value 
 %This block itself is laid multiple times.
 %and this number of blocks $N_{bloack}$ is one of the hyperparameters and optimized later. 
 %The optimal structure of the network was determined by hyperparameter search.
-Along with the hidden layer dimensions $D$, the dropout ratio, batch normalization, and the types of activation function, the number of repetition $T$ is one of the hyperparameters and optimized through hyperparameter search. The details are described in subsection \ref{hyperparametersearch}.
+Along with the dimensions of the hidden layer $D$, the dropout ratio, batch normalization, and the types of activation function, the number of repetitions $T$ is one of the hyperparameters and is optimized by performing a hyperparameter search. Details are provided in subsection \ref{hyperparametersearch}.
 %The subjects of hyperparameter search are the number of highway blocks $N_{block}$, the number of hidden layer dimensions $d$ of highway blocks, the dropout ratio, the presence of batch normalization, and the type of activation function.
 
 {\bf Batch Normalization layer:}
-We adopt Batch Normalization \citep{batch_norm} to accelerate and stabilize the optimization. Even if it may be a large number of parameters we need to train, Batch Normalization helps converge the training, reduce errors on the slope when we apply entropy minimization, prevents the average and dispersion goes exponentially large in deep layers, and minimize the biases on outputs \citep{understanding_batch_norm}.
-Batch Normalization works well in many cases. However, if both Batch Normalization and Dropout are in the model, the performance may degrade (\cite{dropout_and_batch_norm}).   
+We adopt batch normalization \citep{batch_norm} to accelerate and stabilize the optimization. 
+Even if a large number of parameters need to be trained, batch normalization facilitates convergence of the training process, reduces errors on the slope when we apply entropy minimization, prevents the average and dispersion from becoming exponentially large in deep layers, and minimizes the biases on outputs  \citep{understanding_batch_norm}.
+Batch normalization is effective in many cases. 
+However, the performance of a model that employs both batch normalization and dropout may degrade  (\cite{dropout_and_batch_norm}).   
 
 {\bf Activation layer:}
-Each neuron is activated through a non-linear transformation.  Non-linearity is an important component for DNN which gives us a wide variety of expression.   Note the majority of the layers, including Fully Connected Layers, are a linear transformation and even if we have a number of layers, it is equivalent of one single linear transformation.   Thus, it is essential to have a non-linear transformation so that each neuron can have a freedom to take any values necessary.
-For the first iteration, we do not know what kind of transformation is the best, the transformation itself is taken as one of the hyperparameters.  The functions, 'tf.nn', in {\it Tensorflow} is being used.
+Each neuron is activated by using nonlinear transformation. 
+Nonlinearity is an important component of DNN, because it allows a wide variety of expressions. 
+Note that the majority of the layers, including fully connected layers, involve a linear transformation and, even if a number of layers were to exist, it would be equivalent to one single linear transformation. 
+Thus, nonlinear transformation is essential to allow each neuron the freedom to have any necessary values.
+For the first iteration, we do not know what kind of transformation is the best; thus, the transformation itself is taken as one of the hyperparameters. 
+In our work, we used the functions ``tf.nn,'' in {\it Tensorflow}.
 
 {\bf Second Fully Connected layer:}
-After $T$ reptitions of Highway layer, Batch Normalization layer, and Activation layer,
-we are in need of converting the number of neurons to the number of SNe times the number of SN classes.   This is an opposite operation of the First Fully Connected layers.
+After $T$ repetitions of the highway layer, batch normalization layer, and activation layer, it is necessary to convert the number of neurons to the number of SNe times the number of SN classes. 
+This operation is opposite to that of the first fully connected layer.
 
 {\bf Softmax layer:}
-Softmax layer normalize the input value of this layer, which is denoted by $h \in \mathbb{R}^D$. The output value is $\hat{y} \in \mathbb{R}^D$ and each element $\hat{y}_k$ is expressed as
+The Softmax layer normalizes the input value of this layer, which is denoted by $h \in \mathbb{R}^D$. The output value is $\hat{y} \in \mathbb{R}^D$ and each element $\hat{y}_k$ is expressed as
 \begin{equation}
     \hat{y}_k = \frac{\exp \left( h_k \right)}{\sum_{k'=1}^K \exp \left( h_{k'} \right)}.
 \end{equation}
 The normalized value $\hat{y}$ satisfies $\hat{y}_k \geq 0$ and $\sum_k^K \hat{y}_k =1$.
-We can interpret $\hat{y}_k$ as a probability that the input $x$ belongs to class $k$.
-However, we note that this is a pseudo probability and it differs from the one we use in statistics.
+We can interpret $\hat{y}_k$ as the probability that the input $x$ belongs to class $k$.
+However, we note that this is a pseudo-probability and that it differs from the statistical probability.
   
 \subsection{Hyperparameter search}\label{hyperparametersearch}
-We perform a hyperparameter search (red boxes in figure \ref{fig:dnn_model}) by combining grid search and Tree-structured Parzen Estimator (TPE) algorithm.
-Grid search is not suitable for high-dimensional space search, but has an advantage of searching for multiple points in parallel.
-In addition, since the algorithm is simple, we can convey the knowledge of preliminary experiments for parameter initialization.
-On the other hand, the TPE algorithm is suitable for searching a high-dimensional space, but has a disadvantage of not knowing where to start for the first time.
-Therefore, this time, we search around the hyperparameter values that were good in the preliminary experiment by grid search, and then send the grid search results to TPE algorithm.  
-The ranges of hyperparameters that we searched are given in table \ref{tb:hp}.
+We perform a hyperparameter search (red boxes in figure \ref{fig:dnn_model}) by combining grid search and the Tree-structured Parzen Estimator (TPE) algorithm \citep{pmlr-v28-bergstra13}.
+Although grid search is not suitable to search a high-dimensional space, it has the advantage of searching for multiple points in parallel.
+In addition, because of the simplicity of the algorithm, it allows us to convey knowledge acquired during preliminary experiments for parameter initialization.
+Meanwhile, the TPE algorithm is suitable for searching a high-dimensional space, but has the disadvantage of not knowing where to start initially.
+Therefore, this time, our search was guided by the hyperparameter values that were obtained in the preliminary experiment using grid search, and these results were then used as input for the TPE algorithm.  
+The ranges in which we searched for the hyperparameters are given in table \ref{tb:hp}.
 %By combining them, there are merits that the knowledge obtained in the preliminary experiment can be used and the time required for the search can be shortened.
 
 % We optimized the hyperparameters of the DNN model using the library, optuna(\cite{optuna}).
-As a usual strategy, we divide the dataset into a training data and a validation dataset.
-We use the training data for optimizing DNN, and use the validation data for measuring the accuracy.
-In optimizing the hyperparameters, we evaluated the hyperparameters with validation dataset so
-that the accuracy of validation dataset becomes maximum.
-We iterate this process for 100 times so that the accuracy converges to its maximum (figure \ref{fig:hp_test}).
+According to the usual approach, we divided the dataset into training and validation datasets.
+We used the training data to optimize the DNN, and the validation data to measure the accuracy.
+The hyperparameters were optimized by evaluation with the validation dataset to maximize the accuracy of this dataset.
+This process was iteratively conducted 100 times to allow the accuracy to converge to its maximum (figure \ref{fig:hp_test}).
 
 %We trained the DNN model using the hyper parameters obtained by optimization, and evaluated the performance of the DNN model.
 %
@@ -435,7 +448,7 @@ We iterate this process for 100 times so that the accuracy converges to its maxi
      \includegraphics[width=\columnwidth]{figures/hp_iterations_accuracy.eps}
   \end{center}
   \caption{%
-  We iterate hyperparameter search for 100 times where it converges to its maximum performance in terms of accuracy.   What is shown is the case of a binary classification.
+  Result of iterative hyperparameter search (100 cycles) showing its convergence to its maximum performance in terms of accuracy. The task involved binary classification.
   }%
   \label{fig:hp_test}
 \end{figure}
@@ -489,21 +502,21 @@ We iterate this process for 100 times so that the accuracy converges to its maxi
 %
 %
 We can train the DNN classifier in the same way regardless of the number of classes.
-In the case of multi-type classification, the number of classes is $K = 3$ in our experiment, so the number of outputs of the DNN classifier is also three.
-In binary classification (SN~Ia or Non-SN~Ia), the number of the outputs is two.
+In the case of multi-type classification, the number of classes is $K = 3$ in our experiment; thus, the number of outputs of the DNN classifier is also three.
+In binary classification (SN~Ia or non-SN~Ia), the number of outputs is two.
 
-We train the model by minimizing the cross-entropy error: 
+We trained the model by minimizing the cross-entropy error: 
 \begin{equation}
 \mathrm{CE} \left(y, \hat{y} \right) =　-\sum_{k = 1}^K y_k \log \hat{y}_k,
 \end{equation}
-where $y$ is a ground truth vector which is one-hot encoding of $K$ dimension, and $\hat{y}$ is the DNN output vector.
-We deploy {\it Adam optimizer} which uses a stochastic gradient method to optimize the model parameters.
+where $y$ is the ground truth vector, which entails one-hot encoding of $K$ dimensions, and $\hat{y}$ is the DNN output vector.
+We deployed the {\it Adam optimizer} \citep{Kingma2014} which uses a stochastic gradient method to optimize the model parameters.
 
-We introduce a data augmentation to prevent overfitting at the time of training.
-By increasing the number of input data by augmentation, we prevent DNN from memorizing all of the training dataset.
-We apply two ways of data augmentation to the training dataset.
-One is adding Gaussian noise (based on the expected observed uncertainty) to the simulated flux.
-The other is mixup (\cite{mixup}).
+We introduced data augmentation to prevent overfitting at the time of training.
+By increasing the number of input data by using data augmentation, we prevent DNN from having to memorize the entire training dataset.
+We used two data augmentation methods to augment the training dataset.
+The first was to add Gaussian noise (based on the expected observed uncertainty) to the simulated flux.
+The second involved the use of the mixup technique (\cite{mixup}).
 
 %To add noise to flux, as follows, we replaced $f_i$ with $f_i + \epsilon_i$ in eq.\ref{eq:scaled_flux} and eq.\ref{eq:mag},
 %where $\epsilon_i$ is a random noise drawn from the Gaussian distribution with zero mean and $e_i^2$ variance, and $e_i$ is the flux error corresponding to $f_i$.
@@ -512,12 +525,11 @@ Mixup generates a new virtual training dataset as follows:
     \tilde{x} &=& \lambda x_u + \left( 1-\lambda \right) x_v, \\
     \tilde{y} &=& \lambda y_u + \left( 1-\lambda \right) y_v,
 \end{eqnarray*}
-where $\left(x_u, y_u\right)$ and $\left(x_v, y_v\right)$ are samples drawn at random from the training dataset, $x$ is input vector, $y$ is one-hot label vector, 
-and a mixing ratio $\lambda \in \left[0, 1\right]$ is drawn from a random distribution which is low density around 0 and 1 and higher density around 0.5. 
-The generated datasets are suitable for DNN to learn the classification boundaries.
+where $\left(x_u, y_u\right)$ and $\left(x_v, y_v\right)$ are samples drawn at random from the training dataset, $x$ is the input vector, $y$ is the one-hot label vector, and the mixing ratio $\lambda \in \left[0, 1\right]$ is drawn from a random distribution, of which the density is low near 0 and 1 and higher near 0.5. 
+The datasets generated in this way are suitable to enable the DNN to learn the classification boundaries.
 
-As described above, the hyperparameters (red boxes in figure \ref{fig:dnn_model}) of the model are optimized by maximizing the accuracy, while 
-the model parameters (green boxes in figure \ref{fig:dnn_model}) are optimized by minimizing cross-entropy error.
+As described above, the hyperparameters (red boxes in figure \ref{fig:dnn_model}) of the model are optimized by maximizing the accuracy, whereas 
+the model parameters (green boxes in figure \ref{fig:dnn_model}) are optimized by minimizing the cross-entropy error.
 %Table\ref{tb:hp_grid} shows the grid search settings, and Table\ref{tb:hp_search} shows the search settings for the TPE algorithm.
 %Table\ref{tb:hp} shows the grid search settings and the search settings for the TPE algorithm.
 % We determined the optimal DNN model size for classification by hyperparameter search.
@@ -530,38 +542,35 @@ the model parameters (green boxes in figure \ref{fig:dnn_model}) are optimized b
 % The accuracy is evaluated by the matching rate of DNN predicted class and the ground truth.
 %
 
-\subsection{Testing DNN model with PLAsTiCC dataset} 
+\subsection{Testing the DNN model with PLAsTiCC dataset} 
 \label{sec:p}
 %
 %We verify the performance of the classifier described in the previous section using the PLAsTiCC dataset \citep{plasticc_dataset}.
-Before we apply our model to the HSC observed data, we test it with LSST simulated classification challenge dataset, PLAsTiCC dataset \citep{allam18a,malz19a} which is composed of realistic photometric dataset with errors on time-variable objects.
-To evaluate our model, we are in need of dataset with labels of true identity. 
-PLAsTiCC Deep Drilling Field (DDF) dataset is similar to HSC-SSP Transient Survey, and we took advantage of it.
-However, %our primary purpose is to extract SN~Ia, and 
-we generate the training set by ourselves 
-%(subsection \ref{sec:training}) 
-and do not use the training set PLAsTiCC team has provided because we knew that the number of training dataset is not good enough to achieve the maximum performance (figure \ref{fig:size_convergence_test}).
+Before we applied our model to the data observed by HSC, we tested it with a dataset resulting from the LSST simulated classification challenge, i.e., the PLAsTiCC dataset \citep{allam18a,malz19a}, which is composed of realistic photometric data with errors on time-variable objects.
+To evaluate our model, we required a dataset with labels of true identity. 
+The PLAsTiCC Deep Drilling Field (DDF) dataset contains data similar to those in the HSC-SSP Transient Survey, and we took advantage thereof.
+However, we generated the training set by ourselves and selected not to use the training set provided by the PLAsTiCC team because we knew that the size of their training dataset was insufficient to achieve maximum performance (figure \ref{fig:size_convergence_test}).
 
 %For training, 370,345 light curves are generated for LSST DDF.
 %We use filter response including system throughput from \citet{ivezic19a}. 
-For training, we generated 370,345 light curves based on the method described in subsection \ref{sec:training} using filter response and photometric zero-point for LSST \citep{ivezic19a}.
-These light curves are composed of SN types by SN~Ia:Ibc:II=0.60:0.06:0.34, and their peaks are randomly shifted in time.
+The training dataset was created by using the method described in subsection \ref{sec:training}. We generated 370,345 light curves based on the filter response and photometric zero-point for LSST \citep{ivezic19a}.
+These light curves are composed of the different types of SNe in the ratio SN~Ia:Ibc:II=0.60:0.06:0.34, and their peaks are randomly shifted in time. 
 %In addition, the timing at which SNs occur is shifted by randomly setting an offset that indicates the difference between the SN phase and the observation schedule.
 %
-For test dataset, we extract 2,297 light curves from PLAsTiCC dataset.
+The test dataset was created by extracting 2,297 light curves from the PLAsTiCC dataset.
 %, and applied our model to it.
-These are labeled three types of SNe (Ia, Ibc and II), and simulated to occur in COSMOS.
+These light curves are labeled Ia, Ibc, or II, to identify the type of SN each curve represented. The light curves were simulated to occur in the COSMOS field.
 %, the target region of HSC survey.
 
-We use the area under the curve (AUC) of receiver operating characteristic (ROC) curve, precision-recall curve in two-class classification, and the accuracy from confusion matrix in three-class classification as a metric to evaluate our model.
-We test which combination of inputs performs best for PLAsTiCC dataset. Our input could be a combination of arrays of normalized flux ($f$), magnitude ($m$), pseudo-absolute magnitude ($M$).
-Table \ref{tab:p_test} shows the AUC in two-class classification and accuracy in three-class classification in PLAsTiCC data, respectively.
-We find that the combination of normalized flux ($f$) and pseudo-absolute magnitude ($M$) performs best, although the information is redundant, we suspect the different distribution of the data gives extra clue to the machine.
+We used the area under the curve (AUC) of the receiver operating characteristic (ROC) curve, the precision-recall curve in two-class classification, and the accuracy from the confusion matrix in three-class classification as a metric to evaluate our model.
+Different combinations of inputs were tested to determine which performs best when using the PLAsTiCC dataset. Our input could be a combination of the arrays of normalized flux ($f$), magnitude ($m$), or the pseudo-absolute magnitude ($M$).
+Table \ref{tab:p_test} lists the AUC for two-class classification and the accuracy for three-class classification when using PLAsTiCC data, respectively.
+Our investigation showed that a combination of the normalized flux ($f$) and pseudo-absolute magnitude ($M$) performs best, and, although the information is redundant, we suspect the different distribution of the data provides the machine with additional guidance.
 %As with the case of the simulated data, the classifier with absolute magnitudes and normalized flux provides the best classification results for PLAsTiCC data.
-The AUC for the ROC curve and precision-recall curve are 0.996 and 0.995 respectively.
+The AUC values for the ROC curve and the precision-recall curve are 0.996 and 0.995, respectively.
 %, and these curves in this model are shown in figure\ \ref{fig:plasticc_2class_ROC} and figure\ \ref{fig:plasticc_2class_PreRec}.
-Figure\ \ref{fig:plasticc_3class_CM} shows the confusion matrix in the three-class classification, and the total accuracy is calculated as 95.3\%.
-As is always the case in the real world, it is hard to classify SN~Ibc, but the effect on total accuracy is relatively small.
+Figure\ \ref{fig:plasticc_3class_CM} shows the confusion matrix for the three-class classification, with the total accuracy calculated as 95.3\%.
+As is always the case in the real world, it is difficult to classify SN~Ibc, but the effect on overall accuracy is relatively small.
 %PLAsTiCC, test(v1.2.1)
 %
 \begin{table}[htbp]
@@ -581,7 +590,7 @@ $M$ & $m$ & $f$ &  ROC &  Pre.-Rec. &\\
 \end{tabular}
 }\label{tab:p_test}
 \begin{tabnote}
-\footnotemark[$*$] Input to classifier is displayed as check mark. $M$: pseudo-absolute magnitude, $m$: magnitude, $f$: normalized flux.
+\footnotemark[$*$] Input to classifier is displayed as a check mark. $M$: pseudo-absolute magnitude, $m$: magnitude, $f$: normalized flux.
 \end{tabnote}
 \end{table}
 %
@@ -590,58 +599,82 @@ $M$ & $m$ & $f$ &  ROC &  Pre.-Rec. &\\
      \includegraphics[width=\columnwidth]{figures/06_CM_abs-mag_scaled-flux_w-mixup_predictions_test_2.eps}
   \end{center}
   \caption{%
-  Normalized confusion matrix in three-class classification of PLAsTiCC dataset. The input to the classifier is pseudo-absolute magnitude and normalized flux. The proportions in each row sum to 1. The numbers in parentheses represent the raw numbers.
+  Normalized confusion matrix in the three-class classification of the PLAsTiCC dataset. The classifier received the pseudo-absolute magnitude and normalized flux as its input. The proportions in each row sum to 1. The numbers in parentheses represent the raw numbers.
   }%
   \label{fig:plasticc_3class_CM}
 \end{figure}
 %
+%added IT 200707
+%SN ratio vs performance
+%
+Table \ref{tab:snr_vs_AUC} summarizes the classification performance for each group of the test set divided according to the maximum signal-to-noise ratio of the photometric data.
+It shows that the classification performance tends to improve as the maximum signal-to-noise ratio increases.
+\begin{table}[htbp]
+\tbl{Classification performance for the maximum signal-to-noise ratio (SNR).}{
+\begin{tabular}{cccc}
+\noalign{\vskip 2mm}
+\hline
+Max. SNR & Number & \multicolumn{2}{c}{AUC\footnotemark[$*$]} \\
+\hline
+         &        & ROC   & Pre.-Rec. \\
+\hline
+$<$ 5    & 31     & 0.975 & 0.983 \\
+5 -- 10  & 736    & 0.989 & 0.983 \\   
+10 -- 20 & 814    & 0.999 & 0.998 \\
+$>$ 20   & 716    & 0.999 & 0.999 \\
+\hline
+All      & 2297   & 0.996 & 0.995 \\
+\hline
+\end{tabular}
+}\label{tab:snr_vs_AUC}
+\begin{tabnote}
+\footnotemark[$*$] AUC for the best performing model ($M+f$).
+\end{tabnote}
+\end{table}
+%
 
+%
 In the three-class classification of the PLAsTiCC dataset,
-107 SNe is misclassified and have the following characteristics:
+107 SNe were misclassified and have the following characteristics:
 \begin{itemize}
-\item 54\% (58/107) of them are 'incomplete events' that do not include the SN peak phase, the period (observed frame) of 10 days before and 20 days after peak, in the photometric data, while they are only 38\% of all events.
-\item Of the rest, 29\% (14/49) are on the boundary where the difference in probability between the correct class and the predicted class is less than 0.1.
-\item More than half of the remaining 35 events misclassify Ibc as Ia, II
+\item 54\% (58/107) of them  were ``incomplete events'' that did not include the peak phase of the SN (the period of 10 days before and 20 days after the peak in the observed frame) in the photometric data, whereas they only constitute 38\% of all events.
+\item Of the remaining misclassifications, 29\% (14/49) are on the boundary where the difference in probability between the correct class and the predicted class is less than 0.1.
+\item In more than half of the remaining 35 events, SN Ibc was misclassified as either SN Ia or II.
 \end{itemize}
 Figure\ \ref{fig:misclass_rate_3class} shows the accuracy against redshift for the PLAsTiCC dataset.
-%We found that 
-The accuracy for Ibc is lower than that of other classes.
-%and that the accuracy dropped significantly in the vicinity of redshift 1.0, and the accuracy also decreased for nearby Ibc SNe.
-%The accuracy for SN~Ibc is 
-It is greatly reduce at redshifts beyond 1.0, and also decreased at redshift z of 0.1 to 0.2.
-As a result of individual check, while some misclassified SNe are so dark and indeterminate that they are difficult to classify even with conventional methods, there are also bright SNe that are completely misclassified.
+The accuracy for SN Ibc is lower than that of the other classes; in particular, it is greatly reduced at redshifts beyond 1.0, and also decreased at redshift {\it z} of 0.1 to 0.2.
+%Manual verification of individual misclassifications revealed that, although certain misclassified SNe are dark and indeterminate to an extent that they are difficult to classify even with conventional methods, a few bright SNe were also completely misclassified.
+Manual verification of individual misclassifications revealed that, although certain misclassified SNe are too faint to classify even with conventional methods, a few bright SNe were also completely misclassified.
 %
 \begin{figure}[htbp]
   \begin{center}
      \includegraphics[width=\columnwidth]{figures/misclass_rate_plastic_3class.eps}
   \end{center}
   \caption{%
-  Accuracy against redshift in the three-class classification of the PLAsTiCC dataset.
+  Accuracy as a function of the redshift in the three-class classification of the PLAsTiCC dataset.
   }%
   \label{fig:misclass_rate_3class}
 \end{figure}
-%
-%
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Application to HSC-SSP transient survey}
 \label{sec:h}
 %
 %observation frequencies,
-We apply the developed classifier to the observed photometric data set of 1824 SNe.
+We applied the developed classifier to the dataset acquired during the HSC-SSP Transient Survey. This dataset includes photometric data of 1824 SNe.
 As described in \citet{yasuda19a}, the survey %is part of HSC-SSP survey, where observations were performed in two areas with different 
-is conducted in two kinds of layers with different depths and cadence, 'Deep' and 'Ultra-Deep'.
-Therefore, the number of photometric data points of SN in each layer could be different.
-%There are also SNe in which part of the light curve data is missing.
-%To correspond these SNe, we prepared five input cases of light curve data and classifiers for each case.
-Our DNN model requires the exactly the same number of data points as an input, and here we divide
-our data set into five cases based on the number of photometric data points.
+was conducted in two layers with different depths and cadence, i.e., ``Deep'' and ``Ultra-Deep.''
+Therefore, the number of photometric data points of an SN in each layer could be different.
+Our DNN model requires exactly the same number of data points as its input; thus, we divided our dataset into five cases based on the number of photometric data points.
+%Our DNN model requires exactly the same number of data points as an input. However, since the observing schedules (epochs) for each SN are common to some extent in each layer, and here we divide our dataset into five cases based on the number of photometric data points.
+%
 The number of SNe for each case is summarized in table\ \ref{tab:class_flag}.
-For example, the number of SNe in Case 0 is 709, and they are in the Ultra-Deep field.  Each SN has a total of 
+For example, the number of SNe in Case 0 is 709, and they are in the Ultra-Deep field. Each SN is represented by a total of 
 42 epochs of photometric data in four bands ($g$-, $r2$-, $i2$- and $z$-band).
 The number of epochs and filter schedule for Case 0 SNe are summarized in table \ref{tab:HSCsurvey_schedule}.
-By introducing five cases, the machine can classify 1812 HSC SNe which corresponds to 99.3\% of 1824 SNe.
-The remaining 12 SNe are excluded due to the missing data. 
+The introduction of these five cases enabled the machine to correctly classify 1812 HSC SNe, which corresponds to 99.3\% of the 1824 SNe.
+The remaining 12 SNe were excluded owing to missing data.
 %in all of the schedule patterns from Case 0 to Case 4, and there is no new pattern common to them.
 %
 %v190522
@@ -682,10 +715,9 @@ $z$ & 12 & 0, 6, 30, 40, 59, 68, 90, 101, 119, 126, 151, 157\\
 %
 %
 %training set 
-We apply both two-class and three-class classification to the above five cases of HSC observed data.
-For each case, the machine needs to be trained independently with a dedicated training data set.
-Thus, hyperparameters are optimized for each case and reported in table \ref{tb:searched_hp_class}.
-%The optimized hyperparameters for each cases are listed in table \ref{tb:searched_hp_class}.
+We subjected the aforementioned five cases of observed HSC data to both two-class and three-class classification.
+For each of these cases, the machine needs to be trained independently with a dedicated training dataset.
+Thus, the hyperparameters were optimized for each case and are reported in table \ref{tb:searched_hp_class}.
 The following subsections (subsection \ref{sec:h2} and \ref{sec:h3}) describe the performance evaluation for each classification.
 %
 %
@@ -720,7 +752,7 @@ Case 4& \checkmark &            & \checkmark & 5 & 379 & 4.21e-3   & 1  & sigmoi
 \end{tabular}
   }\label{tb:searched_hp_class}
 \begin{tabnote}
-\footnotemark[$*$] Input to classifier is displayed as check mark. $M$: pseudo-absolute magnitude, $m$: magnitude, $f$: normalized flux.
+\footnotemark[$*$] Input to classifier is displayed as a check mark. $M$: pseudo-absolute magnitude, $m$: magnitude, $f$: normalized flux.
 \end{tabnote}
 \end{table*}
 %
@@ -730,34 +762,30 @@ Case 4& \checkmark &            & \checkmark & 5 & 379 & 4.21e-3   & 1  & sigmoi
 \subsection{Binary classification}
 \label{sec:h2}
 %
-In binary classification, we prepare four versions of classifiers with different inputs as in PLAsTiCC dataset, and compare their performance.
+Binary classification was performed using four versions of classifiers, which we prepared with different inputs as in the PLAsTiCC dataset. This approach allowed us to compare their performance, a summary of which is provided in table\ \ref{tab:h2_AUC}.
 %The performance for each input of binary classification are summarized in table\ \ref{tab:h2_validation},\ref{tab:h2_test_gold} and \ref{tab:h2_test_all}.
-The performance for each input of binary classification are summarized in table\ \ref{tab:h2_AUC}.
+%The performance for each input of binary classification are summarized in table\ \ref{tab:h2_AUC}.
 
-For the validation dataset, which is a part of the simulated dataset, a higher number of input dimensions results in the better the results, and any classifier can classify them with very high AUCs.
-The best AUCs for all classified events are 0.993 and 0.995 for the ROC curve and precision-recall curve, respectively.
+For the validation dataset, which is part of the simulated dataset, a higher number of input dimensions were found to improve the results, enabling any classifier to classify the data with very high AUC.
+The best AUCs for all classified events are 0.993 and 0.995 for the ROC and precision-recall curve, respectively.
 %Figure\ \ref{fig:h2_validation} show ROC curves and precision-recall curves in the best performing classifier for the validation set.
 
-For test dataset, the classification performance is verified using 1332 HSC SNe (1256 with redshift) labeled by the SALT2 light curve fitter \citep{guy2007,guy10b}, one of the conventional classification methods.
-The verification label for HSC SNe conforms to \citet{yasuda19a}, which defines SN~Ia as SNe that satisfy all the following four criteria for the SALT2 fitting results:
-(1)color ($c$), and stretch ($x_1$) within the $3\sigma$ range of \citet{scolnickessler2016} 'All G10' distribution, 
-(2)absolute magnitude in B band $M_B$ brighter than $-18.5$ mag, 
-(3)reduced $\chi ^{2}$ of less than 10,
-(4)number of degrees of freedom (dof) is greater than or equal to 5.
-Other candidates that satisfy the looser set of conditions above are labeled 'Ia?'.
-Specifically, the range of (1) is expanded to within 5 sigma, and the thresholds of (2) and (3) are set to $-17.5$ mag and 20 respectively.
-On the other hand, we define non Ia in the HSC classification as SNe that do not satisfy the conditions of 'Ia' and 'Ia?', and whose number of dof is 5 or more.
-The numbers of labeled Ia, Ia? and non Ia are 429, 251 and 908 (410, 240 and 850, with redshift), respectively.
-Besides the above, 215 SNe with the number of dof less than 5 are labeled as 'unclassified', and fitting of the remaining 21 SNe fails.
-In this performance evaluation, we use 428 Ia and 904 non Ia SNe classified by our machine.
+For the test dataset, the classification performance was verified using 1332 HSC SNe (1256 with redshift) labeled by the SALT2 light curve fitter \citep{guy2007,guy10b}, a conventional classification method.
+The verification label for the HSC SNe conforms to that reported in \citet{yasuda19a}, which defines SN~Ia as SNe that satisfy all four of the following criteria for the SALT2 fitting results:
+(1) color ($c$), and stretch ($x_1$) within the $3\sigma$ range of \citet{scolnickessler2016} ``All G10'' distribution, (2) absolute magnitude in B band $M_B$ brighter than $-18.5$ mag, (3) reduced $\chi ^{2}$ of less than 10, (4) number of degrees of freedom (dof) greater than or equal to five.
+Other candidates that satisfy the looser set of conditions above were labeled ``Ia?.''
+Specifically, the range in (1) was expanded to within 5 sigma, and the thresholds of (2) and (3) were set to $-17.5$ mag and 20, respectively.
+Meanwhile, we defined non-Ia in the HSC classification as SNe that do not satisfy the conditions to be classified as ``Ia'' and ``Ia?,'' and of which the number of dof is five or more.
+The number of labeled Ia, Ia?, and non-Ia are 429, 251, and 908 (410, 240, and 850, with redshift), respectively.
+Apart from the above, 215 SNe with less than 5 dof were labeled as ``unclassified,'' and the remaining 21 SNe failed to be fitted.
+This performance evaluation was conducted by using 428 SNe~Ia and 904 non-SNe~Ia classified by our machine.
 %The numbers of labeled Ia, Ia? and non Ia are 428, 251 and 904 (409, and 847, with redshift), respectively.
 %Those with the number of dof less than 5 are labeled as 'unclassified', which is not classified by SALT2 fit, and remaining 21 SNe are labeled 'fail' which does not even fit. 
 
-We also extracted 441 'light curve verified SNe' that have spec-z and photometric information before and after peak, and verified their classification results.
+We also extracted 441 ``light-curve verified SNe'' that have photometric information before and after their peak and for which spec-z are available, and verified their classification results.
 Figures\ \ref{fig:h2_test_all} and \ref{fig:h2_test_gold} show the AUCs of the best classifier for all labeled HSC SNe and the light curve verified HSC SNe respectively.
 The confusion matrices for each case are shown in figure\ \ref{fig:h2_test_CM}.
-%need reference
-The best performing classifier shows the same classification results as the conventional method in 84.2\% of 1256 labeled SNe, with 91.8\% accuracy for 441 light curve verified SNe.
+The best performing classifier obtained the same classification results as the conventional method for 84.2\% of 1256 labeled SNe, which is 91.8\% accurate for the 441 light curve verified SNe.
 %The final classification result of the HSC SNe is the combination of outputs from the classifier using the absolute magnitude for those with redshift information, and for that using the magnitude for those without redshift information.
 %The numbers of SNe with Ia probabilities above 0.5, 0.7 and 0.9 are 530, 386 and 170 out of 1332, respectively.
 %The numbers of SNe with Ia probabilities above 0.5, 0.7 and 0.9 are 613, 437 and 186 out of 1540, respectively. (in old ver.)
@@ -794,7 +822,7 @@ Test& \checkmark &            & \checkmark &       0.945 &       0.922 &       0
 \end{tabular}
 }\label{tab:h2_AUC}
 \begin{tabnote}
-\footnotemark[$*$] Input to classifier is displayed as check mark. $M$: pseudo-absolute magnitude, $m$: magnitude, $f$: normalized flux.
+\footnotemark[$*$] Input to classifier is displayed as a check mark. $M$: pseudo-absolute magnitude, $m$: magnitude, $f$: normalized flux.
 \end{tabnote}
 \end{table*}
 %
@@ -816,9 +844,9 @@ Test& \checkmark &            & \checkmark &       0.945 &       0.922 &       0
     \end{tabular}
     \vspace{2mm}
     \caption{%
-    ROC curves and Precision Recall curves in two-class classification of all labeled HSC SNe.
-    The input to the classifier is pseudo-absolute magnitude and normalized flux.
-    Each colored line represents the performance for each of the five classifiers with different input cases, and the that for all of their outputs.
+    ROC curves and precision-recall curves for the two-class classification of all labeled HSC SNe.
+    The input to the classifier is the pseudo-absolute magnitude and normalized flux.
+    The colored lines represent the performance for each of the five classifiers with different input cases, and that for all of their outputs.
     }
     \label{fig:h2_test_all}
 \end{figure*}
@@ -841,7 +869,7 @@ Test& \checkmark &            & \checkmark &       0.945 &       0.922 &       0
     \end{tabular}
     \vspace{2mm}
     \caption{%
-  As in figure \ref{fig:h2_test_all}, but for the light curve verified HSC SNe. 
+  As shown in figure \ref{fig:h2_test_all}, but for the light curve verified HSC SNe. 
   %Recall curves in two-class classification of light curve verified HSC SNe. 
   %The input to the classifier is absolute magnitude and normalized flux.
   %Each colored line represents the performance for each of the five classifiers with different input cases, and the that for all of their outputs.
@@ -871,19 +899,19 @@ Test& \checkmark &            & \checkmark &       0.945 &       0.922 &       0
         \end{minipage}
     \end{tabular}
     \caption{%
-  Normalized confusion matrices in binary classification of 1256 labeled HSC SNe (left) and 441 light curve verified SNe (right).
-  The inputs for both classifications are pseudo-absolute magnitude and normalized flux.
+  Normalized confusion matrices for the binary classification of 1256 labeled HSC SNe (left) and the 441 light curve verified SNe (right).
+  The inputs for both classifications are the pseudo-absolute magnitude and normalized flux.
 }%
     \label{fig:h2_test_CM}
 \end{figure*}
 %
 
-In the binary classification of 1256 labeled HSC SNe, 198 of them are misclassified.
-The misclassification rate for each case is different, and tends to increase as the number of input dimensions decreases.
-Although the rate is 13\% for Case 0, it is 23\% for Case 4.
-As with the PLAsTiCC data, incomplete events without peak phase are the majority of misclassified events in HSC data, accounting for 47\% (93/198) of them.
-The second most common cause of misclassification is outlier value or systematic flux offset in photometric data, accounting for 34\%(67/198) of misclassifications.
-Of the remaining 38 SNe, 17 are boundary events with Ia probability of 40 to 60\%, and the rest are events where SALT2 fitting does not work well.
+In the binary classification of 1256 labeled HSC SNe, 198 of them were misclassified.
+The misclassification rate for each case is different, and tends to increase as the number of input dimensions decreases;
+i.e., even though the rate is 13\% for Case 0, it is 23\% for Case 4.
+As with the PLAsTiCC data, incomplete events without their peak phase constitute the majority of misclassified events in the HSC data, accounting for 47\% (93/198) of them.
+The second most common cause of misclassification is an outlier value or systematic flux offset in photometric data, accounting for 34\% (67/198) of misclassifications.
+Of the remaining 38 SNe, 17 are boundary events with a Ia probability of 40 to 60\%, and the remainder are events for which SALT2 fitting is ineffective.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -891,20 +919,20 @@ Of the remaining 38 SNe, 17 are boundary events with Ia probability of 40 to 60\
 \subsection{Multi-type classification}
 \label{sec:h3}
 %
-In this paper, we show the classification performance only for the validation dataset with three-class classifier, because three type classification label is not available for the HSC transients.
+In this paper, we present the classification performance only for the validation dataset with the three-class classifier, because these three types of classification labels are not available for the HSC transients.
 %because we are currently labeling more than three classes for all SNe detected in HSC-SSP Transient Survey using conventional light curve fitting.
 %It is necessary to write the reason why there is no answer of multi-class classification.
 %
 % Classification performance of each model (3class, HSC, validation)
-The accuracy for each input in the three-class classification of the validation dataset are summarized in table\ \ref{tab:h3_validation}.
+The accuracy values for each input in the three-class classification of the validation dataset are summarized in table\ \ref{tab:h3_validation}.
 The best accuracy for the validation dataset is 94.0\%.
 The confusion matrix of the best classifier is shown in figure \ref{fig:h3_validation_CM}.
-It represents that our classifier has a very high sensitivity to SN~Ia while it is not good at classifying SN~Ibc.
+The result represents that our classifier has a very high sensitivity toward SN~Ia, whereas it is less effective at classifying SN~Ibc.
 
 In addition, we describe the predicted classes of actual HSC SNe classified by the three-class classifier.
 Figure \ref{fig:hsc3_type_frac_alongz} shows the fractions of each type predicted by the classifier in each redshift from 0.1 to 1.5.
-All 1812 classified HSC SNe are used to calculate the fraction.
-These SN types are a combination of the outputs from the two classifiers with different inputs depending on the presence of redshift information: (1)pseudo-absolute magnitude and normalized flux, (2)magnitude and normalized flux.
+All of the classified HSC SNe were used to calculate the fraction.
+These SN types are a combination of the outputs from the two classifiers with different inputs depending on the presence of redshift information: (1) pseudo-absolute magnitude and normalized flux, (2) magnitude and normalized flux.
 %Figure \ref{fig:h3_class_ratio} shows the predicted class ratio.
 %Our machine classifies 1812 SN classes with a ratio of SN~Ia:Ibc:II=0.43:0.06:0.51, which is an integrated value throughout the redshift and includes incomplete sampling of faint SNe.
 
@@ -934,7 +962,7 @@ $M$ & $m$ & $f$  &  Case 0 & 1 & 2 & 3 & 4 &  All \\
 \end{tabular}
 }\label{tab:h3_validation}
 \begin{tabnote}
-\footnotemark[$*$] Input to classifier is displayed as check mark. $M$: pseudo-absolute magnitude, $m$: magnitude, $f$: normalized flux.
+\footnotemark[$*$] Input to classifier is displayed as a check mark. $M$: pseudo-absolute magnitude, $m$: magnitude, $f$: normalized flux.
 
 \footnotemark[$\dagger$] %Accuracy for samples extracted from each case according to the number ratio in the actual HSC dataset.
 Accuracy of samples extracted from each case according to the fractions in table \ref{tab:class_flag}.
@@ -948,8 +976,8 @@ Accuracy of samples extracted from each case according to the fractions in table
   \end{center}
   \caption{%
   Normalized confusion matrix for validation dataset in the HSC three-class classification.
-  The input is pseudo-absolute magnitude and normalized flux.
-  The proportions in each row sum to 1 (within rounding error).
+  The input is the pseudo-absolute magnitude and normalized flux.
+  The proportions in each row sum to 1 (within the rounding error).
   }%
   \label{fig:h3_validation_CM}
 \end{figure}
@@ -970,9 +998,9 @@ Accuracy of samples extracted from each case according to the fractions in table
 %
 \subsection{Classification of HSC SNe}
 %
-We here publish the classification results of 1824 HSC SNe, obtained by the proposed classifiers, in e-table 1.\footnote{ E-table 1 is available on the online edition as a supplementary table. }
-A part of this classification list is shown in table\ \ref{tab:h_results} as an example.
-This list summarizes the probabilities predicted by the two-class and three-class classifiers for each SN, along with redshifts of host galaxies and classification labels by SALT2 fit.
+We report the classification results of 1824 HSC SNe, obtained by the proposed classifiers, in e-table 1.\footnote{ E-table 1 is available on the online edition as a supplementary table. }
+Part of this classification list is provided in table\ \ref{tab:h_results} as an example.
+This list summarizes the probabilities predicted by the two-class and three-class classifiers for each SN, along with the redshifts of the host galaxies and the classification labels assigned on the basis of the SALT2 fitting.
 The probabilities in this list are calculated from the output of the classifier with the normalized flux added to the input.
 Each classification performance shown in subsections \ref{sec:h2} and \ref{sec:h3} is calculated based on the probabilities in this list.
 \begin{table*}[htbp]
@@ -983,7 +1011,7 @@ Each classification performance shown in subsections \ref{sec:h2} and \ref{sec:h
 \noalign{\vskip 1mm}
 %\multicolumn{6}{|c}{Accuracy}
 \hline
-Name  &  Case &        z &  z\_src\footnotemark[$*$] &  \multicolumn{3}{p{6.0em}}{SALT2 fitting} &\multicolumn{5}{|p{13.5em}}{Classifier (Input\footnotemark[$\dagger$]: $M+f$)} & \multicolumn{5}{|p{12.0em}}{Classifier (Input\footnotemark[$\dagger$]: $m+f$)}\\
+Name  &  Case &        {\it z} &  {\it z}\_src\footnotemark[$*$] &  \multicolumn{3}{p{6.0em}}{SALT2 fitting} &\multicolumn{5}{|p{13.5em}}{Classifier (Input\footnotemark[$\dagger$]: $M+f$)} & \multicolumn{5}{|p{12.0em}}{Classifier (Input\footnotemark[$\dagger$]: $m+f$)}\\
 \hline
       &       &          &          &  dof & Type\footnotemark[$\ddagger$] & F\_cover\footnotemark[$\S$]  & 2-class &\multicolumn{4}{p{10.0em}|}{3-class}&2-class &    \multicolumn{4}{p{10.0em}}{3-class}\\
 \hline
@@ -992,7 +1020,7 @@ Name  &  Case &        z &  z\_src\footnotemark[$*$] &  \multicolumn{3}{p{6.0em}
 HSC16aaau &     1 &    $0.370_{-0.072}^{+0.110}$ &         3 &    7 &    Ia? &   False &    0.556 &    0.554 &    0.022 &    0.424 &      Ia &    0.517 &    0.649 &    0.008 &    0.342 &      Ia \\
 HSC16aaav &     1 &    $3.280_{-2.423}^{+0.167}$ &         4 &   17 &  nonIa &     True &    0.134 &    0.049 &    0.002 &    0.949 &      II &    0.279 &    0.356 &    0.048 &    0.596 &      II \\
 HSC16aabj &     0 &    $0.361_{-0.008}^{+0.007}$ &         2 &    8 &  nonIa &   False &    0.630 &    0.667 &    0.001 &    0.331 &      Ia &    0.574 &    0.578 &    0.018 &    0.405 &      Ia \\
-HSC16aabk &     1 &      NaN &         0 &    9 &    Ia? &   False &      NaN &      NaN &      NaN &      NaN &     NaN &    0.433 &    0.675 &    0.077 &    0.248 &      Ia \\
+HSC16aabk &     1 &      -- &         0 &    9 &    Ia? &   False &      -- &      -- &      -- &      -- &     -- &    0.433 &    0.675 &    0.077 &    0.248 &      Ia \\
 HSC16aabp &     1 &    $1.477_{-0.032}^{+0.037}$ &         2 &   19 &  nonIa &   False &    0.957 &    0.964 &    0.001 &    0.035 &      Ia &    0.807 &    0.871 &    0.039 &    0.090 &      Ia \\
 \vdots & & & & & & & & & & & & & & & &\\
 HSC17bjrb &     1 &    $0.560_{-0.036}^{+0.024}$ &         3 &    1 &  UC &   False &    0.003 &    0.007 &    0.004 &    0.989 &      II &    0.011 &    0.002 &    0.004 &    0.994 &      II \\
@@ -1002,7 +1030,7 @@ HSC17bjyn &     0 &    $0.626_{-0.000}^{+0.000}$ &         1 &   24 &     Ia &  
 HSC17bjza &     1 &    $1.350_{-0.156}^{+1.142}$ &         4 &   13 &  nonIa &     True &    0.016 &    0.041 &    0.016 &    0.943 &      II &    0.062 &    0.039 &    0.005 &    0.957 &      II \\
 HSC17bkbn &     0 &    $0.863_{-0.012}^{+0.036}$ &         2 &   23 &  nonIa &     True &    0.031 &    0.025 &    0.002 &    0.973 &      II &    0.028 &    0.021 &    0.002 &    0.976 &      II \\
 HSC17bkcz &     0 &    $0.795_{-0.000}^{+0.000}$ &         1 &   27 &     Ia &     True &    0.675 &    0.674 &    0.035 &    0.291 &      Ia &    0.661 &    0.789 &    0.019 &    0.191 &      Ia \\
-HSC17bkef &     0 &    $2.940_{-0.087}^{+0.119}$ &         2 &    0 &   fail &    NaN &    0.219 &    0.443 &    0.000 &    0.556 &      II &    0.950 &    0.947 &    0.010 &    0.043 &      Ia \\
+HSC17bkef &     0 &    $2.940_{-0.087}^{+0.119}$ &         2 &    0 &   fail &    -- &    0.219 &    0.443 &    0.000 &    0.556 &      II &    0.950 &    0.947 &    0.010 &    0.043 &      Ia \\
 HSC17bkem &     2 &    $0.609_{-0.000}^{+0.000}$ &         1 &   17 &     Ia &     True &    0.889 &    0.858 &    0.001 &    0.141 &      Ia &    0.901 &    0.863 &    0.023 &    0.114 &      Ia \\
 HSC17bkfv &     0 &    $0.670_{-0.035}^{+0.035}$ &         3 &   23 &     Ia &     True &    0.915 &    0.906 &    0.016 &    0.078 &      Ia &    0.961 &    0.926 &    0.011 &    0.063 &      Ia \\
 \vdots & & & & & & & & & & & & & & & &\\
@@ -1016,13 +1044,13 @@ HSC17dspl &     0 &    $0.624_{-0.000}^{+0.000}$ &         1 &    9 &  nonIa &  
 }\label{tab:h_results}
 \begin{tabnote}
 \footnotemark[$*$] Code for redshift source.
-1: spec-z, 2: COSMOS photo-z, 3: HSC photo-z ultra-deep, 4: HSC photo-z deep, 0: hostless.
+1: spec-z, 2: COSMOS photo-z, 3: HSC photo-z Ultra-Deep, 4: HSC photo-z Deep, 0: hostless.
 
 \footnotemark[$\dagger$] $M$: pseudo-absolute magnitude, $m$: magnitude, $f$: normalized flux.
 
 \footnotemark[$\ddagger$] SN type labeled by SALT2 fitting, UC: unclassified.
 
-\footnotemark[$\S$] Flag indicating whether the photometric data covers the period of 10 days before and 20 days after the peak. SNe with this flag set to False are defined as 'incomplete events'.
+\footnotemark[$\S$] Flag indicating whether the photometric data cover the period of 10 days before and 20 days after the peak. SNe with this flag set to False are defined as ``incomplete events.''
 \end{tabnote}
 \end{table*}
 %
@@ -1031,11 +1059,11 @@ HSC17dspl &     0 &    $0.624_{-0.000}^{+0.000}$ &         1 &    9 &  nonIa &  
 %
 When using our classification method, the number of photometric data points given to the classifier increases as the survey progresses.
 Therefore, we investigated the transition of performance against the number of epochs.
-We classified the HSC dataset by increasing the number of input data points one by one, and examined the relationship between the number of epochs and the classification performance.
-Binary classifiers are used for classification, and the accuracy calculated from each confusion matrix is used for evaluation.
+This was accomplished by classifying the HSC dataset by increasing the number of input data points in increments of one, and by examining the relationship between the number of epochs and the classification performance.
+Binary classifiers were adopted for classification, and the accuracy calculated from each confusion matrix was used for evaluation.
 Figure\ \ref{fig:n_observations} shows the transition of classification performance for the Case 0 HSC dataset along with the number of epochs.
 Although the Ia accuracy is as low as 0.6 to 0.7 in the early stage of the survey with less than five epochs, it exceeds 0.8 when the number of epochs increases to 22.
-The partial decrease in accuracy is thought to be due to the new SN found at the added photometric point.
+The partial decrease in accuracy is thought to be due to the new SNe being found upon the addition of a photometric point.
 %
 \begin{figure}[htbp]
   \begin{center}
@@ -1043,7 +1071,7 @@ The partial decrease in accuracy is thought to be due to the new SN found at the
   \end{center}
   \caption{%
   Relationship between the number of epochs and classification performance in binary classification for the Case 0 dataset. 
-  The horizontal axis is the elapsed days of the HSC survey, and the vertical dot line shows the scale of input photometric point number. 
+  The horizontal axis represents the number of elapsed days of the HSC survey, and the vertical dotted line indicates the scale of the number of photometric points that were used as input. 
   The color of each mark in accuracy indicates the band of the added photometric point. 
   The blue horizontal dotted line indicates the accuracy when using all epochs.
   }%
@@ -1051,24 +1079,24 @@ The partial decrease in accuracy is thought to be due to the new SN found at the
 \end{figure}
 %
 
-We also investigated the classification performance during each SN phase by regrouping all events according to the length of period since the first detection.
-%examples of probability
-Figure\ \ref{fig:lcps} illustrates the light curves and Ia probability transitions since the first detection of three HSC SNe.
-We define 'first detection' as the first day when the SN is detected with 5$\sigma$ confidence in flux, and flagged as a real object by the real-bogus classifier using convolutional neural network \citep{yasuda19a}.
+We also investigated the classification performance during each SN phase by regrouping all events according to the length of time since the first detection.
+Figure\ \ref{fig:lcps} illustrates the light curves and Ia probability transitions since the first detection of the three types of HSC SNe.
+We define ``first detection'' as the first day when the SN is detected with 5$\sigma$ confidence in flux, and which is flagged as a real object by the real-bogus classifier using a convolutional neural network \citep{yasuda19a}.
 The probability is updated at each new epoch.
-While there are events where the probability increases as the SN phase progresses, there are also some events where the probabilities fluctuate around 0.5 even as the observation progresses and cannot be clearly classified.
-Figure\ \ref{fig:n_observations_SNphase} shows the relationship between the number of days from first detection to classification, accuracy and the cumulative number of SNe classified as Ia with high probability.
-The calculations for each performance are based on the classification results for 1161 SNe detected before the rising phase.
-This figure presents how long SN photometric data is needed to classify with high accuracy using our classifier.
+Although the probability increases for certain events as the SN phase progresses, in the case of other events the probabilities fluctuate around 0.5 even as the observation progresses and these events cannot be clearly classified.
+%Figure\ \ref{fig:n_observations_SNphase} shows the relationship between the number of days since the first detection until classification, the accuracy, and the cumulative number of SNe classified as Ia with high probability.
+Figure\ \ref{fig:n_observations_SNphase} shows the accuracy of SN~Ia classification as a function of the time since the first detection. Orange and green curves show cumulative numbers of SNe~Ia.
+The calculations for each performance are based on the classification results for 1161 SNe that were detected before the rising phase.
+This figure presents the time span of SN photometric data that is needed for highly accurate classification using our classifier.
 %The classification performance is low if only the initial rising phase before the SN peek is included in the input photometric data, but the accuracy increases to 78\% when we input two weeks of SN data from the first detection.
 The classification accuracy is 78.1\% for the first two weeks of data, and after one month it increases to 82.7\%.
 %Since the observation interval in the HSC survey is not constant, the number of inputs is different even for SNe with the same detected period.
 %Due to this fact, there is a variation in the average input dimension number of samples in each phase, which causes a fluctuation in accuracy.
 %However, due to events whose probabilities fluctuate with the progress of the SN phase illustrated in Figure \ref{fig:lcps}, there are some cases where the accuracy slightly decreases even if the period until classification becomes long.
 %In addition, considering the cumulative number of SNe classified as Ia with high probability from six months data, it is estimated that our classifier can classify at least four or more Ia SNe candidate to follow-up in one month observation of the Ultra-deep area.
-In addition, the number of follow-up candidates by the classifier can be estimated from the cumulative number in figure \ref{fig:n_observations_SNphase}.
-Using data within one month from the first detection, 79 SNe with z $>$ 1 are classified with Ia probability of 95\% or more.
-Since the number of these SNe is a cumulative number for six months observation, dividing this by six corresponds to the number of follow-up SNe classified during a one-month survey, which is 13 events.
+In addition, the number of follow-up candidates identified by the classifier can be estimated from the cumulative number in figure \ref{fig:n_observations_SNphase}.
+Using data acquired within one month from the first detection, 79 SNe with {\it z} $>$ 1 could be classified with Ia probability of 95\% or more.
+Because the number of these SNe is a cumulative number observed during a period of six months, dividing this by six corresponds to the number of follow-up SNe classified during a one-month survey, which is 13 events.
 %
 \begin{figure*}[htbp]
     \begin{tabular}{ccc}
@@ -1100,30 +1128,40 @@ Since the number of these SNe is a cumulative number for six months observation,
      \includegraphics[width=\columnwidth]{figures/n_observations_SNphase_v200318.eps}
   \end{center}
   \caption{%
-  Classification accuracy and cumulative number of type Ia SNe classified with high probability against SN phase.
-  The orange line indicates the cumulative number of SNe with Ia probability $>$ 95\%, and green line is that for distant SNe at z $>$ 1. %Average number of observation points with red lines.
+  Classification accuracy and cumulative number of Type Ia SNe classified with high probability against the SN phase.
+  The orange line indicates the cumulative number of SNe with Ia probability $>$ 95\%, and the green line is that for distant SNe at {\it z} $>$ 1. %Average number of observation points with red lines.
   }%
   \label{fig:n_observations_SNphase}
 \end{figure}
 %
 
-Lastly, we study the transition of the Ia probability output by the classifier along SN phase.
-Each time the number of input epochs increases, Ia probability, the output of the classifier, is updated.
-For each of 100 SNe labeled Ia and non Ia with SALT2 fitting, we extracted its Ia probability for each duration from the various classification results, and plotted its transition as figure\ \ref{fig:visualized_Ia_prob}.
-Although the Ia probability fluctuates greatly in the earliest phase, it begins to divide in about two weeks, and it can be clearly separated in one month.
+%Lastly, we studied the transition of the Ia probability output by the classifier along the SN phase.
+%Each time the number of input epochs increases, the Ia probability, i.e., the output of the classifier, is updated.
+%IT changed 200710
+%For each of 300 SNe labeled Ia and non Ia with SALT2 fitting, we extracted its Ia probability for each duration from the various classification results, and plotted its transition as figure\ \ref{fig:visualized_Ia_prob}.
+%Although the Ia probability fluctuates greatly in the earliest phase, it begins to divide in about two weeks, and it can be clearly separated in one month.
+%IT changed 200717
+%For each of 300 SNe labeled Ia and non Ia with SALT2 fitting, we extracted its Ia probability for each duration from the various classification results, and plotted its transition and the cumulative ratio of finally correctly classified (not reswitched to the other) SNe as figure \ref{fig:visualized_Ia_prob}.
+%Although the Ia probability fluctuates greatly and the cumulative ratio is less than 60\% in the earliest phase, it starts to split in about 2 weeks, and about 1 month after the detection, 80\% of supernovae are correctly classified. The initial cumulative rate is lower than the accuracy in Figure \ref{fig:n_observations_SNphase}, due to the SNe that are correctly classified at the beginning but eventually switch to the wrong type.
+Lastly, we studied the evolution of the SN~Ia probability along the SN phase.
+Each time the number of input epochs increases, the SN~Ia probability, i.e., the output of the classifier, is updated.
+In figure \ref{fig:visualized_Ia_prob} (Upper panel), we plotted the SN~Ia probability at each epoch for each of 300 SNe labeled as Ia and non-Ia based on the SALT2 fitting. The use of this result enabled us to measure the last epoch at which the correct type is classified, i.e., the epoch after which no further change in the classification occurs. The lower panel shows the cumulative ratio for the epoch. The figure shows that the classification performance improves with time and that 80\% of supernovae are correctly classified approximately 30 days after their first detection. In this figure, the initial cumulative ratio is lower than the accuracy shown in figure \ref{fig:n_observations_SNphase} because certain SNe that are initially correctly classified could ultimately be misclassified as a wrong type.
+
+%
 %Figure \ref{fig:HSTIaprob} shows the transitions of Ia probability along the days from the peak for 16 SNe included in Case 0 data, among 26 SNe selected as HST targets in the HSC survey, and the average of these transitions.
-Figure \ref{fig:HSTIaprob} shows the transitions of Ia probability along the days from the peak for 26 SNe selected as HST targets in the HSC survey, and the average of these transitions.
-The Ia probability for the average of the candidates is greater than 0.8 three weeks before the peak.
-This means that our classifier accomplishes the task described in subsection \ref{sec:tasks} to find good candidates only with information before the SN peak.
+Figure \ref{fig:HSTIaprob} shows the transitions of SN~Ia probability as a function of the number of days from the peak for 26 SNe selected as HST targets in the HSC survey, and the average of these transitions.
+The SN~Ia probability for the average of the candidates is greater than 0.8 three weeks before the peak.
+This means that our classifier accomplishes the task described in subsection \ref{sec:tasks} by identifying good candidate SNe even when it only has information acquired before the SN peak.
 %
 \begin{figure}[htbp]
   \begin{center}
-     \includegraphics[width=\columnwidth]{figures/n_observations_visualized_Ia_probability_200319.eps}
+     \includegraphics[width=\columnwidth]{figures/n_observations_lastestday_200709.eps}
   \end{center}
-  \caption{%
-  Transition of Ia probability with increasing elapsed time of input SNe.
-  Each line corresponds to one of SNe.
-  The difference in color indicates the difference in label, with red being Ia and blue being non Ia.
+  \caption{%IT changed 200710
+  %Transition of Ia probability with increasing elapsed time of input SNe.
+  %Each line corresponds to one of SNe.
+  %The difference in color indicates the difference in label, with red being Ia and blue being non Ia.
+  Upper panel: Transition of Ia probability of SNe after first detection. Each line corresponds to one of the SNe. Different colors indicate different labels, with red being Ia and blue being non-Ia. Lower panel: Cumulative ratio for the epoch at which SNe are finally correctly classified.
   }%
   \label{fig:visualized_Ia_prob}
 \end{figure}
@@ -1134,7 +1172,7 @@ This means that our classifier accomplishes the task described in subsection \re
      \includegraphics[width=\columnwidth]{figures/HST_DaysFromPeak_vs_IaProbability_200319.eps}
   \end{center}
   \caption{%
-  Ia probability transitions of 26 HST targets. Each of the lighter lines represents the variation for the individual HST targets, and the red line is those average.
+  Ia probability transitions of 26 HST targets. Each of the lighter lines represents the variation for individual HST targets, and the red line is the average of these lines.
   }%
   \label{fig:HSTIaprob}
 \end{figure}
@@ -1147,29 +1185,28 @@ This means that our classifier accomplishes the task described in subsection \re
 %\subsection{Simulated data versus observed data}
 %
 %In this paper we not only evaluate our classifier with simulated data, but also apply it to actual HSC survey data to evaluate classification performance.
-In this paper, we apply our classifier to actual HSC survey data to evaluate its classification performance.
-What we find out by classifying actual data with our method is that the performance difference between the validation and test set is larger than that for the PLAsTiCC data.
-We discuss the factors that affect the classification performance of actual data.
+In this study, we applied our classifier to actual HSC survey data to evaluate its classification performance.
+By classifying actual data with our method, we determined that the performance difference between the validation and test sets is larger than that for the PLAsTiCC data.
+Here we discuss the factors that affect the classification performance of actual data.
 
-One possible reason is the uncertainty in the labeling of actual data using conventional methods.
-In the confusion matrix for all labeled SNe in figure \ref{fig:h2_test_CM}, 47\% of the 198 misclassified SNe are incomplete events.
+One possible factor is the uncertainty in the labeling of actual data using conventional methods.
+In the confusion matrix for all labeled SNe in figure \ref{fig:h2_test_CM}, 47\% of the 198 misclassified SNe are incomplete events and these events only form 35\% of the 1824 HSC SNe.
 %As with the classification of the PLAsTiCC data, many misclassified incomplete events, which should be only 27\% in all classified SNe, suggest that they reduce the performance of the classifier.
-They are only 35\% of 1824 HSC SNe.
-The high percentage of incomplete events among misclassified events suggests that they reduce classification performance. %, as with classification of PLAsTiCC data.
+The high percentage of incomplete events among the misclassified events suggests that incomplete events reduce the classification performance. %, as with classification of PLAsTiCC data.
 %However, the misclassification rate of incomplete events is clearly increased to 7\% (93/1256) in HSC data compared to 3\% (58/2297) in PLAsTiCC data.
-However, the misclassification rate of incomplete events is clearly increased to 28\% (93/338) in HSC data compared to 7\% (58/871) in PLAsTiCC data.
-SALT2 fitting is also not good at fitting incomplete events due to its specification, and errors in fitting parameters are significantly larger.
-These facts suggests the existence of uncertainty in labeling with conventional classification methods.
-Another source of uncertainty in labeling is due to the uncertainty of redshift information used in SALT2 fitting.
-For at least 16 misclassified events that have no other misclassification factors, the fitting color parameters are far outside the criteria for Ia, and the wrong redshift is probably used for fitting.
-In fact, as shown in the right panel of figure \ref{fig:h2_test_CM}, the performance for light curve verified SNe, except for incomplete events and whose spec-z is known, is better than for all classified events.
+However, the misclassification rate of incomplete events is clearly higher at 28\% (93/338) for the HSC data compared to 7\% (58/871) for PLAsTiCC data.
+In addition, SALT2 fitting is equally ineffective at fitting incomplete events owing to its specification, and errors in the fitting parameters are significantly larger.
+These findings suggest a degree of uncertainty in labeling with conventional classification methods.
+Another source of uncertainty in labeling is the uncertainty in the redshift information used in SALT2 fitting.
+For at least 16 misclassified events that were not affected by any other misclassification factors, the fitting color parameters are far outside the criteria for Ia, and the wrong redshift was probably used for fitting.
+In fact, as shown in the panel on the right in figure \ref{fig:h2_test_CM}, the performance for light curve verified SNe, except for incomplete events and for events of which spec-z is not known, is superior to that of all classified events.
 
-Another cause of the large difference in the performance of the validation and test set is the inability to completely simulate the observed data.
-Outlier values and systematic flux offsets, which are considered to be one of the causes of misclassification described in subsection \ref{sec:h2}, are found only in observed data.
-As described in \citet{yasuda19a}, the photometric data of the SN in the HSC survey is measured from the difference image obtained by subtracting the reference image from the observed image.
-We believe that the unsimulated residual in this subtraction creates a difference between the photometric data for training and observation, and increases the misclassification rate of the classifier in the actual data.
-For example, The light curve of SN HSC16akvr shown in the right panel of figure \ref{fig:lcps} fluctuates at its tail part, and the classification is not clear in that part.
-It will be necessary to reduce or simulate these outlier values as much as possible to improve the performance of the classifier.
+Another reason for the large difference in the performance of the validation and test set is the inability to perfectly simulate the observed data.
+Outlier values and systematic flux offsets, which are considered to be one of the causes of misclassification as described in subsection \ref{sec:h2}, are found only in real observed data.
+As described in \citet{yasuda19a}, the photometric data of the SNe in the HSC survey are measured from the difference image obtained by subtracting the reference image from the observed image.
+We believe that the unsimulated residual in this subtraction created a difference between the photometric data that were used for training and observation, and increases the misclassification rate of the classifier when processing actual data.
+For example, the light curve of SN HSC16akvr shown in the panel on the right in figure \ref{fig:lcps} fluctuates at its tail, and in this part of the curve the classification is not clear.
+Improving the performance of the classifier would therefore necessitate the reduction or simulation of these outlier values as much as possible.
 %The presence of anomalous events also reduces the performance of actual survey classifications.
 %
 %Of course, the labeling of the actual data class by the conventional method includes uncertainty, but the difference in the results should be minimized by making the learning data more similar to the actual data.
@@ -1177,29 +1214,29 @@ It will be necessary to reduce or simulate these outlier values as much as possi
 %
 %\subsection{Comparison with the best classifier in PLAsTiCC}
 \subsection{Comparison with other classifiers}
+\label{sec:comparison}
 %
-When comparing the classification results of the classifiers, it is difficult to make a direct comparison if there are differences in methods, training datasets, or number of inputs and outputs. 
-Here, we simply compare the recent SN type classifier based on machine learning and our classifier with AUC of ROC in the binary classification of Ia or not.
-For comparison, we use the classification results of the simulated SN light curves with redshift information from \citet{Lochner_2016}, \citet{charnock17a} and \citet{Muthukrishna_2019}.
-\citet{Lochner_2016} obtained AUC of 0.984 by classification with boosted decision trees (BDTs) using the SALT2 fitting parameters as input features.
-\citet{charnock17a} reported AUC of 0.986 for classification of SNPCC data using deep recurrent neural networks (RNN) with unidirectional long short-term memory (LSTM) units.
-\citet{Muthukrishna_2019} used deep RNN with Gated Recurrent Units (GRUs) to classify simulated ZTF light curves and archived an AUC of 0.99 40 days after the trigger.
-The AUC of our classifier, 0.996, is more than comparable to those of these recent classifiers in binary classification.
+The direct comparison of the classification results of the classifiers is complicated by differences in methods, training datasets, or the number of inputs and outputs. 
+Here, we simply compare the results obtained with the recent SN type classifier based on machine learning and our classifier with AUC of ROC in binary classification to determine whether an SN is of the type Ia.
+For comparison, we use the classification results of the simulated SN light curves with redshift information from \citet{Lochner_2016}, \citet{charnock17a}, and \citet{Muthukrishna_2019}.
+\citet{Lochner_2016} obtained an AUC of 0.984 by using boosted decision trees (BDTs) for classification using the SALT2 fitting parameters as input features.
+\citet{charnock17a} reported an AUC of 0.986 for the classification of SNPCC data using deep recurrent neural networks (RNN) with unidirectional long short-term memory (LSTM) units.
+\citet{Muthukrishna_2019} used deep RNN with Gated Recurrent Units (GRUs) to classify simulated ZTF light curves and achieved an AUC of 0.99 40 days after the trigger.
+The AUC of our classifier, 0.996, is comparable to those of these recent classifiers in binary classification.
 
-Next, we compare the results of our classifiers and those ranked first place in the PLAsTiCC Kaggle competition \citep{malz19a}.
-The best classifier in the competition \citep{boone19a} is based on Light-GBM and trained with features extracted from photometric data modeled by Gaussian process regression.
-The training set of this classifier includes a total of 591,410 light curves by augmenting 100 new light curves under different observation conditions and different redshifts for each light curve of the original PLAsTiCC training set.
-It classifies events into 15 classes including variable objects other than SN such as microlensing events and active galactic nuclei.
-We use 2,297 PLAsTiCC SN predictions, classified by both classifier, for comparison.
-Since the number of output classes is different between our classifier and the best classifier, we divide the classification results into Ia and the other, and compare as binary classification.
+Next, we compare the results of our classifiers with those that ranked first in the PLAsTiCC Kaggle competition \citep{malz19a}.
+The best classifier in the competition \citep{boone19a} was based on Light-GBM and trained with features extracted from photometric data modeled by Gaussian process regression.
+The dataset that was used to train this classifier included a total of 591,410 light curves that were obtained by augmenting 100 new light curves under different observation conditions and different redshifts for each light curve of the original PLAsTiCC training set.
+The classifier classifies events into 15 classes including variable objects other than SN such as microlensing events and active galactic nuclei.
+We used 2,297 PLAsTiCC SN predictions, classified by both classifiers, for comparison.
+Because the number of output classes is different between our classifier and the best classifier, we divided the classification results into Ia and other, and performed the comparison as a binary classification.
 Figure\ \ref{fig:comp_plasticc_1st} shows the confusion matrix of each classifier.
-While our classifier and PLAsTiCC 1st classifier cannot be strictly compared because of the different training datasets and number of output classes,
+Although a strict comparison between our classifier and the best PLAsTiCC classifier is not possible because of the different training datasets and number of output classes, the capability of our classifier is comparable to that of the best PLAsTiCC classifier.
 %only for the compared SNe, our classifier is about 6\% better in total accuracy than the PLAsTiCC 1st classifier and 6\% better in Ia accuracy.
-our classifier has a comparable capability to the PLAsTiCC 1st classifier.
 %Considering that our classifier only uses the middle one year data out of the original three year data as input, it classifies PLAsTiCC data with better accuracy with less data than that of PLAsTiCC 1st.
-However, since our method fixes the observation schedule to input, it is impossible to apply to all PLAsTiCC data with one classifier.
+However, because our method fixes the observation schedule to the type of input, it is impossible to process all PLAsTiCC data with one classifier.
 %How many patterns
-Our method is not useful for surveys that sweep a wide area like LSST survey, but for surveys that keep observing at the same field like HSC-SSP Transient Survey.
+Our method is not necessarily suitable for surveys that sweep a wide area such as the LSST survey; instead, it is useful for surveys that observe the same field for a period of time, such as the HSC-SSP Transient Survey and LSST DDF.
 %
 \begin{figure*}[htbp]
     \begin{tabular}{cc}
@@ -1214,7 +1251,7 @@ Our method is not useful for surveys that sweep a wide area like LSST survey, bu
             \end{center}
         \end{minipage}
     \end{tabular}  \caption{%
-    Normalized confusion matrices of two-class classification results for the PLAsTiCC test set by \citet{boone19a} (left) and our best classifier given pseudo-absolute magnitude and normalized flux (right).
+    Normalized confusion matrices of two-class classification results for the PLAsTiCC test set by \citet{boone19a} (left) and our best classifier given the pseudo-absolute magnitude and normalized flux (right).
     }%                                                                                           
     \label{fig:comp_plasticc_1st}
 \end{figure*}
@@ -1224,50 +1261,54 @@ Our method is not useful for surveys that sweep a wide area like LSST survey, bu
 %
 \subsection{Data uncertainty}
 %
-The flux error information is also important for the classification of distant SN Ia, which is the main target of the HSC survey and has a small signal-to-noise ratio.
-Here, we discuss how to incorporate errors for classification, including our method.
-\citet{charnock17a} adds the flux error itself as part of the input vector.
-In the case of feature-based classification, the flux error is used in fitting for calculating the features, and affects those errors.
-The flux error is also used to calculate statistical features such as 'Standard Deviation / Mean', which is one of the features shown in \citet{narayan18a} and \citet{Muthukrishna_2019}.
-On the other hand, as described in subsection \ref{sec:training}, we calculate the flux error of the simulated training data based on the relationship between the flux and the flux error for each epoch of the observed data.
+Information about the flux error is also important for the classification of distant SN Ia, which is the main target of the HSC survey and has a small signal-to-noise ratio.
+%edited IT 200717
+As mentioned in section \ref{sec:p}, the signal-to-noise ratio affects the performance of the model.
+%
+Here, we discuss the incorporation of errors for classification, including in our method.
+\citet{charnock17a} added the flux error itself as part of the input vector.
+In the case of feature-based classification, the flux error is used in the fitting process to calculate the features, and affects those errors.
+The flux error is also used to calculate statistical features such as ``Standard Deviation / Mean,'' which is one of the features discussed by \citet{narayan18a} and \citet{Muthukrishna_2019}.
+As described in subsection \ref{sec:training}, we calculate the flux error of the simulated training data based on the relationship between the flux and the flux error for each epoch of the observed data.
 Then, random numbers that follow a normal distribution defined by the original fluxes and flux errors are input to the classifier as processed fluxes.
 
-The processing of time series data with uncertainty is an issue in many application domains, not only in the astronomy field.
-For example, in similarity matching of time series data with uncertainty, it is suggested as a promising method to take into account continuous correlation in time series such as measuring distance after filtering by Uncertain Moving Average (UMA)\citep{Dallachiesa_2012}.
+The processing of time series data with uncertainty is problematic in many application domains, not only in the field of astronomy.
+For example, in the similarity matching of time series data with uncertainty,  considering continuous correlation in time series such as measuring the distance after filtering by the Uncertain Moving Average (UMA)\citep{Dallachiesa_2012} is suggested to be a promising approach.
 UMA filtering uses the correlation of neighboring points and reduces the contribution of observation points with large errors.
-We believe that the development of a method to efficiently incorporate such error information is necessary for improving the classification performance.
+We consider the development of a method to efficiently incorporate this error information to be necessary for improving the classification performance.
 %
 \subsection{Missing data}
 %
-Our method is specialized in the HSC survey, where each observed transient tends to have the same cadence by observing a certain field repeatedly.
-However, this method is not suitable for processing data with different observation schedules for each object, or dataset with missing data.
-In other classification methods, missing data is interpolated by linear or Gaussian processes \citep{Lochner_2016,Muthukrishna_2019}, or replaced with reference to the flux of adjacent photometric points \citep{charnock17a}.
-We handle missing data by preparing multiple classifiers.
-The classifier can use the photometric information directly and classify with less pre-processing, compared to the method of interpolation and replacing.
-In the case of the HSC survey, most of the observation schedules of all supernovae can be roughly divided into two types, corresponding to Ultra-Deep and Deep layer.
-Therefore, as shown in table \ref{tab:class_flag}, we can classify 99.3\% of SNe using only five classifiers with different input schedule cases, including those for SNe data containing missing data.
+Our method was developed specifically for the HSC survey, where each observed transient tends to have the same cadence by observing a certain field repeatedly.
+However, this method is neither suitable for processing data with different observation schedules for each object nor for datasets from which data are missing.
+In other classification methods, missing data are interpolated by linear or Gaussian processes \citep{Lochner_2016,Muthukrishna_2019}, or replaced with reference to the flux of adjacent photometric points \citep{charnock17a}.
+Our approach is to handle missing data by preparing multiple classifiers.
+The advantage of our classifier is that it is able to use the photometric information directly for classification with less pre-processing, compared to methods that use interpolation or replacement.
+In the case of the HSC survey, most of the observation schedules of all supernovae can be roughly divided into two types that correspond to either the Ultra-Deep or Deep layers.
+Therefore, we can classify 99.3\% of SNe using only five classifiers with different input schedules, including those for SNe data containing missing data (table \ref{tab:class_flag}).
+%IT added 200709, Canceled 200717
+%Furthermore, as described in section \ref{sec:comparison}, our classifier achieves a comparable result with the best model of the Kaggle competition, which interpolates the data and extracts the features.
+%
 %To classify all objects with our method, we need to prepare multiple classifiers.
 %In order to support ultra-wide-range surveys such as LSST, it is necessary to input features that are less affected by the magnitude of the cadence for each transient, and to add processing to interpolate missing values.
 %
 %
 \subsection{Type fractions of HSC SNe}
 The elemental abundance of the solar system \citep{grevesse98a} originates from the cosmic history of SNe \citep{maraston05a,kobayashi00a}.  
-Recent studies show that the solar abundance pattern is observed in other systems \citep{ramirez09a} and clusters \citep{mernier18a}. 
-It is important to investigate the origin of elements in the context of cosmic evolution \citep{fukugita04a}. 
+Recent studies showed that the solar abundance pattern is observed in other systems \citep{ramirez09a} and clusters \citep{mernier18a}. 
+Investigation of the origin of elements in the context of cosmic evolution is thus important \citep{fukugita04a}.
 
-It is now well established that star formation rate is peaking at z$\sim$2, and the chemical composition of our system is a mixture of SN~Ia and Core-Collapse SNe \citep{tsujimoto95a,kobayashi11a}.
-Deriving SN rate needs a careful analysis \citep{dilday08a,brown19a,frohmaier19a} and it is beyond the scope of this paper, but at least we can check the consistency with previous work on relative fraction.
-Lick Observatory Supernova Survey \citep{li11a} reports the relative ratio between SN~Ia:Ibc:II to be 0.24:0.19:0.57, while we have 0.22:0.19:0.59 even at z$\lesssim$0.2. 
+It is now well established that the star formation rate peaks at $z\sim2$, and that the chemical composition of our system is a mixture of SN~Ia and Core-Collapse SNe \citep{tsujimoto95a,kobayashi11a}.
+Deriving the SN rate would require careful analysis \citep{dilday08a,brown19a,frohmaier19a} and is beyond the scope of this paper, but at least we can verify the consistency with previous work in terms of the relative fraction.
+The Lick Observatory Supernova Survey \citep{li11a} reported the relative ratio of SN~Ia:Ibc:II to be 0.24:0.19:0.57, whereas we obtained 0.22:0.19:0.59 even at $z\lesssim0.2$.
 
-Based on our survey depth, we have a complete sampling of SN~Ia up to z$\sim$1.1 while we lose completeness of Core-Collapse SN in much lower redshift given the fact that the magnitudes of SN~Ibc and SN~II are fainter by 2$\sim$3 mag at maximum.
-The trend of SN~II fraction drops while SN~Ia fraction rises towards high redshift as shown in figure \ref{fig:hsc3_type_frac_alongz}. 
-It is simply because of this completeness effect due the the magnitude difference and does not reflect the cosmological SN rates.
-If we adopt the SN~Ia rate from \citet{graur14a} and Core-Collapse SN rate from \citet{strolger15a}, we can estimate the completeness of Core-Collapse SN. 
-%At z$\sim$0.3 Core-Collapse SN completeness is 72\%, and it drops to be 28\% at z$\sim$0.5. 
-At z$\sim$0.3 Core-Collapse SN completeness is 78\%, and it drops to be 49\% at z$\sim$0.5. 
-The reason why SN~II fraction does not go to zero at z$\sim$1 in Figure \ref{fig:hsc3_type_frac_alongz} is that the magnitude dispersion of Core-Collapse SN \citep[$\sigma$ $\sim$ 1.2 mag]{li11a,kessler19b} is much larger than that of SN~Ia \citep[$\sigma$ $\sim$ 0.5 mag]{rubin15a}, and they are factor of 4-5 more abundant at z$\sim$1 \citep{madau98a,hounsell18a}. 
-More careful investigation is needed, but we deduce completeness %of Core-Collapse SN at z$\sim$1 is 16\%.
-of Core-Collapse SN at z$\sim$1 is 12\%.
+Based on our survey depth, we have a complete sampling of SN~Ia up to $z\sim1.1$ although we lose the completeness of Core-Collapse SN in much lower redshift given the fact that the magnitudes of SN~Ibc and SN~II are fainter by 2$\sim$3 mag at maximum.
+Increasing redshift causes the SN~II fraction to decrease whereas the SN~Ia fraction increases as shown in figure \ref{fig:hsc3_type_frac_alongz}. 
+This completeness effect is simply due to the magnitude difference and does not reflect the cosmological SN rates.
+By adopting the SN~Ia rate from \citet{graur14a} and the Core-Collapse SN rate from \citet{strolger15a}, we can estimate the completeness of Core-Collapse SN. 
+At $z\sim0.3$, the Core-Collapse SN completeness is 78\%, and it is reduced to 49\% at $z\sim0.5$. 
+The reason for the SN~II fraction not approaching zero at $z\sim1$ in figure \ref{fig:hsc3_type_frac_alongz} is that the magnitude of the dispersion of Core-Collapse SN \citep[$\sigma$ $\sim$ 1.2 mag]{li11a,kessler19b} is much larger than that of SN~Ia \citep[$\sigma$ $\sim$ 0.5 mag]{rubin15a}, and they are more abundant at $z\sim1$ by a factor of 4--5 \citep{madau98a,hounsell18a}. 
+Although a more careful investigation would be necessary, we deduce the completeness of Core-Collapse SN at $z\sim1$ to be 12\%.
 
 %Cosmological origin of elements depends of the cosmic history of SNe.
 %show solar abundance 
@@ -1281,10 +1322,10 @@ of Core-Collapse SN at z$\sim$1 is 12\%.
 %\item our new method(2DGP+LGBM)
 %\end{itemize}
 %
-In this paper, we present a model of a classifier that classifies SN types by directly inputting photometric data, and its classification performance.
-Our DNN classifier is trained with simulated SN photometric data and classifies PLAsTiCC data and actual HSC SNe data with high accuracy of 95.3\% and 84.2\% respectively.
-The study on the number of input dimensions also shows that our classifier can classify the HSC survey data with sufficient accuracy even for two weeks of pre-peak data from the first detection.
-From these facts, we conclude that this classifier has sufficient classification performance for subsequent type-specific studies and selection of follow-up targets even in actual HSC surveys.
+In this paper, we present a model of a classifier that classifies SN types by directly accepting photometric data as input. The classification performance of the classifier was discussed in detail.
+Our DNN classifier is trained with simulated SN photometric data and was shown to classify PLAsTiCC data and actual HSC SNe data with high accuracy of 95.3\% and 84.2\%, respectively.
+Our study of the number of input dimensions also indicated that our classifier can classify the HSC survey data with sufficient accuracy by even using two weeks of pre-peak data since the first detection.
+Based on these results, we concluded that this classifier has sufficient classification performance for subsequent type-specific studies and for the selection of follow-up targets even in actual HSC surveys.
 %Furthermore, our proposed method is easy to apply to estimation models such as redshift because of simple input. The application of our model to redshift estimation is useful for the selection of host galaxies by comparing with the photo-z information of galaxies.
 %
 \begin{ack}
@@ -1295,13 +1336,13 @@ This paper makes use of software developed for the Large Synoptic Survey Telesco
 The Pan-STARRS1 Surveys (PS1) have been made possible through contributions of the Institute for Astronomy, the University of Hawaii, the Pan-STARRS Project Office, the Max-Planck Society and its participating institutes, the Max Planck Institute for Astronomy, Heidelberg and the Max Planck Institute for Extraterrestrial Physics, Garching, The Johns Hopkins University, Durham University, the University of Edinburgh, Queen’s University Belfast, the Harvard-Smithsonian Center for Astrophysics, the Las Cumbres Observatory Global Telescope Network Incorporated, the National Central University of Taiwan, the Space Telescope Science Institute, the National Aeronautics and Space Administration under Grant No. NNX08AR22G issued through the Planetary Science Division of the NASA Science Mission Directorate, the National Science Foundation under Grant No. AST-1238877, the University of Maryland, and Eotvos Lorand University (ELTE) and the Los Alamos National Laboratory.
 
 We thank Y. Imoto for his enormous contribution to the development of the classification model, and the data classification.
-We also thank T. J. Moriya, J. Jiang and other members of HSC transient working group for helpful discussions and comments on the manuscript.
+We also thank T. J. Moriya, J. Jiang and other members of the HSC transient working group for helpful discussions and comments on the manuscript.
 
 %IT, NS and NY acknowledge financial support from JST CREST (JPMHCR1414).
 %This work is supported by JST CREST Grant Number JPMHCR1414, Japan.
 %NY is supported by the Grant-in-Aid for Scientific Research program of MEXT (18H04345). NS is supported by JSPS (18K03696).
 %MT is supported by the Grant-in-Aid for Scientific Research program of MEXT (17H06363) and JSPS (16H02183,19H00694).
-This work is supported by JST CREST Grant Number JPMHCR1414, MEXT KAKENHI Grant Numbers 18H04345 (N.Ya.), 17H06363 (M.T.), and JSPS KAKENHI Grant Numbers 18K03696 (N.S.), 16H02183 (M.T.), 19H00694 (M.T.).
+This work is supported by JST CREST Grant Number JPMHCR1414, JST AIP Acceleration Research Grant Number JP20317829, MEXT KAKENHI Grant Numbers 18H04345 (N.Ya.), 17H06363 (M.T.), and JSPS KAKENHI Grant Numbers 18K03696 (N.S.), 16H02183 (M.T.), 19H00694 (M.T.), 20H00179 (N.T.).
 
 This research is based in part on data collected at the Subaru Telescope and retrieved from the HSC data archive system, which is operated by the Subaru Telescope and Astronomy Data Center at NAOJ.
 \end{ack}
@@ -1311,37 +1352,36 @@ This research is based in part on data collected at the Subaru Telescope and ret
 \section*{Redshift estimation}
 %\subsection{Estimating Redshift}
 \label{sec:est_redshift}
-In HSC-SSP transient survey, there are SNe without redshift because their host galaxies are not clearly identified, called hostless SNe.
-In the redshift list of HSC SNe used for type classification, 6\% (108/1824) correspond to them.
-To cope with such SNe and the possibility of host galaxy misidentification,
-we can estimate the redshift $z$ of a SN from the photometric data.
+The HSC-SSP Transient Survey includes SNe without redshift because their host galaxies are not clearly identified. These SNe are referred to as hostless SNe.
+In the redshift list of HSC SNe that was used for type classification, 6\% (108/1824) corresponds to these hostless SNe.
+To be able to process these SNe with our classifier and to address the possibility of host galaxy misidentification,
+we could estimate the redshift $z$ of a SN from the photometric data.
 %There exists cases that we may not have a photometric redshift (hostless supernvoae) or photometric redshift is not accurate.
 %For these cases, we can estimate the redshift $z$ of a SN from the observed brightness.
 %We cannot use absolute magnitude to estimate the redshift value because redshift value is required to calculate absolute magnitude.
 %Therefore, we used magnitude instead of absolute magnitude as the input of the DNN.
 
-We use a model with the same structure as in figure \ref{fig:dnn_model} except that the DNN output is a scalar, and place no final softmax layer for redshift estimation.
+The redshift was estimated by using a model with the same structure as that in figure \ref{fig:dnn_model} except that the DNN output is a scalar, and that the model does not include a final softmax layer for redshift estimation.
 The objective function to optimize is the squared error between the ground truth $z$ and the output value $\hat{y}$.
-We measure the accuracy of the model with the coefficient of determination $R^2$, that is,
+We measured the accuracy of the model with the coefficient of determination $R^2$; that is,
 \begin{eqnarray*}
     R^2 = 1 - \frac{\sum_n \left| z_n - \hat{y}_n \right|^2}{\sum_n \left| z_n - \bar{z} \right|^2}, 
 \end{eqnarray*}
-where $z_n$ is the redshift value of $n$-th sample, $\hat{y}_n$ is the output of $n$-th sample, 
+where $z_n$ is the redshift value of the $n$-th sample, $\hat{y}_n$ is the output of the $n$-th sample, 
 and $\bar{z}$ is the mean redshift of the dataset.
 % $\mathrm{SE} \left(z, y\right) = \frac{1}{2} \left| z - y \right|^2 $
-We perform the same hyperparameter search in the model as in subsection \ref{hyperparametersearch} 
-including the data augmentation.
+We performed the same hyperparameter search in the model as that described in subsection \ref{hyperparametersearch}, including data augmentation.
 The accuracy of this estimator is discussed below.
 
-We apply the standard deviation of normalized residual $(z_{\rm pred}-z_{\rm spec})/(1+z_{\rm spec})$ \citep{Salvato_2009,Salvato_2019}, used in galaxy photo-z estimation, to the performance criteria for redshift estimation.
-In verification with Case 0 simulated data, that for Ia and non Ia objects are 0.022 and 0.076, respectively.
-For the actual HSC SNe, we used observationally obtained redshifts of host galaxies (see section \ref{sec:h}) including spec-z and photo-z for comparison with estimates.
-Figure\ \ref{fig:redshift_estimation} shows the comparison between the estimated redshifts and the observed redshifts for the HSC SNe classified as Ia.
-The two classes labeled by SALT2 fitting have different distributions, and the events labeled non Ia are less accurate in redshift estimation than Ia.
-The normalized residuals for each of Ia and non Ia Case 0 SNe labeled with SALT2 fitting are normally distributed with standard deviations of 0.066 and 0.138, respectively.
-If the comparison is limited to SNe in the host galaxy with spec-z information, they are 0.056 and 0.130.
-Although these estimation accuracy is worse than the template fitting accuracy using host galaxy photometric data, it is useful not only for hostless SNe, but also to select host galaxy by comparing the redshift estimated from the SN light curve itself with those of galaxies.
-Furthermore, this distributional difference of residuals leads to the fact that the Ia accuracy can be further improved by excluding events with large residuals in the estimated redshift of the SN and host galaxy.
+We applied the standard deviation of the normalized residual $(z_{\rm pred}-z_{\rm spec})/(1+z_{\rm spec})$ \citep{Salvato_2009,Salvato_2019}, used in galaxy photo-z estimation, to the performance criteria for redshift estimation.
+Verified with Case 0 simulated data, the redshifts for Ia and non-Ia objects were estimated to be 0.022 and 0.076, respectively.
+For the actual HSC SNe, we used the observationally obtained redshifts of host galaxies (see section \ref{sec:h}) including spec-z and photo-z for comparison with the estimates.
+Figure\ \ref{fig:redshift_estimation} shows the comparison between the estimated redshifts and the observed redshifts for HSC SNe classified as Ia.
+The two classes labeled by SALT2 fitting have different distributions, and the events labeled non-Ia are less accurate in terms of their redshift estimation than Ia.
+The normalized residuals for each of the Ia and non-Ia Case 0 SNe labeled with SALT2 fitting are normally distributed with standard deviations of 0.066 and 0.138, respectively.
+Limiting the comparison to SNe in the host galaxies with spec-z information, the standard deviations are 0.056 and 0.130, respectively.
+Although this estimation accuracy is lower than the template fitting accuracy using host galaxy photometric data, it is useful not only for hostless SNe, but also to select the host galaxy by comparing the redshift estimated from the SN light curve itself with those of the galaxies.
+Furthermore, this distributional difference of residuals leads to the fact that the Ia accuracy can be further improved by excluding events with large residuals when estimating the redshift of the SN and host galaxy.
 %
 \begin{figure*}[htbp]
     \begin{tabular}{cc}
@@ -1358,7 +1398,7 @@ Furthermore, this distributional difference of residuals leads to the fact that 
     \end{tabular}  \caption{%
     (Left) Relation between the machine predictions and the observed redshifts for HSC SNe.
     The dashed line is the line of equality.
-    The color difference represents SALT2 fit label.
+    The color difference represents the SALT2 fitted label.
     (Right) Normalized residual distribution for Case 0 SNe.
     }%
     \label{fig:redshift_estimation}
